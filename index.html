@@ -5,64 +5,220 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DayCambio - Divisas y Comisiones</title>
   
-  <!-- Configuración PWA e Icono Neón 'D' -->
-  <meta name="theme-color" content="#0d1117">
+  <!-- Configuración PWA e Icono -->
+  <meta name="theme-color" content="#0d1117" id="meta-theme">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="DayCambio">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1117'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300ff88'/><path d='M48 42 L58 42 L52 36 M52 58 L42 58 L48 64' stroke='%2300ff88' stroke-width='3' fill='none'/></svg>">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1117'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300ff88'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1117'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300f2fe'/></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1117'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300f2fe'/></svg>">
 
   <style>
+    /* VARIABLES Y TEMAS LIQUID GLASS DARK */
     :root {
-      --bg: #0d1117;
-      --card-bg: #161b22;
-      --accent: #00ff88;
+      /* Tema por defecto: Turquoise Digital */
+      --bg: #070d14;
+      --bg-glow: radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.18), transparent 70%);
+      --card-bg: rgba(13, 22, 33, 0.65);
+      --accent: #00f2fe;
+      --accent-glow: rgba(0, 242, 254, 0.4);
       --text: #ffffff;
-      --subtext: #8b949e;
-      --border: #30363d;
-      --input-bg: #0d1117;
+      --subtext: #8fa3b8;
+      --border: rgba(0, 242, 254, 0.25);
+      --input-bg: rgba(7, 13, 20, 0.7);
+      --btn-text: #000000;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 20px 10px; min-height: 100vh; }
+    [data-theme="blue"] {
+      --bg: #0a1128;
+      --bg-glow: radial-gradient(circle at 50% 0%, rgba(0, 180, 216, 0.2), transparent 70%);
+      --card-bg: rgba(16, 29, 66, 0.65);
+      --accent: #00b4d8;
+      --accent-glow: rgba(0, 180, 216, 0.4);
+      --text: #e0f2fe;
+      --subtext: #94a3b8;
+      --border: rgba(0, 180, 216, 0.25);
+      --input-bg: rgba(10, 17, 40, 0.7);
+      --btn-text: #000000;
+    }
+
+    [data-theme="purple"] {
+      --bg: #12091c;
+      --bg-glow: radial-gradient(circle at 50% 0%, rgba(189, 147, 249, 0.2), transparent 70%);
+      --card-bg: rgba(28, 17, 41, 0.65);
+      --accent: #bd93f9;
+      --accent-glow: rgba(189, 147, 249, 0.4);
+      --text: #f8f8f2;
+      --subtext: #a78bfa;
+      --border: rgba(189, 147, 249, 0.3);
+      --input-bg: rgba(18, 9, 28, 0.7);
+      --btn-text: #12091c;
+    }
+
+    [data-theme="neutral"] {
+      --bg: #0d0d0d;
+      --bg-glow: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.1), transparent 70%);
+      --card-bg: rgba(30, 30, 30, 0.6);
+      --accent: #ffffff;
+      --accent-glow: rgba(255, 255, 255, 0.3);
+      --text: #ffffff;
+      --subtext: #a1a1aa;
+      --border: rgba(255, 255, 255, 0.2);
+      --input-bg: rgba(18, 18, 18, 0.7);
+      --btn-text: #000000;
+    }
+
+    [data-theme="pink"] {
+      --bg: #180a14;
+      --bg-glow: radial-gradient(circle at 50% 0%, rgba(255, 105, 180, 0.22), transparent 70%);
+      --card-bg: rgba(38, 16, 31, 0.65);
+      --accent: #ff69b4;
+      --accent-glow: rgba(255, 105, 180, 0.45);
+      --text: #fff0f6;
+      --subtext: #f472b6;
+      --border: rgba(255, 105, 180, 0.3);
+      --input-bg: rgba(24, 10, 20, 0.7);
+      --btn-text: #180a14;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s; }
+    
+    body {
+      background-color: var(--bg);
+      background-image: var(--bg-glow);
+      background-attachment: fixed;
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 20px 12px;
+      min-height: 100vh;
+    }
+
     .app-container { width: 100%; max-width: 480px; }
     
-    header { text-align: center; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; gap: 12px; }
-    .logo-icon { width: 44px; height: 44px; background: #00ff8822; border: 2px solid var(--accent); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; color: var(--accent); box-shadow: 0 0 15px rgba(0,255,136,0.3); }
-    h1 { font-size: 26px; font-weight: 800; }
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1.5px solid var(--accent);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+      backdrop-filter: blur(10px);
+    }
+    h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
 
-    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
-    .section-title { font-size: 13px; font-weight: 700; color: var(--subtext); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
+    .theme-selector {
+      padding: 8px 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      font-size: 13px;
+      outline: none;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
 
-    .rates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-bottom: 16px; }
-    .rate-box { background: var(--input-bg); border: 1px solid var(--border); padding: 12px 6px; border-radius: 12px; }
-    .rate-label { font-size: 11px; color: var(--subtext); margin-bottom: 4px; }
-    .rate-val { font-size: 16px; font-weight: 700; color: var(--text); }
+    /* ESTILO LIQUID GLASS */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
 
-    .btn-main { width: 100%; padding: 14px; background: var(--accent); color: #000; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; font-size: 15px; transition: opacity 0.2s; }
-    .btn-main:active { opacity: 0.8; }
+    .section-title { font-size: 11px; font-weight: 700; color: var(--subtext); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 16px; }
+
+    .rates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-bottom: 18px; }
+    .rate-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      padding: 12px 6px;
+      border-radius: 14px;
+      backdrop-filter: blur(8px);
+    }
+    .rate-label { font-size: 11px; color: var(--subtext); margin-bottom: 4px; font-weight: 600; }
+    .rate-val { font-size: 16px; font-weight: 800; color: var(--accent); text-shadow: 0 0 8px var(--accent-glow); }
+
+    .btn-main {
+      width: 100%;
+      padding: 15px;
+      background: var(--accent);
+      color: var(--btn-text);
+      font-weight: 800;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 15px;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .btn-main:active { opacity: 0.85; transform: scale(0.99); }
 
     .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-    .tab-btn { padding: 12px; background: var(--card-bg); border: 1px solid var(--border); color: var(--subtext); font-weight: 600; border-radius: 12px; cursor: pointer; }
-    .tab-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+    .tab-btn {
+      padding: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--subtext);
+      font-weight: 700;
+      border-radius: 14px;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: var(--btn-text);
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
 
     .input-group { margin-bottom: 16px; }
-    label { display: block; font-size: 12px; color: var(--subtext); margin-bottom: 8px; }
-    input, select { width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 16px; outline: none; }
-    input:focus, select:focus { border-color: var(--accent); }
+    label { display: block; font-size: 12px; color: var(--subtext); margin-bottom: 8px; font-weight: 600; }
+    input, select {
+      width: 100%;
+      padding: 14px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
 
     .res-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); }
     .res-row:last-child { border-bottom: none; }
-    .res-val { font-weight: 700; color: var(--accent); }
+    .res-val { font-weight: 800; color: var(--accent); }
   </style>
 </head>
 <body>
 
 <div class="app-container">
   <header>
-    <div class="logo-icon">D</div>
-    <h1>DayCambio</h1>
+    <div class="header-left">
+      <div class="logo-icon">D</div>
+      <h1>DayCambio</h1>
+    </div>
+    <!-- SELECTOR DE TEMAS LIQUID GLASS -->
+    <select class="theme-selector" id="themeSelect" onchange="changeTheme(this.value)">
+      <option value="turquoise">💎 Turquoise Digital</option>
+      <option value="blue">🌊 Blue Cyberpunk</option>
+      <option value="purple">🔮 Purple Mystic</option>
+      <option value="neutral">🌫️ Neutral Dark Glass</option>
+      <option value="pink">🌸 Pink Cloud</option>
+    </select>
   </header>
 
   <!-- BLOQUE DE TASAS -->
@@ -88,22 +244,22 @@
     <div class="input-group">
       <label>Moneda de Origen</label>
       <select id="src-curr" onchange="calculate()">
+        <option value="ves">Bolívares (VES)</option>
         <option value="usd">Dólar BCV (USD)</option>
         <option value="eur">Euro BCV (EUR)</option>
         <option value="usdt">Tether (USDT)</option>
-        <option value="ves">Bolívares (VES)</option>
       </select>
     </div>
     <div class="input-group">
-      <label>Monto</label>
-      <input type="number" id="amount" value="100" oninput="calculate()">
+      <label>Monto a Convertir</label>
+      <input type="number" id="amount" value="1000" oninput="calculate()">
     </div>
 
     <div class="section-title" style="margin-top: 20px;">RESULTADOS EQUIVALENTES</div>
-    <div class="res-row"><span>Bolívares (VES):</span><span class="res-val" id="res-ves">0.00</span></div>
-    <div class="res-row"><span>Dólar BCV:</span><span class="res-val" id="res-usd">0.00 $</span></div>
-    <div class="res-row"><span>Euro BCV:</span><span class="res-val" id="res-eur">0.00 €</span></div>
-    <div class="res-row"><span>USDT:</span><span class="res-val" id="res-usdt">0.00 USDT</span></div>
+    <div class="res-row"><span>Bolívares (VES):</span><span class="res-val" id="res-ves">0.00 VES</span></div>
+    <div class="res-row"><span>Dólar BCV (USD):</span><span class="res-val" id="res-usd">0.00 $</span></div>
+    <div class="res-row"><span>Euro BCV (EUR):</span><span class="res-val" id="res-eur">0.00 €</span></div>
+    <div class="res-row"><span>Tether (USDT):</span><span class="res-val" id="res-usdt">0.00 USDT</span></div>
   </div>
 
   <!-- COMISIONES -->
@@ -122,9 +278,22 @@
 <script>
   let rates = { usd: 0, eur: 0, usdt: 0 };
 
+  // Control del tema
+  function changeTheme(themeName) {
+    if (themeName === 'turquoise') {
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', themeName);
+    }
+    localStorage.setItem('daycambio_theme', themeName);
+  }
+
+  const savedTheme = localStorage.getItem('daycambio_theme') || 'turquoise';
+  document.getElementById('themeSelect').value = savedTheme;
+  changeTheme(savedTheme);
+
   async function fetchRates() {
     try {
-      // API de DolarApi Venezuela (HTTPS Segura)
       const res = await fetch('https://ve.dolarapi.com/v1/dolares');
       const data = await res.json();
       
@@ -155,6 +324,7 @@
     else if (curr === 'eur') ves = amt * rates.eur;
     else if (curr === 'usdt') ves = amt * rates.usdt;
 
+    // Calculamos equivalencias para todas las divisas desde VES
     document.getElementById('res-ves').innerText = ves.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " VES";
     document.getElementById('res-usd').innerText = (rates.usd ? (ves / rates.usd).toFixed(2) : '0.00') + " $";
     document.getElementById('res-eur').innerText = (rates.eur ? (ves / rates.eur).toFixed(2) : '0.00') + " €";
@@ -178,7 +348,6 @@
     document.getElementById('tab-com').classList.toggle('active', tab === 'com');
   }
 
-  // Carga inicial
   fetchRates();
 </script>
 </body>
