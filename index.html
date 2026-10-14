@@ -1,0 +1,504 @@
+
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DayCambio</title>
+  <style>
+    :root {
+      --bg-color: #0b0e11;
+      --card-bg: #181a20;
+      --accent: #0ecb81;
+      --accent-hover: #0ba96c;
+      --text-main: #f8fafc;
+      --text-sub: #848e9c;
+      --border-color: #2b313a;
+      --highlight: #0ecb81;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 12px;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      padding-bottom: 20px;
+    }
+
+    /* HEADER Y LOGO NEÓN CRIPTO */
+    .header {
+      text-align: center;
+      padding: 16px 0 12px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon-svg {
+      width: 44px;
+      height: 44px;
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 0 12px rgba(14, 203, 129, 0.25);
+    }
+
+    .header h1 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+
+    /* TARJETAS Y CONTENEDORES */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .rate-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .rate-box {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .rate-box label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .rate-box input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .rate-box input:focus {
+      outline: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .input-group {
+      margin-bottom: 12px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+
+    .input-wrapper input, .input-wrapper select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-color);
+      color: var(--text-main);
+      font-size: 1.1rem;
+    }
+
+    .input-wrapper input:focus, .input-wrapper select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .convert-results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .res-box {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .res-box .title {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+    }
+
+    .res-box .value {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: var(--highlight);
+      margin-top: 4px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: var(--card-bg);
+      color: var(--text-sub);
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #0b0e11;
+      border-color: var(--accent);
+      font-weight: 800;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .fee-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .fee-row:last-child {
+      border-bottom: none;
+    }
+
+    .total-box {
+      background: rgba(14, 203, 129, 0.08);
+      border: 1px solid var(--accent);
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .total-box .lbl {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+    }
+
+    .total-box .val {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--highlight);
+      margin-top: 4px;
+    }
+
+    button.btn-action {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #0b0e11;
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button.btn-action:active {
+      background: var(--accent-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Encabezado con Nombre y Logo Neón Cripto -->
+    <div class="header">
+      <div class="logo-container">
+        <svg class="logo-icon-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Letra D Prominente -->
+          <path d="M 22 15 L 55 15 C 75 15, 88 28, 88 50 C 88 72, 75 85, 55 85 L 22 85 Z" stroke="#0ecb81" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M 38 30 L 53 30 C 65 30, 72 38, 72 50 C 72 62, 65 70, 53 70 L 38 70 Z" fill="#0ecb81" opacity="0.2"/>
+          <!-- Letra C Entrelazada -->
+          <path d="M 62 38 C 50 30, 32 38, 32 50 C 32 62, 50 70, 62 62" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+          <!-- Flecha de Intercambio -->
+          <path d="M 45 42 L 53 50 L 45 58" stroke="#0ecb81" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h1>DayCambio</h1>
+      </div>
+    </div>
+
+    <!-- Panel de Tasas -->
+    <div class="card">
+      <div class="card-title">Tasas Oficiales & P2P (VES)</div>
+      <div class="rate-grid">
+        <div class="rate-box">
+          <label>USD BCV</label>
+          <input type="number" id="rateUsd" value="36.50" step="0.01" oninput="actualizarCalculos()">
+        </div>
+        <div class="rate-box">
+          <label>EUR BCV</label>
+          <input type="number" id="rateEur" value="39.80" step="0.01" oninput="actualizarCalculos()">
+        </div>
+        <div class="rate-box">
+          <label>USDT</label>
+          <input type="number" id="rateUsdt" value="38.20" step="0.01" oninput="actualizarCalculos()">
+        </div>
+      </div>
+      <button class="btn-action" style="padding: 7px; font-size: 0.8rem;" onclick="obtenerTasasApi()">🔄 Actualizar Tasas en Vivo</button>
+    </div>
+
+    <!-- Pestañas de Navegación -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="cambiarTab('conversor')">Conversor</button>
+      <button class="tab-btn" onclick="cambiarTab('comisiones')">Comisiones</button>
+    </div>
+
+    <!-- SECCIÓN CONVERSOR -->
+    <div id="tab-conversor" class="section active">
+      <div class="card">
+        <div class="card-title">Monto a Convertir</div>
+        <div class="input-group">
+          <label>Moneda de Origen</label>
+          <div class="input-wrapper">
+            <select id="monedaOrigen" onchange="actualizarCalculos()">
+              <option value="VES">Bolívares (VES)</option>
+              <option value="USD">Dólar BCV (USD)</option>
+              <option value="EUR">Euro BCV (EUR)</option>
+              <option value="USDT">USDT (Binance)</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Monto</label>
+          <div class="input-wrapper">
+            <input type="number" id="montoOrigen" placeholder="0.00" value="100" oninput="actualizarCalculos()">
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top: 16px;">Resultados Equivalentes</div>
+        <div class="convert-results">
+          <div class="res-box">
+            <div class="title">Bolívares (VES)</div>
+            <div class="value" id="resVes">Bs. 0.00</div>
+          </div>
+          <div class="res-box">
+            <div class="title">Dólar BCV</div>
+            <div class="value" id="resUsd">$ 0.00</div>
+          </div>
+          <div class="res-box">
+            <div class="title">Euro BCV</div>
+            <div class="value" id="resEur">€ 0.00</div>
+          </div>
+          <div class="res-box">
+            <div class="title">USDT</div>
+            <div class="value" id="resUsdt">₮ 0.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN COMISIONES BANCOS -->
+    <div id="tab-comisiones" class="section">
+      <div class="card">
+        <div class="card-title">Calculadora de Comisiones</div>
+        
+        <div class="input-group">
+          <label>Tipo de Operación</label>
+          <div class="input-wrapper">
+            <select id="tipoOperacion" onchange="actualizarComisiones()">
+              <option value="pago_movil">Pago Móvil (0.3%)</option>
+              <option value="transferencia">Transferencia Interbancaria</option>
+              <option value="compra_divisas">Compra/Venta Divisas Banco</option>
+              <option value="igtf">Pago con Divisas/IGTF (3%)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Monto Base (VES)</label>
+          <div class="input-wrapper">
+            <input type="number" id="montoComision" placeholder="0.00" value="1000" oninput="actualizarComisiones()">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Comisión del Banco (%)</label>
+          <div class="input-wrapper">
+            <input type="number" id="porcentajeComision" value="0.3" step="0.01" oninput="actualizarComisiones()">
+          </div>
+        </div>
+
+        <div class="fee-row">
+          <span>Monto Base:</span>
+          <strong id="feeBase">Bs. 0.00</strong>
+        </div>
+        <div class="fee-row">
+          <span>Comisión Calculada:</span>
+          <strong id="feeMonto" style="color: #ef4444;">Bs. 0.00</strong>
+        </div>
+
+        <div class="total-box">
+          <div class="lbl">Monto Total Requerido / Debitado</div>
+          <div class="val" id="feeTotal">Bs. 0.00</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // NAVEGACIÓN
+    function cambiarTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabName).classList.add('active');
+    }
+
+    // GUARDAR Y CARGAR TASAS LOCALMENTE
+    function guardarTasas() {
+      const tasas = {
+        usd: document.getElementById('rateUsd').value,
+        eur: document.getElementById('rateEur').value,
+        usdt: document.getElementById('rateUsdt').value
+      };
+      localStorage.setItem('daycambio_tasas', JSON.stringify(tasas));
+    }
+
+    function cargarTasas() {
+      const guardadas = localStorage.getItem('daycambio_tasas');
+      if (guardadas) {
+        const tasas = JSON.parse(guardadas);
+        document.getElementById('rateUsd').value = tasas.usd || 36.50;
+        document.getElementById('rateEur').value = tasas.eur || 39.80;
+        document.getElementById('rateUsdt').value = tasas.usdt || 38.20;
+      }
+    }
+
+    // CÁLCULOS
+    function actualizarCalculos() {
+      guardarTasas();
+
+      const rateUsd = parseFloat(document.getElementById('rateUsd').value) || 1;
+      const rateEur = parseFloat(document.getElementById('rateEur').value) || 1;
+      const rateUsdt = parseFloat(document.getElementById('rateUsdt').value) || 1;
+
+      const origen = document.getElementById('monedaOrigen').value;
+      const monto = parseFloat(document.getElementById('montoOrigen').value) || 0;
+
+      let montoEnVes = 0;
+
+      if (origen === 'VES') montoEnVes = monto;
+      else if (origen === 'USD') montoEnVes = monto * rateUsd;
+      else if (origen === 'EUR') montoEnVes = monto * rateEur;
+      else if (origen === 'USDT') montoEnVes = monto * rateUsdt;
+
+      const ves = montoEnVes;
+      const usd = montoEnVes / rateUsd;
+      const eur = montoEnVes / rateEur;
+      const usdt = montoEnVes / rateUsdt;
+
+      document.getElementById('resVes').innerText = `Bs. ${ves.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('resUsd').innerText = `$ ${usd.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('resEur').innerText = `€ ${eur.toLocaleString('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('resUsdt').innerText = `₮ ${usdt.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+      actualizarComisiones();
+    }
+
+    function actualizarComisiones() {
+      const tipo = document.getElementById('tipoOperacion').value;
+      const inputPct = document.getElementById('porcentajeComision');
+      
+      if (tipo === 'pago_movil' && inputPct.value !== "0.3") inputPct.value = "0.3";
+      if (tipo === 'igtf' && inputPct.value !== "3.0") inputPct.value = "3.0";
+
+      const monto = parseFloat(document.getElementById('montoComision').value) || 0;
+      const pct = parseFloat(inputPct.value) || 0;
+
+      const comision = monto * (pct / 100);
+      const total = monto + comision;
+
+      document.getElementById('feeBase').innerText = `Bs. ${monto.toLocaleString('es-VE', {minimumFractionDigits: 2})}`;
+      document.getElementById('feeMonto').innerText = `Bs. ${comision.toLocaleString('es-VE', {minimumFractionDigits: 2})}`;
+      document.getElementById('feeTotal').innerText = `Bs. ${total.toLocaleString('es-VE', {minimumFractionDigits: 2})}`;
+    }
+
+    async function obtenerTasasApi() {
+      try {
+        const res = await fetch('https://bcv.justcarlux.dev/api/v1/rates');
+        const data = await res.json();
+        if(data.usd) document.getElementById('rateUsd').value = parseFloat(data.usd).toFixed(2);
+        if(data.eur) document.getElementById('rateEur').value = parseFloat(data.eur).toFixed(2);
+        actualizarCalculos();
+        alert('¡Tasas de DayCambio actualizadas en vivo!');
+      } catch (e) {
+        alert('No se pudo obtener las tasas automáticamente. Puedes ajustarlas manualmente.');
+      }
+    }
+
+    // INICIALIZACIÓN
+    cargarTasas();
+    actualizarCalculos();
+  </script>
+</body>
+</html>
