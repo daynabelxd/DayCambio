@@ -2,353 +2,569 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DayCambio - Divisas y Comisiones</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DayCambio App</title>
   
-  <!-- Configuración PWA e Icono -->
-  <meta name="theme-color" content="#0d1117" id="meta-theme">
-  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" id="theme-color-meta" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="DayCambio">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1117'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300f2fe'/></svg>">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1117'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300f2fe'/></svg>">
 
+  <!-- html2canvas para la generación de imagen en cliente -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <style>
-    /* VARIABLES Y TEMAS LIQUID GLASS DARK */
     :root {
-      /* Tema por defecto: Turquoise Digital */
-      --bg: #070d14;
-      --bg-glow: radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.18), transparent 70%);
-      --card-bg: rgba(13, 22, 33, 0.65);
-      --accent: #00f2fe;
-      --accent-glow: rgba(0, 242, 254, 0.4);
-      --text: #ffffff;
-      --subtext: #8fa3b8;
-      --border: rgba(0, 242, 254, 0.25);
-      --input-bg: rgba(7, 13, 20, 0.7);
-      --btn-text: #000000;
+      --bg-main: #070d14;
+      --card-bg: rgba(18, 26, 38, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f0f6fc;
+      --text-sub: #8b949e;
+      --primary: #00f2fe;
+      --primary-glow: rgba(0, 242, 254, 0.25);
+      --secondary: #4facfe;
+      --input-bg: rgba(10, 16, 26, 0.8);
+      --accent: #10b981;
     }
 
     [data-theme="blue"] {
-      --bg: #0a1128;
-      --bg-glow: radial-gradient(circle at 50% 0%, rgba(0, 180, 216, 0.2), transparent 70%);
-      --card-bg: rgba(16, 29, 66, 0.65);
-      --accent: #00b4d8;
-      --accent-glow: rgba(0, 180, 216, 0.4);
-      --text: #e0f2fe;
-      --subtext: #94a3b8;
-      --border: rgba(0, 180, 216, 0.25);
-      --input-bg: rgba(10, 17, 40, 0.7);
-      --btn-text: #000000;
+      --primary: #3b82f6;
+      --primary-glow: rgba(59, 130, 246, 0.25);
+      --secondary: #60a5fa;
     }
-
     [data-theme="purple"] {
-      --bg: #12091c;
-      --bg-glow: radial-gradient(circle at 50% 0%, rgba(189, 147, 249, 0.2), transparent 70%);
-      --card-bg: rgba(28, 17, 41, 0.65);
-      --accent: #bd93f9;
-      --accent-glow: rgba(189, 147, 249, 0.4);
-      --text: #f8f8f2;
-      --subtext: #a78bfa;
-      --border: rgba(189, 147, 249, 0.3);
-      --input-bg: rgba(18, 9, 28, 0.7);
-      --btn-text: #12091c;
+      --primary: #a855f7;
+      --primary-glow: rgba(168, 85, 247, 0.25);
+      --secondary: #c084fc;
     }
-
     [data-theme="neutral"] {
-      --bg: #0d0d0d;
-      --bg-glow: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.1), transparent 70%);
-      --card-bg: rgba(30, 30, 30, 0.6);
-      --accent: #ffffff;
-      --accent-glow: rgba(255, 255, 255, 0.3);
-      --text: #ffffff;
-      --subtext: #a1a1aa;
-      --border: rgba(255, 255, 255, 0.2);
-      --input-bg: rgba(18, 18, 18, 0.7);
-      --btn-text: #000000;
+      --primary: #e2e8f0;
+      --primary-glow: rgba(226, 232, 240, 0.2);
+      --secondary: #94a3b8;
     }
-
     [data-theme="pink"] {
-      --bg: #180a14;
-      --bg-glow: radial-gradient(circle at 50% 0%, rgba(255, 105, 180, 0.22), transparent 70%);
-      --card-bg: rgba(38, 16, 31, 0.65);
-      --accent: #ff69b4;
-      --accent-glow: rgba(255, 105, 180, 0.45);
-      --text: #fff0f6;
-      --subtext: #f472b6;
-      --border: rgba(255, 105, 180, 0.3);
-      --input-bg: rgba(24, 10, 20, 0.7);
-      --btn-text: #180a14;
+      --primary: #ec4899;
+      --primary-glow: rgba(236, 72, 153, 0.25);
+      --secondary: #f472b6;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s; }
+    /* Light Mode */
+    body.light-mode {
+      --bg-main: #f1f5f9;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --text-main: #0f172a;
+      --text-sub: #64748b;
+      --input-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
     
     body {
-      background-color: var(--bg);
-      background-image: var(--bg-glow);
-      background-attachment: fixed;
-      color: var(--text);
+      background: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 20px 12px;
-      min-height: 100vh;
+      padding: 12px;
+      transition: background 0.3s;
     }
 
-    .app-container { width: 100%; max-width: 480px; }
-    
-    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .logo-icon {
-      width: 42px;
-      height: 42px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1.5px solid var(--accent);
-      border-radius: 14px;
+    .app-container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 24px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 4px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-box {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 22px;
-      color: var(--accent);
-      box-shadow: 0 0 15px var(--accent-glow);
-      backdrop-filter: blur(10px);
+      color: #000;
+      font-size: 20px;
+      box-shadow: 0 0 12px var(--primary-glow);
     }
-    h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
 
-    .theme-selector {
-      padding: 8px 12px;
+    .title-box h1 { font-size: 18px; font-weight: 700; }
+    .title-box p { font-size: 11px; color: var(--text-sub); }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 12px;
-      font-size: 13px;
-      outline: none;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
     }
 
-    /* ESTILO LIQUID GLASS */
     .card {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 20px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    }
-
-    .section-title { font-size: 11px; font-weight: 700; color: var(--subtext); letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 16px; }
-
-    .rates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-bottom: 18px; }
-    .rate-box {
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      padding: 12px 6px;
-      border-radius: 14px;
-      backdrop-filter: blur(8px);
-    }
-    .rate-label { font-size: 11px; color: var(--subtext); margin-bottom: 4px; font-weight: 600; }
-    .rate-val { font-size: 16px; font-weight: 800; color: var(--accent); text-shadow: 0 0 8px var(--accent-glow); }
-
-    .btn-main {
-      width: 100%;
-      padding: 15px;
-      background: var(--accent);
-      color: var(--btn-text);
-      font-weight: 800;
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
-      font-size: 15px;
-      box-shadow: 0 0 20px var(--accent-glow);
-    }
-    .btn-main:active { opacity: 0.85; transform: scale(0.99); }
-
-    .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-    .tab-btn {
-      padding: 12px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--subtext);
-      font-weight: 700;
-      border-radius: 14px;
-      cursor: pointer;
       backdrop-filter: blur(12px);
-    }
-    .tab-btn.active {
-      background: var(--accent);
-      color: var(--btn-text);
-      border-color: var(--accent);
-      box-shadow: 0 0 15px var(--accent-glow);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
 
-    .input-group { margin-bottom: 16px; }
-    label { display: block; font-size: 12px; color: var(--subtext); margin-bottom: 8px; font-weight: 600; }
-    input, select {
-      width: 100%;
-      padding: 14px;
+    .theme-selector {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .theme-dot {
+      flex: 1;
+      height: 28px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .theme-dot.active { border-color: var(--text-main); transform: scale(1.05); }
+
+    .rates-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .rate-card {
       background: var(--input-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      color: var(--text);
-      font-size: 16px;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+    .rate-card .label { font-size: 11px; color: var(--text-sub); }
+    .rate-card .value { font-size: 14px; font-weight: 700; color: var(--primary); margin-top: 2px; }
+
+    .input-group {
+      margin-top: 10px;
+    }
+    .input-label {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .input-box {
+      display: flex;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .input-box input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      padding: 12px;
+      color: var(--text-main);
+      font-size: 18px;
+      font-weight: 600;
       outline: none;
     }
-    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
 
-    .res-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); }
-    .res-row:last-child { border-bottom: none; }
-    .res-val { font-weight: 800; color: var(--accent); }
+    .input-box select {
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-weight: 700;
+      padding: 0 12px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      color: #000;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    .btn-secondary {
+      background: var(--input-bg);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+      box-shadow: none;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding: 8px 0;
+      font-size: 13px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #334155; transition: .3s; border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    .result-box {
+      background: var(--input-bg);
+      border: 1px dashed var(--primary);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      margin-top: 12px;
+    }
+    .result-box .label { font-size: 11px; color: var(--text-sub); }
+    .result-box .value { font-size: 22px; font-weight: 800; color: var(--primary); margin: 4px 0; }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 8px;
+      background: var(--input-bg);
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+    }
+
+    /* Modal / Receipt Card para Generar Imagen */
+    #receipt-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .receipt-card {
+      width: 100%;
+      max-width: 340px;
+      background: #0d1117;
+      border: 2px solid var(--primary);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 0 30px var(--primary-glow);
+    }
+    .receipt-header { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; }
+    .receipt-logo { width: 32px; height: 32px; background: var(--primary); color: #000; border-radius: 8px; font-weight: 800; line-height: 32px; }
+    .receipt-title { font-size: 18px; font-weight: 700; }
+    .receipt-amount { font-size: 28px; font-weight: 800; color: var(--primary); margin: 12px 0; }
+    .receipt-details { font-size: 12px; color: #8b949e; line-height: 1.6; border-top: 1px border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px 0; margin: 12px 0; }
+    .receipt-footer { font-size: 11px; color: var(--primary); font-weight: 600; letter-spacing: 0.5px; }
   </style>
 </head>
-<body>
+<body data-theme="turquoise">
 
-<div class="app-container">
-  <header>
-    <div class="header-left">
-      <div class="logo-icon">D</div>
-      <h1>DayCambio</h1>
-    </div>
-    <!-- SELECTOR DE TEMAS LIQUID GLASS -->
-    <select class="theme-selector" id="themeSelect" onchange="changeTheme(this.value)">
-      <option value="turquoise">💎 Turquoise Digital</option>
-      <option value="blue">🌊 Blue Cyberpunk</option>
-      <option value="purple">🔮 Purple Mystic</option>
-      <option value="neutral">🌫️ Neutral Dark Glass</option>
-      <option value="pink">🌸 Pink Cloud</option>
-    </select>
-  </header>
+  <div class="app-container">
+    <header>
+      <div class="brand">
+        <div class="logo-box">D</div>
+        <div class="title-box">
+          <h1>DayCambio</h1>
+          <p>Calculadora & Conversor</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="toggleLightMode()" title="Modo Claro/Oscuro">🌓</button>
+      </div>
+    </header>
 
-  <!-- BLOQUE DE TASAS -->
-  <div class="card">
-    <div class="section-title">TASAS OFICIALES & P2P (VES)</div>
-    <div class="rates-grid">
-      <div class="rate-box"><div class="rate-label">USD BCV</div><div class="rate-val" id="r-usd">--,--</div></div>
-      <div class="rate-box"><div class="rate-label">EUR BCV</div><div class="rate-val" id="r-eur">--,--</div></div>
-      <div class="rate-box"><div class="rate-label">USDT</div><div class="rate-val" id="r-usdt">--,--</div></div>
+    <!-- Temas de Color -->
+    <div class="card">
+      <div class="theme-selector">
+        <div class="theme-dot" style="background:#00f2fe" onclick="setTheme('turquoise')"></div>
+        <div class="theme-dot" style="background:#3b82f6" onclick="setTheme('blue')"></div>
+        <div class="theme-dot" style="background:#a855f7" onclick="setTheme('purple')"></div>
+        <div class="theme-dot" style="background:#ec4899" onclick="setTheme('pink')"></div>
+        <div class="theme-dot" style="background:#e2e8f0" onclick="setTheme('neutral')"></div>
+      </div>
     </div>
-    <button class="btn-main" onclick="fetchRates()">🔄 Actualizar Tasas en Vivo</button>
+
+    <!-- Tasas en Vivo -->
+    <div class="card">
+      <div class="rates-grid">
+        <div class="rate-card">
+          <div class="label">USD (BCV)</div>
+          <div class="value" id="rate-bcv">--</div>
+        </div>
+        <div class="rate-card">
+          <div class="label">EUR (BCV)</div>
+          <div class="value" id="rate-eur">--</div>
+        </div>
+        <div class="rate-card">
+          <div class="label">USDT</div>
+          <div class="value" id="rate-usdt">--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conversor Principal -->
+    <div class="card">
+      <div class="input-group">
+        <div class="input-label">Monto a Convertir</div>
+        <div class="input-box">
+          <input type="number" id="amount" placeholder="0.00" oninput="calculate()">
+          <select id="currency-from" onchange="calculate()">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="USDT">USDT</option>
+            <option value="VES">VES</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <span>Incluir Impuesto IGTF (3%)</span>
+        <label class="switch">
+          <input type="checkbox" id="igtf-toggle" onchange="calculate()">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">Comisión Bancaria / Adicional (%)</div>
+        <div class="input-box">
+          <input type="number" id="commission" placeholder="0" value="0" oninput="calculate()">
+        </div>
+      </div>
+
+      <div class="result-box">
+        <div class="label">Monto Final Convertido</div>
+        <div class="value" id="result-text">0.00 VES</div>
+        <div class="label" id="result-sub">--</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn" onclick="copyText()">📋 Copiar Texto</button>
+        <button class="btn btn-secondary" onclick="openReceiptModal()">🖼️ Compartir Imagen</button>
+      </div>
+    </div>
+
+    <!-- Historial de Conversiones -->
+    <div class="card">
+      <div class="input-label">Historial Reciente</div>
+      <div class="history-list" id="history-container">
+        <div class="history-item" style="justify-content:center; color:var(--text-sub);">Sin cálculos recientes</div>
+      </div>
+    </div>
   </div>
 
-  <!-- PESTAÑAS -->
-  <div class="tabs">
-    <button class="tab-btn active" id="tab-conv" onclick="switchTab('conv')">Conversor</button>
-    <button class="tab-btn" id="tab-com" onclick="switchTab('com')">Comisiones</button>
-  </div>
-
-  <!-- MONTO A CONVERTIR -->
-  <div class="card" id="sec-conversor">
-    <div class="section-title">MONTO A CONVERTIR</div>
-    <div class="input-group">
-      <label>Moneda de Origen</label>
-      <select id="src-curr" onchange="calculate()">
-        <option value="ves">Bolívares (VES)</option>
-        <option value="usd">Dólar BCV (USD)</option>
-        <option value="eur">Euro BCV (EUR)</option>
-        <option value="usdt">Tether (USDT)</option>
-      </select>
-    </div>
-    <div class="input-group">
-      <label>Monto a Convertir</label>
-      <input type="number" id="amount" value="1000" oninput="calculate()">
-    </div>
-
-    <div class="section-title" style="margin-top: 20px;">RESULTADOS EQUIVALENTES</div>
-    <div class="res-row"><span>Bolívares (VES):</span><span class="res-val" id="res-ves">0.00 VES</span></div>
-    <div class="res-row"><span>Dólar BCV (USD):</span><span class="res-val" id="res-usd">0.00 $</span></div>
-    <div class="res-row"><span>Euro BCV (EUR):</span><span class="res-val" id="res-eur">0.00 €</span></div>
-    <div class="res-row"><span>Tether (USDT):</span><span class="res-val" id="res-usdt">0.00 USDT</span></div>
-  </div>
-
-  <!-- COMISIONES -->
-  <div class="card" id="sec-comisiones" style="display: none;">
-    <div class="section-title">CÁLCULO DE COMISIONES</div>
-    <div class="input-group">
-      <label>Monto Base (VES)</label>
-      <input type="number" id="com-amount" value="1000" oninput="calcCommissions()">
-    </div>
-    <div class="res-row"><span>Pago Móvil (0.3%):</span><span class="res-val" id="com-pm">0.00 VES</span></div>
-    <div class="res-row"><span>IGTF / Divisas (3%):</span><span class="res-val" id="com-igtf">0.00 VES</span></div>
-    <div class="res-row"><span>Total con Pago Móvil:</span><span class="res-val" id="com-tot-pm">0.00 VES</span></div>
-  </div>
-</div>
-
-<script>
-  let rates = { usd: 0, eur: 0, usdt: 0 };
-
-  // Control del tema
-  function changeTheme(themeName) {
-    if (themeName === 'turquoise') {
-      document.documentElement.removeAttribute('data-theme');
-    } else {
-      document.documentElement.setAttribute('data-theme', themeName);
-    }
-    localStorage.setItem('daycambio_theme', themeName);
-  }
-
-  const savedTheme = localStorage.getItem('daycambio_theme') || 'turquoise';
-  document.getElementById('themeSelect').value = savedTheme;
-  changeTheme(savedTheme);
-
-  async function fetchRates() {
-    try {
-      const res = await fetch('https://ve.dolarapi.com/v1/dolares');
-      const data = await res.json();
+  <!-- Modal para Renderizar Tarjeta de Imagen -->
+  <div id="receipt-modal">
+    <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+      <div class="receipt-card" id="receipt-to-render">
+        <div class="receipt-header">
+          <div class="receipt-logo">D</div>
+          <div class="receipt-title">DayCambio</div>
+        </div>
+        <div class="receipt-details" id="modal-date">--</div>
+        <div class="receipt-amount" id="modal-amount">0.00 VES</div>
+        <div class="receipt-details" id="modal-details">--</div>
+        <div class="receipt-footer">✨ Generado por DayCambio</div>
+      </div>
       
-      const bcv = data.find(item => item.fuente === 'oficial') || data[0];
-      const paralelos = data.find(item => item.fuente === 'paralelo') || data[1];
+      <div style="display:flex; gap:10px; width:100%;">
+        <button class="btn" onclick="downloadImage()">⬇️ Descargar Imagen</button>
+        <button class="btn btn-secondary" onclick="closeReceiptModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
 
-      rates.usd = bcv ? bcv.promedio : 36.5;
-      rates.eur = rates.usd * 1.08; 
-      rates.usdt = paralelos ? paralelos.promedio : 38.2;
+  <script>
+    let rates = { USD: 45.20, EUR: 48.50, USDT: 47.10, VES: 1.0 };
+    let history = [];
 
-      document.getElementById('r-usd').innerText = rates.usd.toFixed(2);
-      document.getElementById('r-eur').innerText = rates.eur.toFixed(2);
-      document.getElementById('r-usdt').innerText = rates.usdt.toFixed(2);
-
+    // Cargar Tasa simulada / API real
+    async function fetchRates() {
+      try {
+        const res = await fetch('https://ve.dolarapi.com/v1/dolares');
+        const data = await res.json();
+        const bcv = data.find(d => d.fuente === 'oficial');
+        const usdt = data.find(d => d.fuente === 'paralelo');
+        
+        if(bcv) rates.USD = bcv.promedio;
+        if(usdt) rates.USDT = usdt.promedio;
+        rates.EUR = (rates.USD * 1.08).toFixed(2);
+      } catch(e) {
+        console.log('Usando tasas estimadas');
+      }
+      
+      document.getElementById('rate-bcv').innerText = rates.USD.toFixed(2) + ' Bs';
+      document.getElementById('rate-eur').innerText = rates.EUR.toFixed(2) + ' Bs';
+      document.getElementById('rate-usdt').innerText = rates.USDT.toFixed(2) + ' Bs';
       calculate();
-    } catch (e) {
-      alert("No se pudieron obtener las tasas automáticas. Verifique su conexión.");
     }
-  }
 
-  function calculate() {
-    const amt = parseFloat(document.getElementById('amount').value) || 0;
-    const curr = document.getElementById('src-curr').value;
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('daycambio_theme', theme);
+    }
 
-    let ves = 0;
-    if (curr === 'ves') ves = amt;
-    else if (curr === 'usd') ves = amt * rates.usd;
-    else if (curr === 'eur') ves = amt * rates.eur;
-    else if (curr === 'usdt') ves = amt * rates.usdt;
+    function toggleLightMode() {
+      document.body.classList.toggle('light-mode');
+    }
 
-    // Calculamos equivalencias para todas las divisas desde VES
-    document.getElementById('res-ves').innerText = ves.toLocaleString('es-VE', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " VES";
-    document.getElementById('res-usd').innerText = (rates.usd ? (ves / rates.usd).toFixed(2) : '0.00') + " $";
-    document.getElementById('res-eur').innerText = (rates.eur ? (ves / rates.eur).toFixed(2) : '0.00') + " €";
-    document.getElementById('res-usdt').innerText = (rates.usdt ? (ves / rates.usdt).toFixed(2) : '0.00') + " USDT";
-  }
+    function calculate() {
+      const amount = parseFloat(document.getElementById('amount').value) || 0;
+      const curr = document.getElementById('currency-from').value;
+      const comm = parseFloat(document.getElementById('commission').value) || 0;
+      const igtf = document.getElementById('igtf-toggle').checked;
 
-  function calcCommissions() {
-    const amt = parseFloat(document.getElementById('com-amount').value) || 0;
-    const pm = amt * 0.003;
-    const igtf = amt * 0.03;
+      if (amount <= 0) {
+        document.getElementById('result-text').innerText = '0.00';
+        document.getElementById('result-sub').innerText = '--';
+        return;
+      }
 
-    document.getElementById('com-pm').innerText = pm.toFixed(2) + " VES";
-    document.getElementById('com-igtf').innerText = igtf.toFixed(2) + " VES";
-    document.getElementById('com-tot-pm').innerText = (amt + pm).toFixed(2) + " VES";
-  }
+      let total = 0;
+      let targetCurr = 'VES';
 
-  function switchTab(tab) {
-    document.getElementById('sec-conversor').style.display = tab === 'conv' ? 'block' : 'none';
-    document.getElementById('sec-comisiones').style.display = tab === 'com' ? 'block' : 'none';
-    document.getElementById('tab-conv').classList.toggle('active', tab === 'conv');
-    document.getElementById('tab-com').classList.toggle('active', tab === 'com');
-  }
+      if (curr === 'VES') {
+        targetCurr = 'USD';
+        total = amount / rates.USD;
+      } else {
+        let rate = rates[curr] || rates.USD;
+        total = amount * rate;
+      }
 
-  fetchRates();
-</script>
+      if (igtf && curr !== 'VES') {
+        total += total * 0.03;
+      }
+
+      if (comm > 0) {
+        total += total * (comm / 100);
+      }
+
+      const resStr = total.toFixed(2) + ' ' + targetCurr;
+      document.getElementById('result-text').innerText = resStr;
+      document.getElementById('result-sub').innerText = `Base: ${amount} ${curr} ${igtf ? '+ 3% IGTF' : ''}`;
+
+      addHistory(`${amount} ${curr} ➔ ${resStr}`);
+    }
+
+    function addHistory(item) {
+      if(history[0] === item) return;
+      history.unshift(item);
+      if(history.length > 5) history.pop();
+      
+      const container = document.getElementById('history-container');
+      container.innerHTML = history.map(h => `<div class="history-item"><span>${h}</span><span style="color:var(--primary)">✓</span></div>`).join('');
+    }
+
+    function copyText() {
+      const res = document.getElementById('result-text').innerText;
+      const sub = document.getElementById('result-sub').innerText;
+      const text = `🧮 *DayCambio Calculation*\n${sub}\n👉 *Total: ${res}*\n✨ Generado por DayCambio App`;
+      
+      navigator.clipboard.writeText(text);
+      alert('¡Texto copiado al portapapeles!');
+    }
+
+    function openReceiptModal() {
+      const res = document.getElementById('result-text').innerText;
+      const sub = document.getElementById('result-sub').innerText;
+      
+      document.getElementById('modal-date').innerText = new Date().toLocaleDateString('es-VE', { weekday: 'long', day: 'numeric', month: 'short' });
+      document.getElementById('modal-amount').innerText = res;
+      document.getElementById('modal-details').innerText = sub;
+      document.getElementById('receipt-modal').style.display = 'flex';
+    }
+
+    function closeReceiptModal() {
+      document.getElementById('receipt-modal').style.display = 'none';
+    }
+
+    function downloadImage() {
+      const card = document.getElementById('receipt-to-render');
+      html2canvas(card, { backgroundColor: null }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'DayCambio-Monto.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    // Inicializar
+    const savedTheme = localStorage.getItem('daycambio_theme');
+    if(savedTheme) setTheme(savedTheme);
+    fetchRates();
+  </script>
 </body>
 </html>
