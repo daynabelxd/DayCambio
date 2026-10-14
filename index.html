@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-title" content="DayCambio">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1117'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300f2fe'/></svg>">
 
-  <!-- html2canvas para la generación de imagen en cliente -->
+  <!-- html2canvas para la generación de imagen -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
@@ -326,7 +326,7 @@
     .receipt-logo { width: 32px; height: 32px; background: var(--primary); color: #000; border-radius: 8px; font-weight: 800; line-height: 32px; }
     .receipt-title { font-size: 18px; font-weight: 700; }
     .receipt-amount { font-size: 28px; font-weight: 800; color: var(--primary); margin: 12px 0; }
-    .receipt-details { font-size: 12px; color: #8b949e; line-height: 1.6; border-top: 1px border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px 0; margin: 12px 0; }
+    .receipt-details { font-size: 12px; color: #8b949e; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px 0; margin: 12px 0; }
     .receipt-footer { font-size: 11px; color: var(--primary); font-weight: 600; letter-spacing: 0.5px; }
   </style>
 </head>
@@ -426,7 +426,7 @@
     </div>
   </div>
 
-  <!-- Modal para Renderizar Tarjeta de Imagen -->
+  <!-- Modal para Generar Imagen -->
   <div id="receipt-modal">
     <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
       <div class="receipt-card" id="receipt-to-render">
@@ -448,27 +448,39 @@
   </div>
 
   <script>
-    let rates = { USD: 45.20, EUR: 48.50, USDT: 47.10, VES: 1.0 };
+    // Tasas iniciales de respaldo por si falla la red
+    let rates = { USD: 877.90, EUR: 948.13, USDT: 910.00, VES: 1.0 };
     let history = [];
 
-    // Cargar Tasa simulada / API real
     async function fetchRates() {
       try {
         const res = await fetch('https://ve.dolarapi.com/v1/dolares');
-        const data = await res.json();
-        const bcv = data.find(d => d.fuente === 'oficial');
-        const usdt = data.find(d => d.fuente === 'paralelo');
-        
-        if(bcv) rates.USD = bcv.promedio;
-        if(usdt) rates.USDT = usdt.promedio;
-        rates.EUR = (rates.USD * 1.08).toFixed(2);
-      } catch(e) {
-        console.log('Usando tasas estimadas');
+        if (res.ok) {
+          const data = await res.json();
+          const bcv = data.find(d => d.fuente === 'oficial');
+          const paralelo = data.find(d => d.fuente === 'paralelo');
+          
+          if (bcv && bcv.promedio) {
+            rates.USD = parseFloat(bcv.promedio);
+            rates.EUR = parseFloat((rates.USD * 1.08).toFixed(2));
+          }
+          
+          if (paralelo && paralelo.promedio) {
+            rates.USDT = parseFloat(paralelo.promedio);
+          } else {
+            rates.USDT = parseFloat((rates.USD * 1.04).toFixed(2));
+          }
+        }
+      } catch (e) {
+        console.log('Usando tasas de respaldo');
+        rates.EUR = parseFloat((rates.USD * 1.08).toFixed(2));
+        rates.USDT = parseFloat((rates.USD * 1.04).toFixed(2));
       }
       
       document.getElementById('rate-bcv').innerText = rates.USD.toFixed(2) + ' Bs';
       document.getElementById('rate-eur').innerText = rates.EUR.toFixed(2) + ' Bs';
       document.getElementById('rate-usdt').innerText = rates.USDT.toFixed(2) + ' Bs';
+      
       calculate();
     }
 
@@ -488,7 +500,7 @@
       const igtf = document.getElementById('igtf-toggle').checked;
 
       if (amount <= 0) {
-        document.getElementById('result-text').innerText = '0.00';
+        document.getElementById('result-text').innerText = '0.00 VES';
         document.getElementById('result-sub').innerText = '--';
         return;
       }
@@ -561,7 +573,7 @@
       });
     }
 
-    // Inicializar
+    // Inicialización
     const savedTheme = localStorage.getItem('daycambio_theme');
     if(savedTheme) setTheme(savedTheme);
     fetchRates();
