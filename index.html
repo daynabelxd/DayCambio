@@ -1,62 +1,38 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="neon-cyan">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>DayCambio - PWA Financiera</title>
+  <title>DayCambio</title>
   
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#070d14">
+  <meta name="theme-color" content="#0d1117">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="icon-192.png">
 
   <style>
-    /* Motor de 5 Temas Liquid Glass Avanzado */
-    :root[data-theme="neon-cyan"] {
-      --bg-dark: #070d14;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(255, 255, 255, 0.12);
-      --primary: #00f3ff;
-      --secondary: #00ff66;
-      --text-white: #ffffff;
-      --text-dim: #94a3b8;
+    /* Definición de Temas (Oscuro y Claro) */
+    :root[data-theme="dark"] {
+      --bg-color: #0d1117;
+      --card-bg: rgba(22, 27, 34, 0.8);
+      --border-color: #30363d;
+      --text-main: #ffffff;
+      --text-dim: #8b949e;
+      --primary: #58a6ff;
+      --success: #3fb950;
+      --input-bg: #010409;
     }
-    :root[data-theme="neon-purple"] {
-      --bg-dark: #0f0714;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(255, 255, 255, 0.12);
-      --primary: #d946ef;
-      --secondary: #a855f7;
-      --text-white: #ffffff;
-      --text-dim: #cbd5e1;
-    }
-    :root[data-theme="neon-gold"] {
-      --bg-dark: #141107;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(255, 255, 255, 0.12);
-      --primary: #fbbf24;
-      --secondary: #f59e0b;
-      --text-white: #ffffff;
-      --text-dim: #d1d5db;
-    }
-    :root[data-theme="emerald-glass"] {
-      --bg-dark: #04140b;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(255, 255, 255, 0.12);
-      --primary: #34d399;
-      --secondary: #10b981;
-      --text-white: #ffffff;
-      --text-dim: #9ca3af;
-    }
-    :root[data-theme="ruby-glass"] {
-      --bg-dark: #140404;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(255, 255, 255, 0.12);
-      --primary: #fb7185;
-      --secondary: #f43f5e;
-      --text-white: #ffffff;
-      --text-dim: #d1d5db;
+
+    :root[data-theme="light"] {
+      --bg-color: #f4f6f9;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --border-color: #d0d7de;
+      --text-main: #1f2328;
+      --text-dim: #57606a;
+      --primary: #0969da;
+      --success: #1a7f37;
+      --input-bg: #ffffff;
     }
 
     * {
@@ -67,231 +43,136 @@
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-white);
+      background-color: var(--bg-color);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 24px 16px;
-      transition: background-color 0.3s ease;
+      padding: 20px 15px;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .container {
       width: 100%;
-      max-width: 450px;
+      max-width: 420px;
     }
 
     header {
       text-align: center;
       margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     header h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
     }
 
-    header p {
-      color: var(--text-dim);
+    /* Botón Selector de Tema */
+    .theme-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 8px;
       font-size: 0.85rem;
-      margin-top: 6px;
-    }
-
-    /* Selector de Temas Completo */
-    .theme-selector {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--card-border);
-      padding: 10px;
-      border-radius: 30px;
-    }
-
-    .theme-dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.4);
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+      transition: all 0.2s;
     }
 
-    .theme-dot:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 12px var(--primary);
+    .theme-btn:hover {
+      border-color: var(--primary);
     }
 
-    /* Notificación Toast */
-    .toast-notification {
-      background: rgba(0, 255, 102, 0.15);
-      border: 1px solid var(--secondary);
-      color: var(--secondary);
-      font-size: 0.8rem;
-      padding: 10px 14px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      text-align: center;
-      display: none;
-      animation: fadeIn 0.4s ease;
-    }
-
-    /* Tarjetas Liquid Glass Detalladas */
-    .glass-card {
+    .card {
       background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .card-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 600;
       color: var(--primary);
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .rates-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .rate-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .rate-box span {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      margin-bottom: 4px;
-    }
-
-    .rate-input {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 6px;
-      color: var(--secondary);
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-align: center;
-      outline: none;
-    }
-
-    .rate-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 8px rgba(0, 243, 255, 0.2);
+      margin-bottom: 12px;
     }
 
     .input-group {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .input-group label {
       display: block;
       font-size: 0.85rem;
       color: var(--text-dim);
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
-    .input-field, select {
+    input, select {
       width: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 12px 15px;
-      color: var(--text-white);
-      font-size: 1rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--text-main);
+      font-size: 0.95rem;
       outline: none;
-      transition: all 0.3s ease;
+      transition: border-color 0.2s;
     }
 
-    .input-field:focus, select:focus {
+    input:focus, select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
     }
 
     select option {
-      background-color: var(--bg-dark);
-      color: var(--text-white);
+      background-color: var(--bg-color);
+      color: var(--text-main);
     }
 
-    .converter-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    /* Reporte y Desglose de Comisiones */
     .result-box {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px dashed var(--primary);
-      border-radius: 14px;
-      padding: 15px;
-      margin-top: 15px;
+      background: var(--bg-color);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid var(--border-color);
     }
 
     .result-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
       font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: var(--text-main);
     }
 
     .result-row.total {
-      border-top: 1px solid var(--card-border);
-      padding-top: 10px;
-      margin-top: 8px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 8px;
       margin-bottom: 0;
-      font-size: 1.1rem;
       font-weight: 700;
-      color: var(--secondary);
+      color: var(--success);
+      font-size: 1.05rem;
     }
 
     .badge-minimo {
       background: rgba(251, 191, 36, 0.15);
       border: 1px solid #fbbf24;
-      color: #fbbf24;
+      color: #b45309;
       font-size: 0.75rem;
-      padding: 8px 12px;
+      padding: 6px 10px;
       border-radius: 8px;
-      margin-top: 12px;
+      margin-top: 10px;
       text-align: center;
       display: none;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--text-dim);
-      font-size: 0.75rem;
-      margin-top: 20px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-5px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -300,182 +181,111 @@
   <div class="container">
     <header>
       <h1>DayCambio</h1>
-      <p>Calculadora Financiera & Tasas Oficiales</p>
+      <button class="theme-btn" onclick="alternarTema()" id="btnTema">☀️ Claro</button>
     </header>
 
-    <!-- 5 Temas de Colores (Liquid Glass Engine) -->
-    <div class="theme-selector">
-      <div class="theme-dot" style="background: #00f3ff;" onclick="cambiarTema('neon-cyan')" title="Neon Cyan"></div>
-      <div class="theme-dot" style="background: #d946ef;" onclick="cambiarTema('neon-purple')" title="Neon Purple"></div>
-      <div class="theme-dot" style="background: #fbbf24;" onclick="cambiarTema('neon-gold')" title="Neon Gold"></div>
-      <div class="theme-dot" style="background: #34d399;" onclick="cambiarTema('emerald-glass')" title="Emerald Glass"></div>
-      <div class="theme-dot" style="background: #fb7185;" onclick="cambiarTema('ruby-glass')" title="Ruby Glass"></div>
-    </div>
-
-    <!-- Notificación Toast de Tasas -->
-    <div id="toastNotif" class="toast-notification">
-      🔔 Tasas de cambio actualizadas correctamente.
-    </div>
-
-    <!-- Tasas de Cambio editables -->
-    <div class="glass-card">
-      <div class="card-title">
-        <span>💵 Tasas del Día</span>
-        <span style="font-size: 0.8rem; color: var(--text-dim); cursor: pointer; text-decoration: underline;" onclick="notificarTasas()">Sincronizar</span>
-      </div>
-      <div class="rates-grid">
-        <div class="rate-box">
-          <span>USD BCV</span>
-          <input type="number" id="tasaUsd" class="rate-input" value="876.92" step="0.01" oninput="calcularTodo()">
-        </div>
-        <div class="rate-box">
-          <span>EUR BCV</span>
-          <input type="number" id="tasaEur" class="rate-input" value="975.24" step="0.01" oninput="calcularTodo()">
-        </div>
-        <div class="rate-box">
-          <span>USDT</span>
-          <input type="number" id="tasaUsdt" class="rate-input" value="1010.00" step="0.01" oninput="calcularTodo()">
-        </div>
-      </div>
-    </div>
-
-    <!-- Conversor Rápido de Divisas -->
-    <div class="glass-card">
-      <div class="card-title">💱 Conversor Rápido</div>
-      <div class="converter-row">
-        <div class="input-group">
-          <label for="inputUsd">USD ($):</label>
-          <input type="number" id="inputUsd" class="input-field" placeholder="0.00" oninput="convertirDesdeUsd()">
-        </div>
-        <div class="input-group">
-          <label for="inputBsConv">Bolívares (Bs.):</label>
-          <input type="number" id="inputBsConv" class="input-field" placeholder="0.00" oninput="convertirDesdeBs()">
-        </div>
-      </div>
-    </div>
-
-    <!-- Calculadora y Reporte de Comisiones con piso de Bs. 14,00 -->
-    <div class="glass-card">
-      <div class="card-title">📲 Calculadora de Comisiones</div>
+    <!-- Calculadora con Tarifas del BCV y piso de 14 Bs -->
+    <div class="card">
+      <div class="card-title">Calculadora de Comisiones</div>
 
       <div class="input-group">
         <label for="inputMonto">Monto de la Operación (Bs.):</label>
-        <input type="number" id="inputMonto" class="input-field" placeholder="0.00" oninput="calcularTodo()">
+        <input type="number" id="inputMonto" placeholder="0.00" oninput="calcular()">
       </div>
 
       <div class="input-group">
-        <label for="tipoOperacion">Modalidad de Pago:</label>
-        <select id="tipoOperacion" onchange="calcularTodo()">
-          <option value="P2P">Pago Móvil P2P (0.30% - mín. 14 Bs)</option>
-          <option value="P2C">Persona a Comercio P2C (1.50% - mín. 14 Bs)</option>
-          <option value="C2P">Comercio a Persona C2P (1.75% - mín. 14 Bs)</option>
-          <option value="REVERSO">Operación Fallida / Reverso (14 Bs)</option>
+        <label for="tipoOperacion">Tipo de Operación:</label>
+        <select id="tipoOperacion" onchange="calcular()">
+          <option value="P2P">Pago Móvil P2P (0.30% - mín. Bs. 14,00)</option>
+          <option value="P2C">Pago Móvil P2C (1.50% - mín. Bs. 14,00)</option>
+          <option value="C2P">Pago Móvil C2P (1.75% - mín. Bs. 14,00)</option>
+          <option value="REVERSO">Operación Fallida / Reverso (Bs. 14,00)</option>
         </select>
       </div>
 
-      <!-- Reporte y Desglose Detallado -->
       <div class="result-box">
         <div class="result-row">
           <span>Monto Base:</span>
-          <span id="lblMontoBase">0,00 Bs.</span>
+          <span id="lblMonto">0,00 Bs.</span>
         </div>
         <div class="result-row">
           <span>Comisión BCV:</span>
           <span id="lblComision">0,00 Bs.</span>
         </div>
         <div class="result-row total">
-          <span>Total Débito / Pago:</span>
+          <span>Total:</span>
           <span id="lblTotal">0,00 Bs.</span>
         </div>
       </div>
 
       <div id="badgeMinimo" class="badge-minimo">
-        ⚠️ Se aplicó la tarifa mínima obligatoria del BCV (Bs. 14,00)
+        ⚠️ Se aplica la comisión mínima oficial del BCV (Bs. 14,00)
       </div>
     </div>
-
-    <footer>
-      <p>DayCambio &copy; 2026 — Tarifario BCV Oficial</p>
-    </footer>
   </div>
 
   <script>
-    // Configuración de Tarifas BCV con Piso Mínimo de Bs. 14,00
-    const COMISIONES_BCV = {
+    // Tarifario BCV con mínimo de Bs. 14,00
+    const TARIFAS = {
       P2P: { porcentaje: 0.003, minimo: 14.00 },
       P2C: { porcentaje: 0.015, minimo: 14.00 },
       C2P: { porcentaje: 0.0175, minimo: 14.00 },
       REVERSO: { fijo: 14.00 }
     };
 
-    function cambiarTema(tema) {
-      document.documentElement.setAttribute('data-theme', tema);
-      localStorage.setItem('daycambio_theme', tema);
+    function alternarTema() {
+      const html = document.documentElement;
+      const btn = document.getElementById('btnTema');
+      const actual = html.getAttribute('data-theme');
+      
+      if (actual === 'light') {
+        html.setAttribute('data-theme', 'dark');
+        btn.innerText = '☀️ Claro';
+        localStorage.setItem('daycambio_theme', 'dark');
+      } else {
+        html.setAttribute('data-theme', 'light');
+        btn.innerText = '🌙 Oscuro';
+        localStorage.setItem('daycambio_theme', 'light');
+      }
     }
 
+    // Cargar preferencia de tema guardada
     window.addEventListener('DOMContentLoaded', () => {
-      const temaGuardado = localStorage.getItem('daycambio_theme');
-      if (temaGuardado) {
-        document.documentElement.setAttribute('data-theme', temaGuardado);
-      }
-      calcularTodo();
+      const guardado = localStorage.getItem('daycambio_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', guardado);
+      document.getElementById('btnTema').innerText = guardado === 'light' ? '🌙 Oscuro' : '☀️ Claro';
+      calcular();
     });
 
-    function notificarTasas() {
-      const toast = document.getElementById('toastNotif');
-      toast.style.display = 'block';
-      setTimeout(() => {
-        toast.style.display = 'none';
-      }, 3500);
-      calcularTodo();
-    }
+    function calcular() {
+      const monto = parseFloat(document.getElementById('inputMonto').value) || 0;
+      const tipo = document.getElementById('tipoOperacion').value;
+      const badge = document.getElementById('badgeMinimo');
 
-    function convertirDesdeUsd() {
-      const usd = parseFloat(document.getElementById('inputUsd').value) || 0;
-      const tasaUsd = parseFloat(document.getElementById('tasaUsd').value) || 0;
-      const bs = usd * tasaUsd;
-      document.getElementById('inputBsConv').value = bs > 0 ? bs.toFixed(2) : '';
-    }
+      let comision = 0;
+      let aplicaMin = false;
 
-    function convertirDesdeBs() {
-      const bs = parseFloat(document.getElementById('inputBsConv').value) || 0;
-      const tasaUsd = parseFloat(document.getElementById('tasaUsd').value) || 1;
-      const usd = bs / tasaUsd;
-      document.getElementById('inputUsd').value = usd > 0 ? usd.toFixed(2) : '';
-    }
-
-    function calcularTodo() {
-      const montoInput = parseFloat(document.getElementById('inputMonto').value) || 0;
-      const modalidad = document.getElementById('tipoOperacion').value;
-      const badgeMinimo = document.getElementById('badgeMinimo');
-
-      let comisionFinal = 0;
-      let aplicaMinimo = false;
-
-      if (modalidad === 'REVERSO') {
-        comisionFinal = COMISIONES_BCV.REVERSO.fijo;
+      if (tipo === 'REVERSO') {
+        comision = TARIFAS.REVERSO.fijo;
         aplicaMinimo = true;
-      } else if (montoInput > 0) {
-        const tarifa = COMISIONES_BCV[modalidad];
-        const comisionCalculada = montoInput * tarifa.porcentaje;
-        
-        // Aplica Math.max para garantizar el piso mínimo de Bs. 14,00
-        comisionFinal = Math.max(comisionCalculada, tarifa.minimo);
-        aplicaMinimo = comisionCalculada < tarifa.minimo;
+      } else if (monto > 0) {
+        const tarifa = TARIFAS[tipo];
+        const calculada = monto * tarifa.porcentaje;
+        // Aplica Math.max para garantizar la comisión mínima obligatoria de Bs. 14,00
+        comision = Math.max(calculada, tarifa.minimo);
+        aplicaMin = calculada < tarifa.minimo;
       }
 
-      const totalPagar = montoInput + comisionFinal;
+      const total = monto + comision;
 
-      // Renderizar reporte de resultados
-      document.getElementById('lblMontoBase').innerText = formatoBS(montoInput);
-      document.getElementById('lblComision').innerText = formatoBS(comisionFinal);
-      document.getElementById('lblTotal').innerText = formatoBS(totalPagar);
+      document.getElementById('lblMonto').innerText = formatoBS(monto);
+      document.getElementById('lblComision').innerText = formatoBS(comision);
+      document.getElementById('lblTotal').innerText = formatoBS(total);
 
-      // Mostrar aviso si se aplicó el piso mínimo
-      if (aplicaMinimo && montoInput > 0) {
-        badgeMinimo.style.display = 'block';
+      if (aplicaMin && monto > 0) {
+        badge.style.display = 'block';
       } else {
-        badgeMinimo.style.display = 'none';
+        badge.style.display = 'none';
       }
     }
 
@@ -483,7 +293,6 @@
       return monto.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs.';
     }
 
-    // Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js');
