@@ -11,22 +11,16 @@
   "theme_color": "#070d14",
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "https://daynabelxd.github.io/DayCambio/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
-      "src": "./icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23070d14'/><path d='M150 100 H280 C360 100 420 160 420 256 C420 352 360 412 280 412 H150 Z' fill='%23a855f7'/></svg>",
+      "src": "https://daynabelxd.github.io/DayCambio/icon-192.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
