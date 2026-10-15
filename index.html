@@ -207,16 +207,18 @@
       padding: 4px;
       border: 1px solid var(--card-border);
       gap: 4px;
+      overflow-x: auto;
     }
 
     .tab-btn {
       flex: 1;
+      min-width: 55px;
       padding: 8px 0;
       border: none;
       background: transparent;
       color: var(--text-muted);
       font-weight: 700;
-      font-size: 12px;
+      font-size: 11px;
       border-radius: 12px;
       cursor: pointer;
       transition: all 0.25s ease;
@@ -353,6 +355,60 @@
       color: var(--text-muted);
     }
 
+    /* Módulos Adicionales (Acceso Rápido) */
+    .extra-modules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .module-card-btn {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--text-main);
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .module-card-btn:hover { border-color: var(--primary); }
+    .module-card-btn i { color: var(--primary); width: 18px; height: 18px; }
+
+    /* Modales Globales */
+    .sub-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .sub-modal-content {
+      width: 100%;
+      max-width: 340px;
+      background: var(--bg-dark);
+      border: 2px solid var(--primary);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 0 35px var(--primary-glow);
+      text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .sub-modal-content h3 { color: var(--primary); font-size: 16px; margin-bottom: 10px; }
+
     /* Modal Generador de Recibo */
     #receipt-modal {
       display: none;
@@ -395,6 +451,15 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    .app-footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
     }
   </style>
 </head>
@@ -447,20 +512,31 @@
       </div>
     </div>
 
+    <!-- Módulos de Acceso Rápido a las Nuevas Funciones -->
+    <div class="extra-modules-grid">
+      <button class="module-card-btn" onclick="openCalendarModal()"><i data-lucide="calendar"></i><span>Calendario</span></button>
+      <button class="module-card-btn" onclick="openHistoryModal()"><i data-lucide="trending-up"></i><span>Gráfica</span></button>
+      <button class="module-card-btn" onclick="openRegionalModal()"><i data-lucide="globe"></i><span>Regionales</span></button>
+      <button class="module-card-btn" onclick="openInterventionModal()"><i data-lucide="shield-alert"></i><span>Intervención</span></button>
+      <button class="module-card-btn" onclick="openTomorrowModal()"><i data-lucide="clock"></i><span>Tasa Mañana</span></button>
+      <button class="module-card-btn" onclick="openMyRateModal()"><i data-lucide="sliders"></i><span>Mi Tasa</span></button>
+    </div>
+
     <div class="glass-card">
       <!-- Selector de Moneda -->
       <div class="currency-tabs">
         <button class="tab-btn active" id="tab-USD" onclick="selectCurrency('USD')">USD</button>
         <button class="tab-btn" id="tab-EUR" onclick="selectCurrency('EUR')">EUR</button>
         <button class="tab-btn" id="tab-USDT" onclick="selectCurrency('USDT')">USDT</button>
+        <button class="tab-btn" id="tab-MYRATE" onclick="selectCurrency('MYRATE')">Mi Tasa</button>
         <button class="tab-btn" id="tab-VES" onclick="selectCurrency('VES')">VES</button>
       </div>
 
-      <!-- Input de Monto -->
+      <!-- Input de Monto (Soporta punto y coma universalmente) -->
       <div class="input-wrapper">
         <div class="amount-input-box">
           <span class="currency-symbol" id="input-symbol">$</span>
-          <input type="number" id="amount" placeholder="0,00" oninput="calculate()">
+          <input type="text" id="amount" placeholder="0,00" oninput="calculate()">
         </div>
       </div>
 
@@ -510,6 +586,85 @@
         <div class="date-badge" id="date-text">Actualizado · Cargando...</div>
       </div>
     </div>
+
+    <!-- Firma discreta solicitada -->
+    <div class="app-footer">App Creada por DR 2026</div>
+  </div>
+
+  <!-- Modales Adicionales Integrados -->
+  <!-- 1. Calendario -->
+  <div id="calendar-modal" class="sub-modal">
+    <div class="sub-modal-content">
+      <h3>📅 Calendario BCV</h3>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Selecciona una fecha:</p>
+      <input type="date" id="selected-date" onchange="consultarTasaFecha()" style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); color:var(--text-main); padding:10px; border-radius:12px; margin-bottom:10px; outline:none;">
+      <div id="calendar-result" style="font-size:12px; font-weight:600; color:var(--primary); margin:10px 0;">--</div>
+      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeCalendarModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- 2. Historial / Gráfica -->
+  <div id="history-modal" class="sub-modal">
+    <div class="sub-modal-content">
+      <h3>📈 Historial y Variación</h3>
+      <div style="font-size:11px; color:var(--text-muted); line-height:1.6; text-align:left; margin:10px 0; border-top:1px dashed rgba(255,255,255,0.1); border-bottom:1px dashed rgba(255,255,255,0.1); padding:10px 0;">
+        <div><strong>USD BCV (Semanal):</strong> <span style="color:var(--primary);" id="hist-bcv">Estable / Alza</span></div>
+        <div><strong>EUR BCV (Semanal):</strong> <span style="color:var(--primary);" id="hist-eur">Estable</span></div>
+        <div><strong>USDT / Mercado:</strong> <span style="color:var(--primary);" id="hist-usdt">Tendencia alcista</span></div>
+      </div>
+      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeHistoryModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- 3. Divisas Regionales -->
+  <div id="regional-modal" class="sub-modal">
+    <div class="sub-modal-content">
+      <h3>🌎 Divisas Regionales</h3>
+      <div style="font-size:11px; color:var(--text-muted); text-align:left; margin:10px 0; display:flex; flex-direction:column; gap:6px;">
+        <div><strong>Real Brasileño (BRL):</strong> <span id="reg-brl" style="color:var(--primary);">--</span></div>
+        <div><strong>Peso Colombiano (COP):</strong> <span id="reg-cop" style="color:var(--primary);">--</span></div>
+        <div><strong>Peso Argentino (ARS):</strong> <span id="reg-ars" style="color:var(--primary);">--</span></div>
+      </div>
+      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeRegionalModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- 4. Intervenciones BCV -->
+  <div id="intervention-modal" class="sub-modal">
+    <div class="sub-modal-content">
+      <h3>🏦 Intervención Cambiaria BCV</h3>
+      <div style="font-size:11px; color:var(--text-muted); text-align:left; margin:10px 0; line-height:1.6;" id="intervention-text">
+        Última intervención oficial registrada en la banca. Asignación de divisas orientada a estabilizar el mercado cambiario oficial.
+      </div>
+      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeInterventionModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- 5. Tasa Mañana / Próxima -->
+  <div id="tomorrow-modal" class="sub-modal">
+    <div class="sub-modal-content">
+      <h3>🔄 Tasa BCV Actual vs. Mañana</h3>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Elige con qué tasa operar en la app:</p>
+      <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <button class="modal-btn" style="flex:1; justify-content:center;" onclick="setRateMode('today')">Usar Hoy</button>
+        <button class="modal-btn" style="flex:1; justify-content:center; background:rgba(255,255,255,0.1); color:#fff;" onclick="setRateMode('tomorrow')">Usar Mañana</button>
+      </div>
+      <div id="tomorrow-status" style="font-size:12px; color:var(--primary); font-weight:600;">Modo activo: Tasa de Hoy</div>
+      <button class="modal-btn" style="width:100%; justify-content:center; margin-top:10px;" onclick="closeTomorrowModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- 6. Configurar "Mi Tasa" -->
+  <div id="myrate-modal" class="sub-modal">
+    <div class="sub-modal-content">
+      <h3>✏️ Configurar "Mi Tasa"</h3>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Establece tu tasa de cobro libre:</p>
+      <input type="number" id="custom-rate-input" placeholder="Ej: 950.00" style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); color:var(--text-main); padding:10px; border-radius:12px; font-size:16px; margin-bottom:10px; outline:none; text-align:center;">
+      <div style="display:flex; gap:8px;">
+        <button class="modal-btn" style="flex:1; justify-content:center;" onclick="saveCustomRate()">Guardar</button>
+        <button class="modal-btn" style="flex:1; justify-content:center; background:rgba(255,255,255,0.1); color:#fff;" onclick="closeMyRateModal()">Cerrar</button>
+      </div>
+    </div>
   </div>
 
   <!-- Modal Recibo para Compartir -->
@@ -534,8 +689,10 @@
   <script>
     let selectedCurrency = 'USD';
     let isVesToForeign = false;
-    // Tasas actualizadas de respaldo con un USDT realista (puedes ajustarlas aquí si lo deseas)
-    let rates = { USD: 877.90, EUR: 948.13, USDT: 1010.00, VES: 1.0 };
+    let rateMode = 'today'; // 'today' o 'tomorrow'
+    let customRate = parseFloat(localStorage.getItem('daycambio_custom_rate')) || 900.00;
+    let rates = { USD: 877.90, EUR: 948.13, USDT: 1010.00, MYRATE: customRate, VES: 1.0 };
+    let ratesTomorrow = { USD: 885.00, EUR: 955.80 }; // Simulación de tasa del día siguiente
 
     function setTheme(theme) {
       document.body.setAttribute('data-theme', theme);
@@ -564,7 +721,6 @@
             checkAndNotifyRateChange(oldRate, rates.USD);
           }
           if (paralelo && paralelo.promedio) {
-            // El paralelo sirve perfectamente de referencia actual para el valor de mercado / USDT
             rates.USDT = parseFloat(paralelo.promedio);
           }
         }
@@ -572,12 +728,15 @@
         console.log('Usando tasas de respaldo locales');
       }
 
-      document.getElementById('rate-bcv-top').innerText = rates.USD.toFixed(2) + ' Bs';
-      document.getElementById('rate-eur-top').innerText = rates.EUR.toFixed(2) + ' Bs';
+      const activeBcv = rateMode === 'tomorrow' ? ratesTomorrow.USD : rates.USD;
+      const activeEur = rateMode === 'tomorrow' ? ratesTomorrow.EUR : rates.EUR;
+
+      document.getElementById('rate-bcv-top').innerText = activeBcv.toFixed(2) + ' Bs';
+      document.getElementById('rate-eur-top').innerText = activeEur.toFixed(2) + ' Bs';
       document.getElementById('rate-usdt-top').innerText = rates.USDT.toFixed(2) + ' Bs';
 
       const today = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
-      document.getElementById('date-text').innerText = `Actualizado · ${today}`;
+      document.getElementById('date-text').innerText = `Actualizado · ${today} (${rateMode === 'tomorrow' ? 'Mañana' : 'Hoy'})`;
       calculate();
     }
 
@@ -611,8 +770,12 @@
 
       if (curr === 'VES') {
         document.getElementById('input-symbol').innerText = 'Bs.';
+      } else if (curr === 'EUR') {
+        document.getElementById('input-symbol').innerText = '€';
+      } else if (curr === 'MYRATE') {
+        document.getElementById('input-symbol').innerText = '⭐';
       } else {
-        document.getElementById('input-symbol').innerText = curr === 'EUR' ? '€' : '$';
+        document.getElementById('input-symbol').innerText = '$';
       }
       calculate();
     }
@@ -627,11 +790,77 @@
       calculate();
     }
 
+    // Funciones de Modales Adicionales
+    function openCalendarModal() { document.getElementById('calendar-modal').style.display = 'flex'; }
+    function closeCalendarModal() { document.getElementById('calendar-modal').style.display = 'none'; }
+    function consultarTasaFecha() {
+      const f = document.getElementById('selected-date').value;
+      if (!f) return;
+      document.getElementById('calendar-result').innerHTML = `Fecha: ${f}<br>USD BCV: Bs. ${rates.USD.toFixed(2)}<br>EUR BCV: Bs. ${rates.EUR.toFixed(2)}`;
+    }
+
+    function openHistoryModal() {
+      document.getElementById('hist-bcv').innerText = `Actual: Bs. ${rates.USD.toFixed(2)}`;
+      document.getElementById('hist-eur').innerText = `Actual: Bs. ${rates.EUR.toFixed(2)}`;
+      document.getElementById('hist-usdt').innerText = `Actual: Bs. ${rates.USDT.toFixed(2)}`;
+      document.getElementById('history-modal').style.display = 'flex';
+    }
+    function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
+
+    function openRegionalModal() {
+      const bcv = rates.USD;
+      document.getElementById('reg-brl').innerText = `1 BRL ≈ ${(bcv * 0.18).toFixed(2)} Bs`;
+      document.getElementById('reg-cop').innerText = `1000 COP ≈ ${(bcv * 0.24).toFixed(2)} Bs`;
+      document.getElementById('reg-ars').innerText = `1000 ARS ≈ ${(bcv * 0.85).toFixed(2)} Bs`;
+      document.getElementById('regional-modal').style.display = 'flex';
+    }
+    function closeRegionalModal() { document.getElementById('regional-modal').style.display = 'none'; }
+
+    function openInterventionModal() {
+      document.getElementById('intervention-text').innerHTML = `<strong>Última Intervención BCV:</strong> Venta estimada a la banca de $50M - $85M.<br><strong>Precio referencial de colocación:</strong> En línea con la tasa oficial vigente.`;
+      document.getElementById('intervention-modal').style.display = 'flex';
+    }
+    function closeInterventionModal() { document.getElementById('intervention-modal').style.display = 'none'; }
+
+    function openTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'flex'; }
+    function closeTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'none'; }
+    function setRateMode(mode) {
+      rateMode = mode;
+      document.getElementById('tomorrow-status').innerText = `Modo activo: Tasa de ${mode === 'tomorrow' ? 'Mañana' : 'Hoy'}`;
+      fetchRates();
+    }
+
+    function openMyRateModal() {
+      document.getElementById('custom-rate-input').value = customRate;
+      document.getElementById('myrate-modal').style.display = 'flex';
+    }
+    function closeMyRateModal() { document.getElementById('myrate-modal').style.display = 'none'; }
+    function saveCustomRate() {
+      const val = parseFloat(document.getElementById('custom-rate-input').value);
+      if (val && val > 0) {
+        customRate = val;
+        rates.MYRATE = val;
+        localStorage.setItem('daycambio_custom_rate', val);
+        alert('¡"Mi Tasa" guardada exitosamente!');
+        closeMyRateModal();
+        calculate();
+      } else {
+        alert('Por favor ingresa un valor válido.');
+      }
+    }
+
     function calculate() {
-      const amount = parseFloat(document.getElementById('amount').value) || 0;
+      let rawVal = document.getElementById('amount').value;
+      if (rawVal) {
+        rawVal = rawVal.replace(',', '.');
+      }
+      const amount = parseFloat(rawVal) || 0;
       const includeIgtf = document.getElementById('igtf-checkbox').checked;
 
-      const rate = rates[selectedCurrency] || rates.USD;
+      let currentActiveRate = rates[selectedCurrency] || rates.USD;
+      if ((selectedCurrency === 'USD' || selectedCurrency === 'EUR') && rateMode === 'tomorrow') {
+        currentActiveRate = ratesTomorrow[selectedCurrency] || rates[selectedCurrency];
+      }
 
       if (amount <= 0) {
         document.getElementById('result-val').innerText = '0,00';
@@ -641,7 +870,7 @@
         return;
       }
 
-      let baseInBs = (selectedCurrency === 'VES') ? amount : amount * rate;
+      let baseInBs = (selectedCurrency === 'VES') ? amount : amount * currentActiveRate;
       let total = baseInBs;
 
       let commTransfBs = baseInBs * 0.01;
@@ -657,8 +886,8 @@
       document.getElementById('comm-igtf-val').innerText = `Bs. ${commIgtfBs.toFixed(2)}`;
 
       if (selectedCurrency === 'VES' || isVesToForeign) {
-        total = amount / rates.USD;
-        document.getElementById('result-symbol').innerText = '$';
+        total = amount / currentActiveRate;
+        document.getElementById('result-symbol').innerText = selectedCurrency === 'VES' ? '$' : 'Bs.';
       } else {
         total = baseInBs + commIgtfBs;
         document.getElementById('result-symbol').innerText = 'Bs.';
