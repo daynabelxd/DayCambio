@@ -1,22 +1,29 @@
 {
   "name": "DayCambio",
   "short_name": "DayCambio",
+  "description": "Calculadora de divisas y comisiones bancarias en Venezuela",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#070d14",
   "theme_color": "#070d14",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1117'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300f2fe'/></svg>",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230d1117'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300f2fe'/></svg>",
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-192.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
