@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="neon-cyan">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>DayCambio - Tasa BCV & Calculadora</title>
+  <title>DayCambio - PWA Financiera</title>
   
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#070d14">
@@ -12,15 +12,51 @@
   <link rel="apple-touch-icon" href="icon-192.png">
 
   <style>
-    :root {
+    /* Motor de 5 Temas Liquid Glass Avanzado */
+    :root[data-theme="neon-cyan"] {
       --bg-dark: #070d14;
       --card-bg: rgba(255, 255, 255, 0.05);
       --card-border: rgba(255, 255, 255, 0.12);
-      --neon-cyan: #00f3ff;
-      --neon-green: #00ff66;
-      --neon-yellow: #ffcc00;
+      --primary: #00f3ff;
+      --secondary: #00ff66;
       --text-white: #ffffff;
       --text-dim: #94a3b8;
+    }
+    :root[data-theme="neon-purple"] {
+      --bg-dark: #0f0714;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --primary: #d946ef;
+      --secondary: #a855f7;
+      --text-white: #ffffff;
+      --text-dim: #cbd5e1;
+    }
+    :root[data-theme="neon-gold"] {
+      --bg-dark: #141107;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --primary: #fbbf24;
+      --secondary: #f59e0b;
+      --text-white: #ffffff;
+      --text-dim: #d1d5db;
+    }
+    :root[data-theme="emerald-glass"] {
+      --bg-dark: #04140b;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --primary: #34d399;
+      --secondary: #10b981;
+      --text-white: #ffffff;
+      --text-dim: #9ca3af;
+    }
+    :root[data-theme="ruby-glass"] {
+      --bg-dark: #140404;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --primary: #fb7185;
+      --secondary: #f43f5e;
+      --text-white: #ffffff;
+      --text-dim: #d1d5db;
     }
 
     * {
@@ -37,7 +73,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 15px;
+      padding: 24px 16px;
+      transition: background-color 0.3s ease;
     }
 
     .container {
@@ -47,13 +84,13 @@
 
     header {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     header h1 {
       font-size: 2.2rem;
       font-weight: 800;
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       letter-spacing: -0.5px;
@@ -62,10 +99,51 @@
     header p {
       color: var(--text-dim);
       font-size: 0.85rem;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
-    /* Glassmorphism Cards */
+    /* Selector de Temas Completo */
+    .theme-selector {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      padding: 10px;
+      border-radius: 30px;
+    }
+
+    .theme-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .theme-dot:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 12px var(--primary);
+    }
+
+    /* Notificación Toast */
+    .toast-notification {
+      background: rgba(0, 255, 102, 0.15);
+      border: 1px solid var(--secondary);
+      color: var(--secondary);
+      font-size: 0.8rem;
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    /* Tarjetas Liquid Glass Detalladas */
     .glass-card {
       background: var(--card-bg);
       backdrop-filter: blur(16px);
@@ -78,20 +156,19 @@
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 600;
-      color: var(--neon-cyan);
+      color: var(--primary);
       margin-bottom: 15px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
     }
 
     .rates-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      margin-bottom: 10px;
     }
 
     .rate-box {
@@ -106,11 +183,25 @@
       display: block;
       font-size: 0.75rem;
       color: var(--text-dim);
+      margin-bottom: 4px;
     }
 
-    .rate-box strong {
-      font-size: 0.95rem;
-      color: var(--neon-green);
+    .rate-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 6px;
+      color: var(--secondary);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+    }
+
+    .rate-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 8px rgba(0, 243, 255, 0.2);
     }
 
     .input-group {
@@ -137,7 +228,7 @@
     }
 
     .input-field:focus, select:focus {
-      border-color: var(--neon-cyan);
+      border-color: var(--primary);
       box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
     }
 
@@ -146,9 +237,16 @@
       color: var(--text-white);
     }
 
+    .converter-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Reporte y Desglose de Comisiones */
     .result-box {
-      background: rgba(0, 243, 255, 0.05);
-      border: 1px dashed var(--neon-cyan);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed var(--primary);
       border-radius: 14px;
       padding: 15px;
       margin-top: 15px;
@@ -165,10 +263,23 @@
     .result-row.total {
       border-top: 1px solid var(--card-border);
       padding-top: 10px;
+      margin-top: 8px;
       margin-bottom: 0;
       font-size: 1.1rem;
       font-weight: 700;
-      color: var(--neon-green);
+      color: var(--secondary);
+    }
+
+    .badge-minimo {
+      background: rgba(251, 191, 36, 0.15);
+      border: 1px solid #fbbf24;
+      color: #fbbf24;
+      font-size: 0.75rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+      text-align: center;
+      display: none;
     }
 
     footer {
@@ -177,6 +288,11 @@
       font-size: 0.75rem;
       margin-top: 20px;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
@@ -184,54 +300,87 @@
   <div class="container">
     <header>
       <h1>DayCambio</h1>
-      <p>Tasa Oficial BCV & Calculadora de Pago Móvil</p>
+      <p>Calculadora Financiera & Tasas Oficiales</p>
     </header>
 
-    <!-- Tasas -->
+    <!-- 5 Temas de Colores (Liquid Glass Engine) -->
+    <div class="theme-selector">
+      <div class="theme-dot" style="background: #00f3ff;" onclick="cambiarTema('neon-cyan')" title="Neon Cyan"></div>
+      <div class="theme-dot" style="background: #d946ef;" onclick="cambiarTema('neon-purple')" title="Neon Purple"></div>
+      <div class="theme-dot" style="background: #fbbf24;" onclick="cambiarTema('neon-gold')" title="Neon Gold"></div>
+      <div class="theme-dot" style="background: #34d399;" onclick="cambiarTema('emerald-glass')" title="Emerald Glass"></div>
+      <div class="theme-dot" style="background: #fb7185;" onclick="cambiarTema('ruby-glass')" title="Ruby Glass"></div>
+    </div>
+
+    <!-- Notificación Toast de Tasas -->
+    <div id="toastNotif" class="toast-notification">
+      🔔 Tasas de cambio actualizadas correctamente.
+    </div>
+
+    <!-- Tasas de Cambio editables -->
     <div class="glass-card">
-      <div class="card-title">💵 Tasas de Cambio</div>
+      <div class="card-title">
+        <span>💵 Tasas del Día</span>
+        <span style="font-size: 0.8rem; color: var(--text-dim); cursor: pointer; text-decoration: underline;" onclick="notificarTasas()">Sincronizar</span>
+      </div>
       <div class="rates-grid">
         <div class="rate-box">
           <span>USD BCV</span>
-          <strong id="rateUsd">---</strong>
+          <input type="number" id="tasaUsd" class="rate-input" value="876.92" step="0.01" oninput="calcularTodo()">
         </div>
         <div class="rate-box">
           <span>EUR BCV</span>
-          <strong id="rateEur">---</strong>
+          <input type="number" id="tasaEur" class="rate-input" value="975.24" step="0.01" oninput="calcularTodo()">
         </div>
         <div class="rate-box">
           <span>USDT</span>
-          <strong id="rateUsdt">---</strong>
+          <input type="number" id="tasaUsdt" class="rate-input" value="1010.00" step="0.01" oninput="calcularTodo()">
         </div>
       </div>
     </div>
 
-    <!-- Calculadora Multi-Modal -->
+    <!-- Conversor Rápido de Divisas -->
+    <div class="glass-card">
+      <div class="card-title">💱 Conversor Rápido</div>
+      <div class="converter-row">
+        <div class="input-group">
+          <label for="inputUsd">USD ($):</label>
+          <input type="number" id="inputUsd" class="input-field" placeholder="0.00" oninput="convertirDesdeUsd()">
+        </div>
+        <div class="input-group">
+          <label for="inputBsConv">Bolívares (Bs.):</label>
+          <input type="number" id="inputBsConv" class="input-field" placeholder="0.00" oninput="convertirDesdeBs()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculadora y Reporte de Comisiones con piso de Bs. 14,00 -->
     <div class="glass-card">
       <div class="card-title">📲 Calculadora de Comisiones</div>
 
       <div class="input-group">
         <label for="inputMonto">Monto de la Operación (Bs.):</label>
-        <input type="number" id="inputMonto" class="input-field" placeholder="0.00" oninput="calcular()">
+        <input type="number" id="inputMonto" class="input-field" placeholder="0.00" oninput="calcularTodo()">
       </div>
 
       <div class="input-group">
         <label for="tipoOperacion">Modalidad de Pago:</label>
-        <select id="tipoOperacion" onchange="calcular()">
-          <option value="P2P">Pago Móvil P2P (0.30%)</option>
-          <option value="P2C">Persona a Comercio - P2C (1.50%)</option>
-          <option value="C2P">Comercio a Persona - C2P (1.75%)</option>
-          <option value="REVERSO">Operación Fallida / Reverso</option>
+        <select id="tipoOperacion" onchange="calcularTodo()">
+          <option value="P2P">Pago Móvil P2P (0.30% - mín. 14 Bs)</option>
+          <option value="P2C">Persona a Comercio P2C (1.50% - mín. 14 Bs)</option>
+          <option value="C2P">Comercio a Persona C2P (1.75% - mín. 14 Bs)</option>
+          <option value="REVERSO">Operación Fallida / Reverso (14 Bs)</option>
         </select>
       </div>
 
+      <!-- Reporte y Desglose Detallado -->
       <div class="result-box">
         <div class="result-row">
           <span>Monto Base:</span>
-          <span id="lblMonto">0,00 Bs.</span>
+          <span id="lblMontoBase">0,00 Bs.</span>
         </div>
         <div class="result-row">
-          <span>Comisión Bancaria:</span>
+          <span>Comisión BCV:</span>
           <span id="lblComision">0,00 Bs.</span>
         </div>
         <div class="result-row total">
@@ -239,42 +388,95 @@
           <span id="lblTotal">0,00 Bs.</span>
         </div>
       </div>
+
+      <div id="badgeMinimo" class="badge-minimo">
+        ⚠️ Se aplicó la tarifa mínima obligatoria del BCV (Bs. 14,00)
+      </div>
     </div>
 
     <footer>
-      <p>DayCambio &copy; 2026 — Tarifario BCV Actualizado</p>
+      <p>DayCambio &copy; 2026 — Tarifario BCV Oficial</p>
     </footer>
   </div>
 
   <script>
-    // Configuración de Tarifas del BCV con Mínimo de Bs. 14,00
-    const TARIFAS_BCV = {
+    // Configuración de Tarifas BCV con Piso Mínimo de Bs. 14,00
+    const COMISIONES_BCV = {
       P2P: { porcentaje: 0.003, minimo: 14.00 },
       P2C: { porcentaje: 0.015, minimo: 14.00 },
       C2P: { porcentaje: 0.0175, minimo: 14.00 },
       REVERSO: { fijo: 14.00 }
     };
 
-    function calcular() {
-      const monto = parseFloat(document.getElementById('inputMonto').value) || 0;
-      const tipo = document.getElementById('tipoOperacion').value;
+    function cambiarTema(tema) {
+      document.documentElement.setAttribute('data-theme', tema);
+      localStorage.setItem('daycambio_theme', tema);
+    }
 
-      let comision = 0;
+    window.addEventListener('DOMContentLoaded', () => {
+      const temaGuardado = localStorage.getItem('daycambio_theme');
+      if (temaGuardado) {
+        document.documentElement.setAttribute('data-theme', temaGuardado);
+      }
+      calcularTodo();
+    });
 
-      if (tipo === 'REVERSO') {
-        comision = TARIFAS_BCV.REVERSO.fijo;
-      } else if (monto > 0) {
-        const tarifa = TARIFAS_BCV[tipo];
-        const calculada = monto * tarifa.porcentaje;
-        // Garantiza la comisión mínima oficial de Bs. 14,00
-        comision = Math.max(calculada, tarifa.minimo);
+    function notificarTasas() {
+      const toast = document.getElementById('toastNotif');
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3500);
+      calcularTodo();
+    }
+
+    function convertirDesdeUsd() {
+      const usd = parseFloat(document.getElementById('inputUsd').value) || 0;
+      const tasaUsd = parseFloat(document.getElementById('tasaUsd').value) || 0;
+      const bs = usd * tasaUsd;
+      document.getElementById('inputBsConv').value = bs > 0 ? bs.toFixed(2) : '';
+    }
+
+    function convertirDesdeBs() {
+      const bs = parseFloat(document.getElementById('inputBsConv').value) || 0;
+      const tasaUsd = parseFloat(document.getElementById('tasaUsd').value) || 1;
+      const usd = bs / tasaUsd;
+      document.getElementById('inputUsd').value = usd > 0 ? usd.toFixed(2) : '';
+    }
+
+    function calcularTodo() {
+      const montoInput = parseFloat(document.getElementById('inputMonto').value) || 0;
+      const modalidad = document.getElementById('tipoOperacion').value;
+      const badgeMinimo = document.getElementById('badgeMinimo');
+
+      let comisionFinal = 0;
+      let aplicaMinimo = false;
+
+      if (modalidad === 'REVERSO') {
+        comisionFinal = COMISIONES_BCV.REVERSO.fijo;
+        aplicaMinimo = true;
+      } else if (montoInput > 0) {
+        const tarifa = COMISIONES_BCV[modalidad];
+        const comisionCalculada = montoInput * tarifa.porcentaje;
+        
+        // Aplica Math.max para garantizar el piso mínimo de Bs. 14,00
+        comisionFinal = Math.max(comisionCalculada, tarifa.minimo);
+        aplicaMinimo = comisionCalculada < tarifa.minimo;
       }
 
-      const total = monto + comision;
+      const totalPagar = montoInput + comisionFinal;
 
-      document.getElementById('lblMonto').innerText = formatoBS(monto);
-      document.getElementById('lblComision').innerText = formatoBS(comision);
-      document.getElementById('lblTotal').innerText = formatoBS(total);
+      // Renderizar reporte de resultados
+      document.getElementById('lblMontoBase').innerText = formatoBS(montoInput);
+      document.getElementById('lblComision').innerText = formatoBS(comisionFinal);
+      document.getElementById('lblTotal').innerText = formatoBS(totalPagar);
+
+      // Mostrar aviso si se aplicó el piso mínimo
+      if (aplicaMinimo && montoInput > 0) {
+        badgeMinimo.style.display = 'block';
+      } else {
+        badgeMinimo.style.display = 'none';
+      }
     }
 
     function formatoBS(monto) {
