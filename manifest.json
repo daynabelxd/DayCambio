@@ -1,38 +1,20 @@
 {
-  "id": "https://daynabelxd.github.io/DayCambio/",
   "name": "DayCambio",
   "short_name": "DayCambio",
-  "description": "Calculadora de divisas y comisiones bancarias en Venezuela",
-  "start_url": "https://daynabelxd.github.io/DayCambio/",
-  "scope": "https://daynabelxd.github.io/DayCambio/",
+  "start_url": "./index.html",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#070d14",
   "theme_color": "#070d14",
   "icons": [
     {
-      "src": "https://daynabelxd.github.io/DayCambio/icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
-      "src": "https://daynabelxd.github.io/DayCambio/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "https://daynabelxd.github.io/DayCambio/icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://daynabelxd.github.io/DayCambio/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "type": "image/png"
     }
   ]
 }
