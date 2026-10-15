@@ -3,27 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>DayCambio - Calculadora de Divisas y Comisiones</title>
+  <title>DayCambio</title>
   
-  <!-- PWA Meta Tags -->
+  <!-- PWA & Meta Tags -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#070d14">
+  <meta name="theme-color" content="#0d1117">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="icon-192.png">
 
   <style>
-    :root {
-      --bg-dark: #070d14;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --card-border: rgba(255, 255, 255, 0.12);
-      --neon-cyan: #00f3ff;
-      --neon-green: #00ff66;
-      --neon-yellow: #ffcc00;
-      --text-white: #ffffff;
-      --text-dim: #94a3b8;
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -32,8 +21,8 @@
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-white);
+      background-color: #0d1117;
+      color: #ffffff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -43,152 +32,84 @@
 
     .container {
       width: 100%;
-      max-width: 450px;
+      max-width: 420px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     header h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #58a6ff;
     }
 
-    header p {
-      color: var(--text-dim);
-      font-size: 0.85rem;
-      margin-top: 4px;
-    }
-
-    /* Glassmorphism Card */
-    .glass-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    .card {
+      background: rgba(22, 27, 34, 0.8);
+      border: 1px solid #30363d;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 15px;
+      backdrop-filter: blur(10px);
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
-      color: var(--neon-cyan);
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      color: #58a6ff;
+      margin-bottom: 12px;
     }
 
     .input-group {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .input-group label {
       display: block;
       font-size: 0.85rem;
-      color: var(--text-dim);
-      margin-bottom: 6px;
+      color: #8b949e;
+      margin-bottom: 5px;
     }
 
-    .input-field, select {
+    input, select {
       width: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 12px 15px;
-      color: var(--text-white);
-      font-size: 1rem;
-      outline: none;
-      transition: all 0.3s ease;
-    }
-
-    .input-field:focus, select:focus {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-    }
-
-    select option {
-      background-color: var(--bg-dark);
-      color: var(--text-white);
-    }
-
-    .rates-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .rate-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .rate-box span {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--text-dim);
-    }
-
-    .rate-box strong {
+      background: #010409;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #ffffff;
       font-size: 0.95rem;
-      color: var(--neon-green);
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #58a6ff;
     }
 
     .result-box {
-      background: rgba(0, 243, 255, 0.05);
-      border: 1px dashed var(--neon-cyan);
-      border-radius: 14px;
-      padding: 15px;
-      margin-top: 15px;
+      background: #161b22;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid #30363d;
     }
 
     .result-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
       font-size: 0.9rem;
+      margin-bottom: 6px;
     }
 
     .result-row.total {
-      border-top: 1px solid var(--card-border);
-      padding-top: 10px;
+      border-top: 1px solid #30363d;
+      padding-top: 8px;
       margin-bottom: 0;
-      font-size: 1.1rem;
       font-weight: 700;
-      color: var(--neon-green);
-    }
-
-    .badge-warning {
-      background: rgba(255, 204, 0, 0.15);
-      border: 1px solid var(--neon-yellow);
-      color: var(--neon-yellow);
-      font-size: 0.75rem;
-      padding: 6px 10px;
-      border-radius: 8px;
-      margin-top: 10px;
-      display: none;
-      text-align: center;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--text-dim);
-      font-size: 0.75rem;
-      margin-top: 20px;
+      color: #3fb950;
+      font-size: 1.05rem;
     }
   </style>
 </head>
@@ -197,43 +118,23 @@
   <div class="container">
     <header>
       <h1>DayCambio</h1>
-      <p>Calculadora de divisas y comisiones BCV</p>
     </header>
 
-    <!-- Tasas de Referencia -->
-    <div class="glass-card">
-      <div class="card-title">💵 Tasas del Día</div>
-      <div class="rates-grid">
-        <div class="rate-box">
-          <span>USD BCV</span>
-          <strong id="rateUsd">879.12</strong>
-        </div>
-        <div class="rate-box">
-          <span>EUR BCV</span>
-          <strong id="rateEur">977.68</strong>
-        </div>
-        <div class="rate-box">
-          <span>USDT</span>
-          <strong id="rateUsdt">1011.61</strong>
-        </div>
-      </div>
-    </div>
-
-    <!-- Calculadora de Pago Móvil con Tarifario Oficial BCV -->
-    <div class="glass-card">
-      <div class="card-title">📲 Calculadora de Pago Móvil</div>
+    <!-- Calculadora con Tarifas del BCV -->
+    <div class="card">
+      <div class="card-title">Calculadora de Comisiones</div>
 
       <div class="input-group">
         <label for="inputMonto">Monto de la Operación (Bs.):</label>
-        <input type="number" id="inputMonto" class="input-field" placeholder="Ej: 100.00" oninput="calcularComision()">
+        <input type="number" id="inputMonto" placeholder="0.00" oninput="calcular()">
       </div>
 
       <div class="input-group">
-        <label for="tipoModalidad">Modalidad de Pago:</label>
-        <select id="tipoModalidad" onchange="calcularComision()">
-          <option value="P2P">Persona a Persona (P2P - 0.30%)</option>
-          <option value="P2C">Persona a Comercio (P2C - 1.50%)</option>
-          <option value="C2P">Comercio a Persona (C2P - 1.75%)</option>
+        <label for="tipoOperacion">Tipo de Operación:</label>
+        <select id="tipoOperacion" onchange="calcular()">
+          <option value="P2P">Pago Móvil P2P (0.30% - mín. Bs. 14,00)</option>
+          <option value="P2C">Pago Móvil P2C (1.50% - mín. Bs. 14,00)</option>
+          <option value="C2P">Pago Móvil C2P (1.75% - mín. Bs. 14,00)</option>
           <option value="REVERSO">Operación Fallida / Reverso (Bs. 14,00)</option>
         </select>
       </div>
@@ -241,86 +142,58 @@
       <div class="result-box">
         <div class="result-row">
           <span>Monto Base:</span>
-          <span id="lblMontoBase">0,00 Bs.</span>
+          <span id="lblMonto">0,00 Bs.</span>
         </div>
         <div class="result-row">
-          <span>Comisión Bancaria:</span>
+          <span>Comisión BCV:</span>
           <span id="lblComision">0,00 Bs.</span>
         </div>
         <div class="result-row total">
-          <span>Total a Pagar / Débito:</span>
-          <span id="lblTotalPagar">0,00 Bs.</span>
+          <span>Total:</span>
+          <span id="lblTotal">0,00 Bs.</span>
         </div>
       </div>
-
-      <div id="badgeMinimo" class="badge-warning">
-        ⚠️ Se aplica la comisión mínima oficial del BCV (Bs. 14,00)
-      </div>
     </div>
-
-    <footer>
-      <p>DayCambio &copy; 2026 — Tarifario BCV Oficial</p>
-    </footer>
   </div>
 
   <script>
-    // Configuración Tarifario Oficial BCV
-    const COMISIONES_BCV = {
+    // Tarifario BCV con mínimo de Bs. 14,00
+    const TARIFAS = {
       P2P: { porcentaje: 0.003, minimo: 14.00 },
       P2C: { porcentaje: 0.015, minimo: 14.00 },
       C2P: { porcentaje: 0.0175, minimo: 14.00 },
       REVERSO: { fijo: 14.00 }
     };
 
-    function calcularComision() {
-      const montoInput = parseFloat(document.getElementById('inputMonto').value) || 0;
-      const modalidad = document.getElementById('tipoModalidad').value;
-      const badgeMinimo = document.getElementById('badgeMinimo');
+    function calcular() {
+      const monto = parseFloat(document.getElementById('inputMonto').value) || 0;
+      const tipo = document.getElementById('tipoOperacion').value;
 
-      let comisionFinal = 0;
-      let aplicaMinimo = false;
+      let comision = 0;
 
-      if (modalidad === 'REVERSO') {
-        comisionFinal = COMISIONES_BCV.REVERSO.fijo;
-        aplicaMinimo = true;
-      } else {
-        const tarifa = COMISIONES_BCV[modalidad];
-        const comisionCalculada = montoInput * tarifa.porcentaje;
-
-        if (montoInput > 0) {
-          // Aplicar piso mínimo de Bs. 14,00
-          comisionFinal = Math.max(comisionCalculada, tarifa.minimo);
-          aplicaMinimo = comisionCalculada < tarifa.minimo;
-        } else {
-          comisionFinal = 0;
-        }
+      if (tipo === 'REVERSO') {
+        comision = TARIFAS.REVERSO.fijo;
+      } else if (monto > 0) {
+        const tarifa = TARIFAS[tipo];
+        const calculada = monto * tarifa.porcentaje;
+        // Aplica Math.max para garantizar la comisión mínima de Bs. 14,00
+        comision = Math.max(calculada, tarifa.minimo);
       }
 
-      const totalPagar = montoInput + comisionFinal;
+      const total = monto + comision;
 
-      // Renderizar resultados con formato venezolano
-      document.getElementById('lblMontoBase').innerText = formatoBS(montoInput);
-      document.getElementById('lblComision').innerText = formatoBS(comisionFinal);
-      document.getElementById('lblTotalPagar').innerText = formatoBS(totalPagar);
-
-      // Mostrar alerta de Tarifa Mínima si aplica
-      if (aplicaMinimo && montoInput > 0) {
-        badgeMinimo.style.display = 'block';
-      } else {
-        badgeMinimo.style.display = 'none';
-      }
+      document.getElementById('lblMonto').innerText = formatoBS(monto);
+      document.getElementById('lblComision').innerText = formatoBS(comision);
+      document.getElementById('lblTotal').innerText = formatoBS(total);
     }
 
     function formatoBS(monto) {
       return monto.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs.';
     }
 
-    // Registro del Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('Service Worker registrado con éxito.', reg))
-          .catch(err => console.error('Error al registrar Service Worker:', err));
+        navigator.serviceWorker.register('sw.js');
       });
     }
   </script>
