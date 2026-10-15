@@ -10,12 +10,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="DayCambio">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23070d14'/><path d='M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z M42 32 V68 H54 C63 68 68 60 68 50 C68 40 63 32 54 32 Z' fill='%2300f2fe'/></svg>">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
 
   <!-- Tipografía Google Fonts: Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Vector Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- html2canvas para generación de imagen -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -25,14 +29,19 @@
       --bg-dark: #070d14;
       --card-glass: rgba(18, 26, 38, 0.75);
       --card-border: rgba(255, 255, 255, 0.08);
-      --primary: #00f2fe;
-      --primary-glow: rgba(0, 242, 254, 0.25);
-      --secondary: #4facfe;
+      --primary: #a855f7;
+      --primary-glow: rgba(168, 85, 247, 0.25);
+      --secondary: #c084fc;
       --text-main: #f0f6fc;
       --text-muted: #8b949e;
       --input-bg: rgba(10, 16, 26, 0.85);
     }
 
+    [data-theme="turquoise"] {
+      --primary: #00f2fe;
+      --primary-glow: rgba(0, 242, 254, 0.25);
+      --secondary: #4facfe;
+    }
     [data-theme="blue"] {
       --primary: #3b82f6;
       --primary-glow: rgba(59, 130, 246, 0.25);
@@ -86,7 +95,7 @@
       padding-bottom: 30px;
     }
 
-    /* Header */
+    /* Header con Logo oficial */
     header {
       display: flex;
       align-items: center;
@@ -96,41 +105,38 @@
 
     .brand-center {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      width: 100%;
+      gap: 12px;
     }
 
-    .logo-circle {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      color: #000;
-      font-weight: 800;
-      box-shadow: 0 0 18px var(--primary-glow);
-      margin-bottom: 6px;
-    }
-
-    .sub-title {
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      font-weight: 600;
+    .logo-img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px var(--primary-glow));
     }
 
     .app-name {
       font-size: 22px;
       font-weight: 800;
       color: var(--text-main);
+      line-height: 1;
     }
 
-    .icon-btn {
+    .sub-title {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn-top {
       background: var(--card-glass);
       border: 1px solid var(--card-border);
       color: var(--text-main);
@@ -141,13 +147,12 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 16px;
-      position: absolute;
-      right: 16px;
-      top: 16px;
+      transition: all 0.2s;
     }
+    
+    .icon-btn-top:active { transform: scale(0.92); }
 
-    /* Card Liquid Glass */
+    /* Tarjetas Liquid Glass */
     .glass-card {
       background: var(--card-glass);
       backdrop-filter: blur(16px);
@@ -158,7 +163,7 @@
       box-shadow: 0 12px 40px rgba(0,0,0,0.3);
     }
 
-    /* Selector de Temas */
+    /* Selector de Temas Neón */
     .theme-selector {
       display: flex;
       justify-content: space-between;
@@ -167,7 +172,7 @@
 
     .theme-dot {
       flex: 1;
-      height: 26px;
+      height: 24px;
       border-radius: 8px;
       border: 2px solid transparent;
       cursor: pointer;
@@ -175,7 +180,26 @@
     }
     .theme-dot.active { border-color: var(--text-main); transform: scale(1.08); }
 
-    /* Monedas Tabs */
+    /* Tasas de Referencia Superior */
+    .rates-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .mini-rate-card {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .mini-rate-card .lbl { font-size: 10px; color: var(--text-muted); font-weight: 600; }
+    .mini-rate-card .val { font-size: 12px; font-weight: 700; color: var(--primary); }
+
+    /* Tabs de Monedas */
     .currency-tabs {
       display: flex;
       background: var(--input-bg);
@@ -187,12 +211,12 @@
 
     .tab-btn {
       flex: 1;
-      padding: 10px 0;
+      padding: 8px 0;
       border: none;
       background: transparent;
       color: var(--text-muted);
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12px;
       border-radius: 12px;
       cursor: pointer;
       transition: all 0.25s ease;
@@ -205,81 +229,91 @@
     }
 
     /* Input Principal */
-    .input-wrapper {
-      margin-top: 14px;
-    }
+    .input-wrapper { margin-top: 14px; }
 
     .amount-input-box {
       width: 100%;
       background: var(--input-bg);
       border: 2px solid var(--primary);
       border-radius: 18px;
-      padding: 12px 16px;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
       box-shadow: 0 0 15px var(--primary-glow);
     }
 
-    .currency-symbol {
-      font-size: 26px;
-      font-weight: 800;
-      color: var(--primary);
-      margin-right: 10px;
-    }
+    .currency-symbol { font-size: 24px; font-weight: 800; color: var(--primary); margin-right: 10px; }
 
     .amount-input-box input {
       width: 100%;
       background: transparent;
       border: none;
       color: var(--text-main);
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
       outline: none;
     }
 
-    /* Opciones Adicionales */
-    .extra-options {
-      margin-top: 12px;
+    /* Módulo Desglosado de Comisiones en Bs. */
+    .commission-breakdown {
+      margin-top: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      background: rgba(255,255,255,0.03);
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid var(--card-border);
     }
 
-    .option-row {
+    .comm-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .comm-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 12px;
       color: var(--text-muted);
-      font-weight: 500;
     }
 
-    .option-row select {
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      color: var(--primary);
-      padding: 5px 8px;
-      border-radius: 8px;
-      font-weight: 700;
-      outline: none;
-      font-family: 'Poppins', sans-serif;
-    }
+    .comm-row strong { color: var(--text-main); font-weight: 600; }
 
-    /* Botones Circulares */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #334155; transition: .3s; border-radius: 20px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(18px); }
+
+    /* Botones de Acción Circulares Vectoriales */
     .actions-row {
       display: flex;
       justify-content: space-between;
       margin-top: 16px;
-      padding: 0 6px;
+      padding: 0 4px;
     }
 
     .action-btn {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       background: var(--input-bg);
       border: 1px solid var(--card-border);
@@ -287,7 +321,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
       cursor: pointer;
       transition: all 0.2s;
     }
@@ -298,50 +331,29 @@
       color: #000;
     }
 
-    /* Separador */
     .divider {
       border-bottom: 2px dashed var(--card-border);
-      margin: 18px 0;
+      margin: 16px 0;
     }
 
-    /* Resultado */
-    .result-section {
-      text-align: center;
-    }
+    /* Resultado Final */
+    .result-section { text-align: center; }
 
-    .result-label {
-      font-size: 30px;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .result-number {
-      font-size: 36px;
-      font-weight: 800;
-      color: var(--text-main);
-      margin-left: 6px;
-    }
-
-    .rate-reference {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 6px;
-      font-weight: 600;
-    }
+    .result-label { font-size: 28px; font-weight: 800; color: var(--primary); }
+    .result-number { font-size: 34px; font-weight: 800; color: var(--text-main); margin-left: 6px; }
 
     .date-badge {
       display: inline-block;
-      margin-top: 12px;
+      margin-top: 10px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--card-border);
-      padding: 6px 16px;
+      padding: 4px 14px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
-      font-weight: 500;
     }
 
-    /* Modal Generador de Imagen */
+    /* Modal Generador de Recibo */
     #receipt-modal {
       display: none;
       position: fixed;
@@ -360,51 +372,78 @@
       background: #090d14;
       border: 2px solid var(--primary);
       border-radius: 24px;
-      padding: 24px;
+      padding: 20px;
       text-align: center;
       box-shadow: 0 0 35px var(--primary-glow);
     }
 
-    .receipt-logo { font-size: 28px; margin-bottom: 6px; }
-    .receipt-title { font-size: 20px; font-weight: 800; color: #fff; }
-    .receipt-amount { font-size: 30px; font-weight: 800; color: var(--primary); margin: 14px 0; }
-    .receipt-details { font-size: 12px; color: var(--text-muted); line-height: 1.6; border-top: 1px dashed rgba(255,255,255,0.1); border-bottom: 1px dashed rgba(255,255,255,0.1); padding: 12px 0; margin: 12px 0; font-weight: 500; }
-    .receipt-footer { font-size: 11px; color: var(--primary); font-weight: 700; letter-spacing: 1px; }
+    .receipt-logo-img { width: 48px; height: 48px; margin-bottom: 6px; object-fit: contain; }
+    .receipt-title { font-size: 18px; font-weight: 800; color: #fff; }
+    .receipt-amount { font-size: 28px; font-weight: 800; color: var(--primary); margin: 12px 0; }
+    .receipt-details { font-size: 11px; color: var(--text-muted); line-height: 1.6; border-top: 1px dashed rgba(255,255,255,0.1); border-bottom: 1px dashed rgba(255,255,255,0.1); padding: 10px 0; margin: 10px 0; text-align: left; }
+    .receipt-footer { font-size: 11px; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
     .modal-btn {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: #000;
       border: none;
       font-weight: 700;
-      padding: 12px 20px;
+      padding: 10px 16px;
       border-radius: 12px;
       cursor: pointer;
-      font-size: 13px;
-      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
   </style>
 </head>
-<body data-theme="turquoise">
-
-  <button class="icon-btn" onclick="toggleLightMode()" title="Modo Claro/Oscuro">🌓</button>
+<body data-theme="purple">
 
   <div class="app-container">
     <header>
       <div class="brand-center">
-        <div class="logo-circle">🔀</div>
-        <div class="sub-title">Conversor de Divisas</div>
-        <div class="app-name">DayCambio</div>
+        <!-- Logo oficial usando icon-192.png -->
+        <img src="icon-192.png" alt="DayCambio Logo" class="logo-img" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' rx=\'20\' fill=\'%23070d14\'/><path d=\'M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z\' fill=\'%23a855f7\'/></svg>'">
+        <div>
+          <div class="app-name">DayCambio</div>
+          <div class="sub-title">Conversor & Comisiones</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn-top" onclick="requestNotificationPermission()" title="Activar Alertas BCV">
+          <i data-lucide="bell"></i>
+        </button>
+        <button class="icon-btn-top" onclick="toggleLightMode()" title="Modo Claro/Oscuro">
+          <i data-lucide="sun-moon"></i>
+        </button>
       </div>
     </header>
 
-    <!-- Barra de Temas -->
+    <!-- Barra de Temas Seleccionables -->
     <div class="glass-card" style="padding: 10px 14px;">
       <div class="theme-selector">
-        <div class="theme-dot active" id="dot-turquoise" style="background:#00f2fe" onclick="setTheme('turquoise')"></div>
+        <div class="theme-dot" id="dot-turquoise" style="background:#00f2fe" onclick="setTheme('turquoise')"></div>
         <div class="theme-dot" id="dot-blue" style="background:#3b82f6" onclick="setTheme('blue')"></div>
-        <div class="theme-dot" id="dot-purple" style="background:#a855f7" onclick="setTheme('purple')"></div>
+        <div class="theme-dot active" id="dot-purple" style="background:#a855f7" onclick="setTheme('purple')"></div>
         <div class="theme-dot" id="dot-pink" style="background:#ec4899" onclick="setTheme('pink')"></div>
         <div class="theme-dot" id="dot-neutral" style="background:#e2e8f0" onclick="setTheme('neutral')"></div>
+      </div>
+    </div>
+
+    <!-- Tasas de Referencia Superior -->
+    <div class="rates-bar">
+      <div class="mini-rate-card">
+        <div class="lbl">USD (BCV)</div>
+        <div class="val" id="rate-bcv-top">-- Bs</div>
+      </div>
+      <div class="mini-rate-card">
+        <div class="lbl">EUR (BCV)</div>
+        <div class="val" id="rate-eur-top">-- Bs</div>
+      </div>
+      <div class="mini-rate-card">
+        <div class="lbl">USDT</div>
+        <div class="val" id="rate-usdt-top">-- Bs</div>
       </div>
     </div>
 
@@ -417,7 +456,7 @@
         <button class="tab-btn" id="tab-VES" onclick="selectCurrency('VES')">VES</button>
       </div>
 
-      <!-- Input Principal -->
+      <!-- Input de Monto -->
       <div class="input-wrapper">
         <div class="amount-input-box">
           <span class="currency-symbol" id="input-symbol">$</span>
@@ -425,59 +464,68 @@
         </div>
       </div>
 
-      <!-- Comisiones -->
-      <div class="extra-options">
-        <div class="option-row">
-          <span>Comisión Bancaria / Pago Móvil:</span>
-          <select id="commission-select" onchange="calculate()">
-            <option value="0">Sin comisión (0%)</option>
-            <option value="0.3">Pago Móvil (0.3%)</option>
-            <option value="1">Transferencia (1%)</option>
-            <option value="2">Otro (2%)</option>
-          </select>
+      <!-- Módulo Desglosado de Comisiones en Bs. -->
+      <div class="commission-breakdown">
+        <div class="comm-title">CONVERSIÓN Y COMISIONES (BS.)</div>
+        
+        <div class="comm-row">
+          <span>Transferencia Bancaria (1%):</span>
+          <strong id="comm-transf-val">Bs. 0,00</strong>
         </div>
-        <div class="option-row">
-          <span>Impuesto Divisas (IGTF 3%):</span>
-          <input type="checkbox" id="igtf-checkbox" onchange="calculate()" style="accent-color: var(--primary);">
+
+        <div class="comm-row">
+          <span>Pago Móvil (0.3%):</span>
+          <strong id="comm-pmov-val">Bs. 0,00</strong>
+        </div>
+
+        <div class="comm-row">
+          <span>Incluir IGTF (3%):</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <strong id="comm-igtf-val">Bs. 0,00</strong>
+            <label class="switch">
+              <input type="checkbox" id="igtf-checkbox" onchange="calculate()">
+              <span class="slider"></span>
+            </label>
+          </div>
         </div>
       </div>
 
-      <!-- Botones Circulares -->
+      <!-- Botones Circulares con Íconos Vectoriales Lucide -->
       <div class="actions-row">
-        <button class="action-btn" onclick="toggleDirection()" title="Invertir conversión">⇅</button>
-        <button class="action-btn" onclick="clearInput()" title="Limpiar">🧹</button>
-        <button class="action-btn" onclick="copyResult()" title="Copiar texto">📋</button>
-        <button class="action-btn" onclick="fetchRates()" title="Actualizar tasa">🔄</button>
-        <button class="action-btn" onclick="openModal()" title="Generar Imagen">📤</button>
+        <button class="action-btn" onclick="toggleDirection()" title="Invertir"><i data-lucide="arrow-up-down"></i></button>
+        <button class="action-btn" onclick="clearInput()" title="Limpiar"><i data-lucide="eraser"></i></button>
+        <button class="action-btn" onclick="copyResult()" title="Copiar"><i data-lucide="copy"></i></button>
+        <button class="action-btn" onclick="fetchRates()" title="Actualizar"><i data-lucide="refresh-cw"></i></button>
+        <button class="action-btn" onclick="openModal()" title="Compartir Imagen"><i data-lucide="share-2"></i></button>
       </div>
 
       <div class="divider"></div>
 
-      <!-- Resultado -->
+      <!-- Resultado Final -->
       <div class="result-section">
         <div>
           <span class="result-label" id="result-symbol">Bs.</span>
           <span class="result-number" id="result-val">0,00</span>
         </div>
-        <div class="rate-reference" id="rate-ref">1 USD = Bs. --</div>
         <div class="date-badge" id="date-text">Actualizado · Cargando...</div>
       </div>
     </div>
   </div>
 
-  <!-- Modal / Generador de Imagen -->
+  <!-- Modal Recibo para Compartir -->
   <div id="receipt-modal">
     <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
       <div class="receipt-card" id="receipt-to-render">
-        <div class="receipt-logo">🔀</div>
+        <img src="icon-192.png" alt="Logo" class="receipt-logo-img" onerror="this.style.display='none'">
         <div class="receipt-title">DayCambio</div>
         <div class="receipt-amount" id="modal-amount">Bs. 0,00</div>
         <div class="receipt-details" id="modal-details">--</div>
-        <div class="receipt-footer">✨ Generado por DayCambio</div>
+        <div class="receipt-footer">Generado por DayCambio App</div>
       </div>
       
-      <div style="display:flex; gap:10px;">
-        <button class="modal-btn" onclick="downloadImage()">⬇️ Descargar Imagen</button>
+      <div style="display:flex; gap:8px;">
+        <button class="modal-btn" onclick="shareNativeImage()"><i data-lucide="send"></i> Compartir</button>
+        <button class="modal-btn" onclick="downloadImage()"><i data-lucide="download"></i> Guardar</button>
         <button class="modal-btn" style="background:rgba(255,255,255,0.1); color:#fff;" onclick="closeModal()">Cerrar</button>
       </div>
     </div>
@@ -509,8 +557,10 @@
           const paralelo = data.find(d => d.fuente === 'paralelo');
           
           if (bcv && bcv.promedio) {
+            const oldRate = rates.USD;
             rates.USD = parseFloat(bcv.promedio);
             rates.EUR = parseFloat((rates.USD * 1.08).toFixed(2));
+            checkAndNotifyRateChange(oldRate, rates.USD);
           }
           if (paralelo && paralelo.promedio) {
             rates.USDT = parseFloat(paralelo.promedio);
@@ -523,9 +573,36 @@
         rates.USDT = parseFloat((rates.USD * 1.04).toFixed(2));
       }
 
+      document.getElementById('rate-bcv-top').innerText = rates.USD.toFixed(2) + ' Bs';
+      document.getElementById('rate-eur-top').innerText = rates.EUR.toFixed(2) + ' Bs';
+      document.getElementById('rate-usdt-top').innerText = rates.USDT.toFixed(2) + ' Bs';
+
       const today = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
       document.getElementById('date-text').innerText = `Actualizado · ${today}`;
       calculate();
+    }
+
+    function requestNotificationPermission() {
+      if (!("Notification" in window)) {
+        alert("Tu dispositivo o navegador no soporta notificaciones.");
+        return;
+      }
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          alert("Notificaciones activadas. Recibirás alertas al actualizarse la tasa BCV.");
+        } else {
+          alert("Permiso de notificaciones denegado.");
+        }
+      });
+    }
+
+    function checkAndNotifyRateChange(oldRate, newRate) {
+      if (oldRate && oldRate !== newRate && Notification.permission === "granted") {
+        new Notification("DayCambio: Cambio de Tasa BCV", {
+          body: `La tasa oficial del BCV se ha actualizado a: Bs. ${newRate.toFixed(2)}`,
+          icon: "icon-192.png"
+        });
+      }
     }
 
     function selectCurrency(curr) {
@@ -553,31 +630,35 @@
 
     function calculate() {
       const amount = parseFloat(document.getElementById('amount').value) || 0;
-      const commRate = parseFloat(document.getElementById('commission-select').value) || 0;
       const includeIgtf = document.getElementById('igtf-checkbox').checked;
 
       const rate = rates[selectedCurrency] || rates.USD;
-      document.getElementById('rate-ref').innerText = `1 ${selectedCurrency} = Bs. ${rate.toFixed(2)}`;
 
       if (amount <= 0) {
         document.getElementById('result-val').innerText = '0,00';
+        document.getElementById('comm-transf-val').innerText = 'Bs. 0,00';
+        document.getElementById('comm-pmov-val').innerText = 'Bs. 0,00';
+        document.getElementById('comm-igtf-val').innerText = 'Bs. 0,00';
         return;
       }
 
-      let total = 0;
+      let baseInBs = (selectedCurrency === 'VES') ? amount : amount * rate;
+      let total = baseInBs;
+
+      let commTransfBs = baseInBs * 0.01;
+      let commPmovBs = baseInBs * 0.003;
+      let commIgtfBs = includeIgtf ? baseInBs * 0.03 : 0;
+
+      document.getElementById('comm-transf-val').innerText = `Bs. ${commTransfBs.toFixed(2)}`;
+      document.getElementById('comm-pmov-val').innerText = `Bs. ${commPmovBs.toFixed(2)}`;
+      document.getElementById('comm-igtf-val').innerText = `Bs. ${commIgtfBs.toFixed(2)}`;
+
       if (selectedCurrency === 'VES' || isVesToForeign) {
         total = amount / rates.USD;
         document.getElementById('result-symbol').innerText = '$';
       } else {
-        total = amount * rate;
+        total = baseInBs + commIgtfBs;
         document.getElementById('result-symbol').innerText = 'Bs.';
-      }
-
-      if (includeIgtf && selectedCurrency !== 'VES') {
-        total += total * 0.03;
-      }
-      if (commRate > 0) {
-        total += total * (commRate / 100);
       }
 
       document.getElementById('result-val').innerText = total.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -587,10 +668,10 @@
       const val = document.getElementById('result-val').innerText;
       const sym = document.getElementById('result-symbol').innerText;
       const amount = document.getElementById('amount').value || '0';
-      const text = `🔀 *DayCambio Calculation*\nMonto: ${amount} ${selectedCurrency}\n👉 *Total: ${sym} ${val}*\n✨ Generado por DayCambio App`;
+      const text = `DayCambio Calculation\nMonto: ${amount} ${selectedCurrency}\nTotal: ${sym} ${val}\nGenerado por DayCambio App`;
       
       navigator.clipboard.writeText(text);
-      alert('¡Copiado al portapapeles!');
+      alert('Copiado al portapapeles');
     }
 
     function openModal() {
@@ -599,7 +680,13 @@
       const amount = document.getElementById('amount').value || '0';
 
       document.getElementById('modal-amount').innerText = `${sym} ${val}`;
-      document.getElementById('modal-details').innerText = `Base: ${amount} ${selectedCurrency}\nTasa Ref: ${document.getElementById('rate-ref').innerText}`;
+      document.getElementById('modal-details').innerHTML = `
+        <strong>Monto Base:</strong> ${amount} ${selectedCurrency}<br>
+        <strong>Tasa Usada:</strong> 1 ${selectedCurrency} = ${rates[selectedCurrency] || rates.USD} Bs.<br>
+        <strong>Transferencia (1%):</strong> ${document.getElementById('comm-transf-val').innerText}<br>
+        <strong>Pago Móvil (0.3%):</strong> ${document.getElementById('comm-pmov-val').innerText}<br>
+        <strong>IGTF (3%):</strong> ${document.getElementById('comm-igtf-val').innerText}
+      `;
       document.getElementById('receipt-modal').style.display = 'flex';
     }
 
@@ -617,9 +704,31 @@
       });
     }
 
-    // Cargar Tema Guardado
-    const savedTheme = localStorage.getItem('daycambio_theme');
-    if(savedTheme) setTheme(savedTheme);
+    async function shareNativeImage() {
+      const card = document.getElementById('receipt-to-render');
+      const canvas = await html2canvas(card, { backgroundColor: null });
+      canvas.toBlob(async (blob) => {
+        const file = new File([blob], 'DayCambio-Monto.png', { type: 'image/png' });
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: 'DayCambio Calculo',
+              text: 'Generado por DayCambio App'
+            });
+          } catch (e) {
+            console.log('Compartido cancelado');
+          }
+        } else {
+          downloadImage();
+        }
+      });
+    }
+
+    // Inicializar
+    lucide.createIcons();
+    const savedTheme = localStorage.getItem('daycambio_theme') || 'purple';
+    setTheme(savedTheme);
     fetchRates();
   </script>
 </body>
