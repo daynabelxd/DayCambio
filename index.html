@@ -534,7 +534,8 @@
   <script>
     let selectedCurrency = 'USD';
     let isVesToForeign = false;
-    let rates = { USD: 877.90, EUR: 948.13, USDT: 910.00, VES: 1.0 };
+    // Tasas actualizadas de respaldo con un USDT realista (puedes ajustarlas aquí si lo deseas)
+    let rates = { USD: 877.90, EUR: 948.13, USDT: 1010.00, VES: 1.0 };
 
     function setTheme(theme) {
       document.body.setAttribute('data-theme', theme);
@@ -553,9 +554,8 @@
         const res = await fetch('https://ve.dolarapi.com/v1/dolares');
         if (res.ok) {
           const data = await res.json();
-          const bcv = data.find(d => d.fuente === 'oficial');
-          const paralelo = data.find(d => d.fuente === 'paralelo' || d.nombre?.toLowerCase().includes('paralelo') || d.key === 'enparalelovzla');
-          const usdtObj = data.find(d => d.fuente === 'binance' || d.nombre?.toLowerCase().includes('usdt') || d.key === 'usdt');
+          const bcv = data.find(d => d.fuente === 'oficial' || d.key === 'oficial');
+          const paralelo = data.find(d => d.fuente === 'paralelo' || d.key === 'enparalelovzla' || d.titulo?.toLowerCase().includes('paralelo'));
           
           if (bcv && bcv.promedio) {
             const oldRate = rates.USD;
@@ -563,9 +563,8 @@
             rates.EUR = parseFloat((rates.USD * 1.08).toFixed(2));
             checkAndNotifyRateChange(oldRate, rates.USD);
           }
-          if (usdtObj && usdtObj.promedio) {
-            rates.USDT = parseFloat(usdtObj.promedio);
-          } else if (paralelo && paralelo.promedio) {
+          if (paralelo && paralelo.promedio) {
+            // El paralelo sirve perfectamente de referencia actual para el valor de mercado / USDT
             rates.USDT = parseFloat(paralelo.promedio);
           }
         }
