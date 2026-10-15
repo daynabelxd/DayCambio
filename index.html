@@ -464,7 +464,7 @@
         </div>
       </div>
 
-      <!-- Módulo Desglosado de Comisiones en Bs. (Actualizado con piso mínimo BCV de 14 Bs.) -->
+      <!-- Módulo Desglosado de Comisiones en Bs. (Con piso mínimo BCV de 14 Bs.) -->
       <div class="commission-breakdown">
         <div class="comm-title">CONVERSIÓN Y COMISIONES (BS.)</div>
         
@@ -554,7 +554,8 @@
         if (res.ok) {
           const data = await res.json();
           const bcv = data.find(d => d.fuente === 'oficial');
-          const paralelo = data.find(d => d.fuente === 'paralelo');
+          const paralelo = data.find(d => d.fuente === 'paralelo' || d.nombre?.toLowerCase().includes('paralelo') || d.key === 'enparalelovzla');
+          const usdtObj = data.find(d => d.fuente === 'binance' || d.nombre?.toLowerCase().includes('usdt') || d.key === 'usdt');
           
           if (bcv && bcv.promedio) {
             const oldRate = rates.USD;
@@ -562,15 +563,14 @@
             rates.EUR = parseFloat((rates.USD * 1.08).toFixed(2));
             checkAndNotifyRateChange(oldRate, rates.USD);
           }
-          if (paralelo && paralelo.promedio) {
+          if (usdtObj && usdtObj.promedio) {
+            rates.USDT = parseFloat(usdtObj.promedio);
+          } else if (paralelo && paralelo.promedio) {
             rates.USDT = parseFloat(paralelo.promedio);
-          } else {
-            rates.USDT = parseFloat((rates.USD * 1.04).toFixed(2));
           }
         }
       } catch (e) {
-        rates.EUR = parseFloat((rates.USD * 1.08).toFixed(2));
-        rates.USDT = parseFloat((rates.USD * 1.04).toFixed(2));
+        console.log('Usando tasas de respaldo locales');
       }
 
       document.getElementById('rate-bcv-top').innerText = rates.USD.toFixed(2) + ' Bs';
@@ -647,7 +647,7 @@
 
       let commTransfBs = baseInBs * 0.01;
       
-      // Aplicación del piso mínimo BCV de Bs. 14,00 para pago móvil (0.3% con mínimo de 14.00)
+      // Aplicación del piso mínimo BCV de Bs. 14,00 para pago móvil
       let commPmovCalculated = baseInBs * 0.003;
       let commPmovBs = Math.max(commPmovCalculated, 14.00);
 
