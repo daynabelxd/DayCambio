@@ -730,6 +730,13 @@
     const savedTheme = localStorage.getItem('daycambio_theme') || 'purple';
     setTheme(savedTheme);
     fetchRates();
+
+    // Registro del Service Worker para PWA / APK
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
   </script>
 </body>
 </html>
