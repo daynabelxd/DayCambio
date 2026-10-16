@@ -358,7 +358,7 @@
       color: var(--text-muted);
     }
 
-    /* Módulos Adicionales (Acceso Rápido) ajustado a 4 columnas para incluir Vuelto */
+    /* Módulos Adicionales (Acceso Rápido) */
     .extra-modules-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -515,7 +515,7 @@
       </div>
     </div>
 
-    <!-- Módulos de Acceso Rápido (Incluye Calculadora de Vuelto) -->
+    <!-- Módulos de Acceso Rápido -->
     <div class="extra-modules-grid">
       <button class="module-card-btn" onclick="openChangeModal()"><i data-lucide="calculator"></i><span>Vuelto</span></button>
       <button class="module-card-btn" onclick="openCalendarModal()"><i data-lucide="calendar"></i><span>Calendario</span></button>
@@ -527,7 +527,7 @@
     </div>
 
     <div class="glass-card">
-      <!-- Selector de Moneda (Incluye BRL, COP, ARS, VES) -->
+      <!-- Selector de Moneda -->
       <div class="currency-tabs">
         <button class="tab-btn active" id="tab-USD" onclick="selectCurrency('USD')">USD</button>
         <button class="tab-btn" id="tab-EUR" onclick="selectCurrency('EUR')">EUR</button>
@@ -536,7 +536,7 @@
         <button class="tab-btn" id="tab-COP" onclick="selectCurrency('COP')">COP</button>
         <button class="tab-btn" id="tab-ARS" onclick="selectCurrency('ARS')">ARS</button>
         <button class="tab-btn" id="tab-MYRATE" onclick="selectCurrency('MYRATE')">Mi Tasa</button>
-        <button class="tab-btn" id="tab-VES" onclick="selectCurrency('VES')">VES</button>
+        <button class="tab-btn" id="tab-VES" onclick="selectCurrency('VES')">VES ➔ $</button>
       </div>
 
       <!-- Input de Monto -->
