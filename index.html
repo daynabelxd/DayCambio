@@ -208,11 +208,13 @@
       border: 1px solid var(--card-border);
       gap: 4px;
       overflow-x: auto;
+      scrollbar-width: none;
     }
+    .currency-tabs::-webkit-scrollbar { display: none; }
 
     .tab-btn {
       flex: 1;
-      min-width: 55px;
+      min-width: 48px;
       padding: 8px 0;
       border: none;
       background: transparent;
@@ -222,6 +224,7 @@
       border-radius: 12px;
       cursor: pointer;
       transition: all 0.25s ease;
+      white-space: nowrap;
     }
 
     .tab-btn.active {
@@ -244,7 +247,7 @@
       box-shadow: 0 0 15px var(--primary-glow);
     }
 
-    .currency-symbol { font-size: 24px; font-weight: 800; color: var(--primary); margin-right: 10px; }
+    .currency-symbol { font-size: 20px; font-weight: 800; color: var(--primary); margin-right: 10px; white-space: nowrap; }
 
     .amount-input-box input {
       width: 100%;
@@ -468,7 +471,7 @@
   <div class="app-container">
     <header>
       <div class="brand-center">
-        <!-- Logo oficial usando icon-192.png -->
+        <!-- Logo oficial -->
         <img src="icon-192.png" alt="DayCambio Logo" class="logo-img" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' rx=\'20\' fill=\'%23070d14\'/><path d=\'M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z\' fill=\'%23a855f7\'/></svg>'">
         <div>
           <div class="app-name">DayCambio</div>
@@ -512,7 +515,7 @@
       </div>
     </div>
 
-    <!-- Módulos de Acceso Rápido a las Nuevas Funciones -->
+    <!-- Módulos de Acceso Rápido -->
     <div class="extra-modules-grid">
       <button class="module-card-btn" onclick="openCalendarModal()"><i data-lucide="calendar"></i><span>Calendario</span></button>
       <button class="module-card-btn" onclick="openHistoryModal()"><i data-lucide="trending-up"></i><span>Gráfica</span></button>
@@ -523,16 +526,19 @@
     </div>
 
     <div class="glass-card">
-      <!-- Selector de Moneda -->
+      <!-- Selector de Moneda (Incluye BRL, COP, ARS directamente) -->
       <div class="currency-tabs">
         <button class="tab-btn active" id="tab-USD" onclick="selectCurrency('USD')">USD</button>
         <button class="tab-btn" id="tab-EUR" onclick="selectCurrency('EUR')">EUR</button>
         <button class="tab-btn" id="tab-USDT" onclick="selectCurrency('USDT')">USDT</button>
+        <button class="tab-btn" id="tab-BRL" onclick="selectCurrency('BRL')">BRL</button>
+        <button class="tab-btn" id="tab-COP" onclick="selectCurrency('COP')">COP</button>
+        <button class="tab-btn" id="tab-ARS" onclick="selectCurrency('ARS')">ARS</button>
         <button class="tab-btn" id="tab-MYRATE" onclick="selectCurrency('MYRATE')">Mi Tasa</button>
         <button class="tab-btn" id="tab-VES" onclick="selectCurrency('VES')">VES</button>
       </div>
 
-      <!-- Input de Monto (Soporta punto y coma universalmente) -->
+      <!-- Input de Monto -->
       <div class="input-wrapper">
         <div class="amount-input-box">
           <span class="currency-symbol" id="input-symbol">$</span>
@@ -540,7 +546,7 @@
         </div>
       </div>
 
-      <!-- Módulo Desglosado de Comisiones en Bs. (Con piso mínimo BCV de 14 Bs.) -->
+      <!-- Módulo Desglosado de Comisiones en Bs. -->
       <div class="commission-breakdown">
         <div class="comm-title">CONVERSIÓN Y COMISIONES (BS.)</div>
         
@@ -566,9 +572,9 @@
         </div>
       </div>
 
-      <!-- Botones Circulares con Íconos Vectoriales Lucide -->
+      <!-- Botones Circulares -->
       <div class="actions-row">
-        <button class="action-btn" onclick="toggleDirection()" title="Invertir"><i data-lucide="arrow-up-down"></i></button>
+        <button class="action-btn" onclick="toggleDirection()" title="Invertir Sentido (VES ↔ Divisa)"><i data-lucide="arrow-up-down"></i></button>
         <button class="action-btn" onclick="clearInput()" title="Limpiar"><i data-lucide="eraser"></i></button>
         <button class="action-btn" onclick="copyResult()" title="Copiar"><i data-lucide="copy"></i></button>
         <button class="action-btn" onclick="fetchRates()" title="Actualizar"><i data-lucide="refresh-cw"></i></button>
@@ -587,7 +593,7 @@
       </div>
     </div>
 
-    <!-- Firma discreta solicitada -->
+    <!-- Firma discreta -->
     <div class="app-footer">App Creada por DR 2026</div>
   </div>
 
@@ -603,23 +609,29 @@
     </div>
   </div>
 
-  <!-- 2. Historial / Gráfica -->
+  <!-- 2. Historial / Gráfica con Brecha Cambiaria -->
   <div id="history-modal" class="sub-modal">
     <div class="sub-modal-content">
-      <h3>📈 Historial y Variación</h3>
+      <h3>📈 Historial y Brecha Cambiaria</h3>
       <div style="font-size:11px; color:var(--text-muted); line-height:1.6; text-align:left; margin:10px 0; border-top:1px dashed rgba(255,255,255,0.1); border-bottom:1px dashed rgba(255,255,255,0.1); padding:10px 0;">
-        <div><strong>USD BCV (Semanal):</strong> <span style="color:var(--primary);" id="hist-bcv">Estable / Alza</span></div>
-        <div><strong>EUR BCV (Semanal):</strong> <span style="color:var(--primary);" id="hist-eur">Estable</span></div>
-        <div><strong>USDT / Mercado:</strong> <span style="color:var(--primary);" id="hist-usdt">Tendencia alcista</span></div>
+        <div><strong>USD BCV:</strong> <span style="color:var(--primary);" id="hist-bcv">--</span></div>
+        <div><strong>EUR BCV:</strong> <span style="color:var(--primary);" id="hist-eur">--</span></div>
+        <div><strong>USDT Mercado:</strong> <span style="color:var(--primary);" id="hist-usdt">--</span></div>
+        <div style="margin-top: 8px; border-top: 1px dotted rgba(255,255,255,0.15); padding-top: 8px;">
+          <strong>Brecha (Euro vs BCV):</strong> <span style="color:#00f2fe;" id="brecha-eur">--</span>
+        </div>
+        <div>
+          <strong>Brecha (USDT vs BCV):</strong> <span style="color:#00f2fe;" id="brecha-usdt">--</span>
+        </div>
       </div>
       <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeHistoryModal()">Cerrar</button>
     </div>
   </div>
 
-  <!-- 3. Divisas Regionales -->
+  <!-- 3. Divisas Regionales Info -->
   <div id="regional-modal" class="sub-modal">
     <div class="sub-modal-content">
-      <h3>🌎 Divisas Regionales</h3>
+      <h3>🌎 Tasas de Divisas Regionales</h3>
       <div style="font-size:11px; color:var(--text-muted); text-align:left; margin:10px 0; display:flex; flex-direction:column; gap:6px;">
         <div><strong>Real Brasileño (BRL):</strong> <span id="reg-brl" style="color:var(--primary);">--</span></div>
         <div><strong>Peso Colombiano (COP):</strong> <span id="reg-cop" style="color:var(--primary);">--</span></div>
@@ -689,11 +701,23 @@
   <script>
     let selectedCurrency = 'USD';
     let isVesToForeign = false;
-    let rateMode = 'today'; // 'today' o 'tomorrow'
+    let rateMode = 'today';
     let customRate = parseFloat(localStorage.getItem('daycambio_custom_rate')) || 900.00;
-    let rates = { USD: 877.90, EUR: 948.13, USDT: 1010.00, MYRATE: customRate, VES: 1.0 };
-    let ratesTomorrow = { USD: 885.00, EUR: 955.80 }; // Simulación de tasa del día siguiente
 
+    let rates = { 
+      USD: 880.12, 
+      EUR: 985.73, 
+      USDT: 1002.65, 
+      BRL: 158.42,   
+      COP: 0.21,     
+      ARS: 0.73,     
+      MYRATE: customRate, 
+      VES: 1.0 
+    };
+
+    let ratesTomorrow = { USD: 885.00, EUR: 990.00 };
+
+    // Corrección 1: Persistencia de Tema Neón y Light Mode
     function setTheme(theme) {
       document.body.setAttribute('data-theme', theme);
       document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.remove('active'));
@@ -704,6 +728,20 @@
 
     function toggleLightMode() {
       document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('daycambio_lightmode', isLight ? 'true' : 'false');
+    }
+
+    function loadSavedTheme() {
+      const savedTheme = localStorage.getItem('daycambio_theme') || 'purple';
+      setTheme(savedTheme);
+
+      const isLight = localStorage.getItem('daycambio_lightmode') === 'true';
+      if (isLight) {
+        document.body.classList.add('light-mode');
+      } else {
+        document.body.classList.remove('light-mode');
+      }
     }
 
     async function fetchRates() {
@@ -717,7 +755,11 @@
           if (bcv && bcv.promedio) {
             const oldRate = rates.USD;
             rates.USD = parseFloat(bcv.promedio);
-            rates.EUR = parseFloat((rates.USD * 1.08).toFixed(2));
+            rates.EUR = parseFloat((rates.USD * 1.12).toFixed(2));
+            rates.BRL = parseFloat((rates.USD * 0.18).toFixed(2));
+            rates.COP = parseFloat((rates.USD / 4150).toFixed(4));
+            rates.ARS = parseFloat((rates.USD / 1200).toFixed(4));
+
             checkAndNotifyRateChange(oldRate, rates.USD);
           }
           if (paralelo && paralelo.promedio) {
@@ -766,22 +808,33 @@
     function selectCurrency(curr) {
       selectedCurrency = curr;
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(`tab-${curr}`).classList.add('active');
+      const activeBtn = document.getElementById(`tab-${curr}`);
+      if(activeBtn) activeBtn.classList.add('active');
 
-      if (curr === 'VES') {
-        document.getElementById('input-symbol').innerText = 'Bs.';
-      } else if (curr === 'EUR') {
-        document.getElementById('input-symbol').innerText = '€';
-      } else if (curr === 'MYRATE') {
-        document.getElementById('input-symbol').innerText = '⭐';
-      } else {
-        document.getElementById('input-symbol').innerText = '$';
-      }
+      updateInputSymbol();
       calculate();
     }
 
+    function updateInputSymbol() {
+      const symElem = document.getElementById('input-symbol');
+      if (isVesToForeign || selectedCurrency === 'VES') {
+        symElem.innerText = 'Bs.';
+        return;
+      }
+      switch (selectedCurrency) {
+        case 'EUR': symElem.innerText = '€'; break;
+        case 'BRL': symElem.innerText = 'R$'; break;
+        case 'COP': symElem.innerText = 'COL$'; break;
+        case 'ARS': symElem.innerText = 'ARS$'; break;
+        case 'MYRATE': symElem.innerText = '⭐'; break;
+        default: symElem.innerText = '$'; break;
+      }
+    }
+
+    // Corrección 2: Alternar dirección VES ↔ Divisa sin errores
     function toggleDirection() {
       isVesToForeign = !isVesToForeign;
+      updateInputSymbol();
       calculate();
     }
 
@@ -790,7 +843,7 @@
       calculate();
     }
 
-    // Funciones de Modales Adicionales
+    // Funciones Modales
     function openCalendarModal() { document.getElementById('calendar-modal').style.display = 'flex'; }
     function closeCalendarModal() { document.getElementById('calendar-modal').style.display = 'none'; }
     function consultarTasaFecha() {
@@ -799,25 +852,34 @@
       document.getElementById('calendar-result').innerHTML = `Fecha: ${f}<br>USD BCV: Bs. ${rates.USD.toFixed(2)}<br>EUR BCV: Bs. ${rates.EUR.toFixed(2)}`;
     }
 
+    // Módulo de Brecha Cambiaria integrado en Gráfica / Historial
     function openHistoryModal() {
-      document.getElementById('hist-bcv').innerText = `Actual: Bs. ${rates.USD.toFixed(2)}`;
-      document.getElementById('hist-eur').innerText = `Actual: Bs. ${rates.EUR.toFixed(2)}`;
-      document.getElementById('hist-usdt').innerText = `Actual: Bs. ${rates.USDT.toFixed(2)}`;
+      const diffEur = rates.EUR - rates.USD;
+      const diffUsdt = rates.USDT - rates.USD;
+      const pctEur = ((diffEur / rates.USD) * 100).toFixed(2);
+      const pctUsdt = ((diffUsdt / rates.USD) * 100).toFixed(2);
+
+      document.getElementById('hist-bcv').innerText = `Bs. ${rates.USD.toFixed(2)}`;
+      document.getElementById('hist-eur').innerText = `Bs. ${rates.EUR.toFixed(2)}`;
+      document.getElementById('hist-usdt').innerText = `Bs. ${rates.USDT.toFixed(2)}`;
+      
+      document.getElementById('brecha-eur').innerText = `+Bs. ${diffEur.toFixed(2)} (${pctEur}%)`;
+      document.getElementById('brecha-usdt').innerText = `+Bs. ${diffUsdt.toFixed(2)} (${pctUsdt}%)`;
+
       document.getElementById('history-modal').style.display = 'flex';
     }
     function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
 
     function openRegionalModal() {
-      const bcv = rates.USD;
-      document.getElementById('reg-brl').innerText = `1 BRL ≈ ${(bcv * 0.18).toFixed(2)} Bs`;
-      document.getElementById('reg-cop').innerText = `1000 COP ≈ ${(bcv * 0.24).toFixed(2)} Bs`;
-      document.getElementById('reg-ars').innerText = `1000 ARS ≈ ${(bcv * 0.85).toFixed(2)} Bs`;
+      document.getElementById('reg-brl').innerText = `1 BRL ≈ ${rates.BRL.toFixed(2)} Bs`;
+      document.getElementById('reg-cop').innerText = `1000 COP ≈ ${(rates.COP * 1000).toFixed(2)} Bs`;
+      document.getElementById('reg-ars').innerText = `1000 ARS ≈ ${(rates.ARS * 1000).toFixed(2)} Bs`;
       document.getElementById('regional-modal').style.display = 'flex';
     }
     function closeRegionalModal() { document.getElementById('regional-modal').style.display = 'none'; }
 
     function openInterventionModal() {
-      document.getElementById('intervention-text').innerHTML = `<strong>Última Intervención BCV:</strong> Venta estimada a la banca de $50M - $85M.<br><strong>Precio referencial de colocación:</strong> En línea con la tasa oficial vigente.`;
+      document.getElementById('intervention-text').innerHTML = `<strong>Última Intervención BCV:</strong> Venta estimada a la banca de $50M - $85M.<br><strong>Precio referencial:</strong> En línea con la tasa oficial vigente.`;
       document.getElementById('intervention-modal').style.display = 'flex';
     }
     function closeInterventionModal() { document.getElementById('intervention-modal').style.display = 'none'; }
@@ -849,6 +911,7 @@
       }
     }
 
+    // Lógica principal de cálculo unificada
     function calculate() {
       let rawVal = document.getElementById('amount').value;
       if (rawVal) {
@@ -870,28 +933,40 @@
         return;
       }
 
-      let baseInBs = (selectedCurrency === 'VES') ? amount : amount * currentActiveRate;
-      let total = baseInBs;
+      let baseInBs = 0;
+      let total = 0;
+
+      if (isVesToForeign || selectedCurrency === 'VES') {
+        baseInBs = amount;
+        let targetRate = (selectedCurrency === 'VES') ? rates.USD : currentActiveRate;
+        total = amount / targetRate;
+        
+        let targetSym = '$';
+        if (selectedCurrency === 'EUR') targetSym = '€';
+        else if (selectedCurrency === 'BRL') targetSym = 'R$';
+        else if (selectedCurrency === 'COP') targetSym = 'COL$';
+        else if (selectedCurrency === 'ARS') targetSym = 'ARS$';
+        else if (selectedCurrency === 'MYRATE') targetSym = '⭐';
+
+        document.getElementById('result-symbol').innerText = targetSym;
+      } else {
+        baseInBs = amount * currentActiveRate;
+        total = baseInBs;
+        document.getElementById('result-symbol').innerText = 'Bs.';
+      }
 
       let commTransfBs = baseInBs * 0.01;
-      
-      // Aplicación del piso mínimo BCV de Bs. 14,00 para pago móvil
       let commPmovCalculated = baseInBs * 0.003;
       let commPmovBs = Math.max(commPmovCalculated, 14.00);
-
       let commIgtfBs = includeIgtf ? baseInBs * 0.03 : 0;
+
+      if (!isVesToForeign && selectedCurrency !== 'VES') {
+        total = baseInBs + commIgtfBs;
+      }
 
       document.getElementById('comm-transf-val').innerText = `Bs. ${commTransfBs.toFixed(2)}`;
       document.getElementById('comm-pmov-val').innerText = `Bs. ${commPmovBs.toFixed(2)}`;
       document.getElementById('comm-igtf-val').innerText = `Bs. ${commIgtfBs.toFixed(2)}`;
-
-      if (selectedCurrency === 'VES' || isVesToForeign) {
-        total = amount / currentActiveRate;
-        document.getElementById('result-symbol').innerText = selectedCurrency === 'VES' ? '$' : 'Bs.';
-      } else {
-        total = baseInBs + commIgtfBs;
-        document.getElementById('result-symbol').innerText = 'Bs.';
-      }
 
       document.getElementById('result-val').innerText = total.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
@@ -957,13 +1032,12 @@
       });
     }
 
-    // Inicializar
+    // Inicialización general
     lucide.createIcons();
-    const savedTheme = localStorage.getItem('daycambio_theme') || 'purple';
-    setTheme(savedTheme);
+    loadSavedTheme();
     fetchRates();
 
-    // Registro del Service Worker para PWA / APK
+    // Service Worker PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js');
