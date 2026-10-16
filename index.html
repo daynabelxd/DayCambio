@@ -358,22 +358,22 @@
       color: var(--text-muted);
     }
 
-    /* Módulos Adicionales (Acceso Rápido) */
+    /* Módulos Adicionales (Acceso Rápido) ajustado a 4 columnas para incluir Vuelto */
     .extra-modules-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
     }
 
     .module-card-btn {
       background: var(--input-bg);
       border: 1px solid var(--card-border);
       border-radius: 14px;
-      padding: 10px 6px;
+      padding: 8px 4px;
       text-align: center;
       cursor: pointer;
       color: var(--text-main);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
       display: flex;
       flex-direction: column;
@@ -382,7 +382,7 @@
       transition: all 0.2s;
     }
     .module-card-btn:hover { border-color: var(--primary); }
-    .module-card-btn i { color: var(--primary); width: 18px; height: 18px; }
+    .module-card-btn i { color: var(--primary); width: 16px; height: 16px; }
 
     /* Modales Globales */
     .sub-modal {
@@ -515,8 +515,9 @@
       </div>
     </div>
 
-    <!-- Módulos de Acceso Rápido -->
+    <!-- Módulos de Acceso Rápido (Incluye Calculadora de Vuelto) -->
     <div class="extra-modules-grid">
+      <button class="module-card-btn" onclick="openChangeModal()"><i data-lucide="calculator"></i><span>Vuelto</span></button>
       <button class="module-card-btn" onclick="openCalendarModal()"><i data-lucide="calendar"></i><span>Calendario</span></button>
       <button class="module-card-btn" onclick="openHistoryModal()"><i data-lucide="trending-up"></i><span>Gráfica</span></button>
       <button class="module-card-btn" onclick="openRegionalModal()"><i data-lucide="globe"></i><span>Regionales</span></button>
@@ -526,7 +527,7 @@
     </div>
 
     <div class="glass-card">
-      <!-- Selector de Moneda (Incluye BRL, COP, ARS directamente) -->
+      <!-- Selector de Moneda (Incluye BRL, COP, ARS, VES) -->
       <div class="currency-tabs">
         <button class="tab-btn active" id="tab-USD" onclick="selectCurrency('USD')">USD</button>
         <button class="tab-btn" id="tab-EUR" onclick="selectCurrency('EUR')">EUR</button>
@@ -598,6 +599,26 @@
   </div>
 
   <!-- Modales Adicionales Integrados -->
+  <!-- 0. Calculadora de Vuelto -->
+  <div id="change-modal" class="sub-modal">
+    <div class="sub-modal-content">
+      <h3>💵 Calculadora de Vuelto</h3>
+      <div style="display:flex; flex-direction:column; gap:8px; margin:10px 0; text-align:left;">
+        <label style="font-size:10px; color:var(--text-muted);">Monto a Cobrar ($):</label>
+        <input type="number" id="change-cost" placeholder="Ej: 15.00" oninput="calculateChange()" style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); color:var(--text-main); padding:8px 12px; border-radius:10px; font-size:14px; outline:none;">
+        
+        <label style="font-size:10px; color:var(--text-muted);">Paga del Cliente ($):</label>
+        <input type="number" id="change-pay" placeholder="Ej: 20.00" oninput="calculateChange()" style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); color:var(--text-main); padding:8px 12px; border-radius:10px; font-size:14px; outline:none;">
+      </div>
+
+      <div id="change-result" style="font-size:12px; font-weight:700; color:var(--primary); background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:10px; border-radius:12px; margin-bottom:12px;">
+        Ingresa los montos para calcular
+      </div>
+
+      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeChangeModal()">Cerrar</button>
+    </div>
+  </div>
+
   <!-- 1. Calendario -->
   <div id="calendar-modal" class="sub-modal">
     <div class="sub-modal-content">
@@ -717,7 +738,6 @@
 
     let ratesTomorrow = { USD: 885.00, EUR: 990.00 };
 
-    // Corrección 1: Persistencia de Tema Neón y Light Mode
     function setTheme(theme) {
       document.body.setAttribute('data-theme', theme);
       document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.remove('active'));
@@ -831,7 +851,6 @@
       }
     }
 
-    // Corrección 2: Alternar dirección VES ↔ Divisa sin errores
     function toggleDirection() {
       isVesToForeign = !isVesToForeign;
       updateInputSymbol();
@@ -844,6 +863,29 @@
     }
 
     // Funciones Modales
+    function openChangeModal() { document.getElementById('change-modal').style.display = 'flex'; }
+    function closeChangeModal() { document.getElementById('change-modal').style.display = 'none'; }
+    
+    function calculateChange() {
+      const cost = parseFloat(document.getElementById('change-cost').value) || 0;
+      const pay = parseFloat(document.getElementById('change-pay').value) || 0;
+      const resBox = document.getElementById('change-result');
+
+      if (cost <= 0 || pay <= 0) {
+        resBox.innerHTML = "Ingresa montos válidos";
+        return;
+      }
+
+      if (pay < cost) {
+        const missing = cost - pay;
+        resBox.innerHTML = `⚠️ Falta por pagar: <strong>$${missing.toFixed(2)}</strong> (o Bs. ${(missing * rates.USD).toFixed(2)})`;
+      } else {
+        const changeUsd = pay - cost;
+        const changeBs = changeUsd * rates.USD;
+        resBox.innerHTML = `Vuelto en Divisa: <strong>$${changeUsd.toFixed(2)}</strong><br>Vuelto en Bs (BCV): <strong>Bs. ${changeBs.toFixed(2)}</strong>`;
+      }
+    }
+
     function openCalendarModal() { document.getElementById('calendar-modal').style.display = 'flex'; }
     function closeCalendarModal() { document.getElementById('calendar-modal').style.display = 'none'; }
     function consultarTasaFecha() {
@@ -852,7 +894,6 @@
       document.getElementById('calendar-result').innerHTML = `Fecha: ${f}<br>USD BCV: Bs. ${rates.USD.toFixed(2)}<br>EUR BCV: Bs. ${rates.EUR.toFixed(2)}`;
     }
 
-    // Módulo de Brecha Cambiaria integrado en Gráfica / Historial
     function openHistoryModal() {
       const diffEur = rates.EUR - rates.USD;
       const diffUsdt = rates.USDT - rates.USD;
@@ -911,7 +952,6 @@
       }
     }
 
-    // Lógica principal de cálculo unificada
     function calculate() {
       let rawVal = document.getElementById('amount').value;
       if (rawVal) {
