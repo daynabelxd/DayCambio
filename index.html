@@ -27,6 +27,7 @@
   <style>
     :root {
       --bg-dark: #070d14;
+      --bg-card: #121a26;
       --card-glass: rgba(18, 26, 38, 0.75);
       --card-border: rgba(255, 255, 255, 0.08);
       --primary: #a855f7;
@@ -66,11 +67,12 @@
     /* Light Mode */
     body.light-mode {
       --bg-dark: #f1f5f9;
+      --bg-card: #ffffff;
       --card-glass: rgba(255, 255, 255, 0.85);
       --card-border: rgba(0, 0, 0, 0.08);
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --input-bg: #ffffff;
+      --input-bg: #f8fafc;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -95,7 +97,6 @@
       padding-bottom: 30px;
     }
 
-    /* Header con Logo oficial */
     header {
       display: flex;
       align-items: center;
@@ -149,10 +150,8 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    
     .icon-btn-top:active { transform: scale(0.92); }
 
-    /* Tarjetas Liquid Glass */
     .glass-card {
       background: var(--card-glass);
       backdrop-filter: blur(16px);
@@ -163,7 +162,6 @@
       box-shadow: 0 12px 40px rgba(0,0,0,0.3);
     }
 
-    /* Selector de Temas Neón */
     .theme-selector {
       display: flex;
       justify-content: space-between;
@@ -180,7 +178,6 @@
     }
     .theme-dot.active { border-color: var(--text-main); transform: scale(1.08); }
 
-    /* Tasas de Referencia Superior */
     .rates-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -195,11 +192,9 @@
       padding: 8px;
       text-align: center;
     }
-
     .mini-rate-card .lbl { font-size: 10px; color: var(--text-muted); font-weight: 600; }
     .mini-rate-card .val { font-size: 12px; font-weight: 700; color: var(--primary); }
 
-    /* Tabs de Monedas */
     .currency-tabs {
       display: flex;
       background: var(--input-bg);
@@ -233,7 +228,6 @@
       box-shadow: 0 4px 12px var(--primary-glow);
     }
 
-    /* Input Principal */
     .input-wrapper { margin-top: 14px; }
 
     .amount-input-box {
@@ -259,7 +253,6 @@
       outline: none;
     }
 
-    /* Módulo Desglosado de Comisiones en Bs. */
     .commission-breakdown {
       margin-top: 14px;
       background: rgba(255,255,255,0.03);
@@ -308,7 +301,6 @@
     input:checked + .slider { background-color: var(--primary); }
     input:checked + .slider:before { transform: translateX(18px); }
 
-    /* Botones de Acción Circulares Vectoriales */
     .actions-row {
       display: flex;
       justify-content: space-between;
@@ -341,24 +333,36 @@
       margin: 16px 0;
     }
 
-    /* Resultado Final */
-    .result-section { text-align: center; }
+    /* Result Card Adaptado (Total arriba, fecha y tasa abajo) */
+    .result-card-box {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
-    .result-label { font-size: 28px; font-weight: 800; color: var(--primary); }
-    .result-number { font-size: 34px; font-weight: 800; color: var(--text-main); margin-left: 6px; }
+    .result-number-line {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      overflow: hidden;
+    }
 
-    .date-badge {
-      display: inline-block;
-      margin-top: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
-      padding: 4px 14px;
-      border-radius: 20px;
+    .result-label { font-size: 20px; font-weight: 700; color: var(--text-muted); }
+    .result-number { font-size: 32px; font-weight: 800; color: var(--text-main); }
+
+    .result-meta {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .result-rateline {
       font-size: 11px;
       color: var(--text-muted);
     }
 
-    /* Módulos Adicionales (Acceso Rápido) */
     .extra-modules-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -384,7 +388,6 @@
     .module-card-btn:hover { border-color: var(--primary); }
     .module-card-btn i { color: var(--primary); width: 16px; height: 16px; }
 
-    /* Modales Globales */
     .sub-modal {
       display: none;
       position: fixed;
@@ -412,7 +415,7 @@
 
     .sub-modal-content h3 { color: var(--primary); font-size: 16px; margin-bottom: 10px; }
 
-    /* Modal Generador de Recibo */
+    /* Modal Recibo Tipo Ticket (Estilo ReceiptCard.jsx) */
     #receipt-modal {
       display: none;
       position: fixed;
@@ -427,20 +430,92 @@
 
     .receipt-card {
       width: 100%;
-      max-width: 320px;
-      background: #090d14;
-      border: 2px solid var(--primary);
-      border-radius: 24px;
+      max-width: 330px;
+      background: linear-gradient(165deg, rgba(255,255,255,0.05) 0%, rgba(10,16,26,0.95) 62%);
+      border: 1px solid var(--primary);
+      border-radius: 20px;
       padding: 20px;
-      text-align: center;
+      color: var(--text-main);
       box-shadow: 0 0 35px var(--primary-glow);
+      text-align: left;
     }
 
-    .receipt-logo-img { width: 48px; height: 48px; margin-bottom: 6px; object-fit: contain; }
-    .receipt-title { font-size: 18px; font-weight: 800; color: #fff; }
-    .receipt-amount { font-size: 28px; font-weight: 800; color: var(--primary); margin: 12px 0; }
-    .receipt-details { font-size: 11px; color: var(--text-muted); line-height: 1.6; border-top: 1px dashed rgba(255,255,255,0.1); border-bottom: 1px dashed rgba(255,255,255,0.1); padding: 10px 0; margin: 10px 0; text-align: left; }
-    .receipt-footer { font-size: 11px; color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .receipt-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .receipt-logo-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .receipt-logo-img { width: 100%; height: 100%; object-fit: cover; }
+    .receipt-title { font-size: 18px; font-weight: 800; color: #fff; line-height: 1; }
+    .receipt-subtitle { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.8px; color: var(--text-muted); margin-top: 2px; }
+
+    .receipt-line {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.15);
+      margin: 14px 0;
+    }
+
+    .receipt-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 4px 0;
+    }
+
+    .receipt-row .lbl {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: var(--text-muted);
+    }
+
+    .receipt-row .val {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .receipt-row .val.strong {
+      color: var(--primary);
+    }
+
+    .receipt-total-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: var(--text-muted);
+    }
+
+    .receipt-total-amount {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+
+    .receipt-footer-text {
+      text-align: center;
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      color: var(--text-muted);
+    }
 
     .modal-btn {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -466,12 +541,11 @@
     }
   </style>
 </head>
-<body data-theme="purple" onload="loadSavedTheme(); fetchRates();">
+<body data-theme="purple">
 
   <div class="app-container">
     <header>
       <div class="brand-center">
-        <!-- Logo oficial -->
         <img src="icon-192.png" alt="DayCambio Logo" class="logo-img" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' rx=\'20\' fill=\'%23070d14\'/><path d=\'M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z\' fill=\'%23a855f7\'/></svg>'">
         <div>
           <div class="app-name">DayCambio</div>
@@ -488,7 +562,6 @@
       </div>
     </header>
 
-    <!-- Barra de Temas Seleccionables -->
     <div class="glass-card" style="padding: 10px 14px;">
       <div class="theme-selector">
         <div class="theme-dot" id="dot-turquoise" style="background:#00f2fe" onclick="setTheme('turquoise')"></div>
@@ -499,7 +572,6 @@
       </div>
     </div>
 
-    <!-- Tasas de Referencia Superior -->
     <div class="rates-bar">
       <div class="mini-rate-card">
         <div class="lbl">USD (BCV)</div>
@@ -515,7 +587,6 @@
       </div>
     </div>
 
-    <!-- Módulos de Acceso Rápido -->
     <div class="extra-modules-grid">
       <button class="module-card-btn" onclick="openChangeModal()"><i data-lucide="calculator"></i><span>Vuelto</span></button>
       <button class="module-card-btn" onclick="openCalendarModal()"><i data-lucide="calendar"></i><span>Calendario</span></button>
@@ -527,7 +598,6 @@
     </div>
 
     <div class="glass-card">
-      <!-- Selector de Moneda (Limpio, sin la opción inversa estorbosa) -->
       <div class="currency-tabs">
         <button class="tab-btn active" id="tab-USD" onclick="selectCurrency('USD')">USD</button>
         <button class="tab-btn" id="tab-EUR" onclick="selectCurrency('EUR')">EUR</button>
@@ -538,7 +608,6 @@
         <button class="tab-btn" id="tab-MYRATE" onclick="selectCurrency('MYRATE')">Mi Tasa</button>
       </div>
 
-      <!-- Input de Monto -->
       <div class="input-wrapper">
         <div class="amount-input-box">
           <span class="currency-symbol" id="input-symbol">$</span>
@@ -546,7 +615,6 @@
         </div>
       </div>
 
-      <!-- Módulo Desglosado de Comisiones en Bs. -->
       <div class="commission-breakdown">
         <div class="comm-title">CONVERSIÓN Y COMISIONES (BS.)</div>
         
@@ -572,33 +640,31 @@
         </div>
       </div>
 
-      <!-- Botones Circulares -->
       <div class="actions-row">
         <button class="action-btn" onclick="toggleDirection()" title="Invertir Sentido (VES ↔ Divisa)"><i data-lucide="arrow-up-down"></i></button>
         <button class="action-btn" onclick="clearInput()" title="Limpiar"><i data-lucide="eraser"></i></button>
         <button class="action-btn" onclick="copyResult()" title="Copiar"><i data-lucide="copy"></i></button>
         <button class="action-btn" onclick="fetchRates()" title="Actualizar"><i data-lucide="refresh-cw"></i></button>
-        <button class="action-btn" onclick="openModal()" title="Compartir Imagen"><i data-lucide="share-2"></i></button>
+        <button class="action-btn" onclick="openReceiptModal()" title="Compartir Recibo"><i data-lucide="share-2"></i></button>
       </div>
 
       <div class="divider"></div>
 
-      <!-- Resultado Final -->
-      <div class="result-section">
-        <div>
+      <!-- Tarjeta de Resultado Mejorada (ResultCard.jsx) -->
+      <div class="result-card-box">
+        <div class="result-number-line">
           <span class="result-label" id="result-symbol">Bs.</span>
           <span class="result-number" id="result-val">0,00</span>
         </div>
-        <div class="date-badge" id="date-text">Actualizado · Cargando...</div>
+        <div class="result-meta" id="result-meta">Monto base sin comisiones</div>
+        <div class="result-rateline" id="result-rateline">Tasa aplicada: --</div>
       </div>
     </div>
 
-    <!-- Firma discreta -->
     <div class="app-footer">App Creada por DR 2026</div>
   </div>
 
   <!-- Modales Adicionales Integrados -->
-  <!-- 0. Calculadora de Vuelto -->
   <div id="change-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>💵 Calculadora de Vuelto</h3>
@@ -618,7 +684,6 @@
     </div>
   </div>
 
-  <!-- 1. Calendario -->
   <div id="calendar-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>📅 Calendario BCV</h3>
@@ -629,7 +694,6 @@
     </div>
   </div>
 
-  <!-- 2. Historial / Gráfica con Brecha Cambiaria -->
   <div id="history-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>📈 Historial y Brecha Cambiaria</h3>
@@ -648,7 +712,6 @@
     </div>
   </div>
 
-  <!-- 3. Divisas Regionales Info -->
   <div id="regional-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>🌎 Tasas de Divisas Regionales</h3>
@@ -661,7 +724,6 @@
     </div>
   </div>
 
-  <!-- 4. Intervenciones BCV -->
   <div id="intervention-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>🏦 Intervención Cambiaria BCV</h3>
@@ -672,7 +734,6 @@
     </div>
   </div>
 
-  <!-- 5. Tasa Mañana / Próxima (Con lógica robusta de fines de semana / feriados) -->
   <div id="tomorrow-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>🔄 Tasa BCV Actual vs. Mañana</h3>
@@ -686,7 +747,6 @@
     </div>
   </div>
 
-  <!-- 6. Configurar "Mi Tasa" -->
   <div id="myrate-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>✏️ Configurar "Mi Tasa"</h3>
@@ -699,372 +759,74 @@
     </div>
   </div>
 
-  <!-- Modal Recibo para Compartir -->
+  <!-- Modal Recibo Tipo Ticket Mejorado (ReceiptModal.jsx + ReceiptCard.jsx) -->
   <div id="receipt-modal">
-    <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+    <div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%; max-width:340px;">
+      
       <div class="receipt-card" id="receipt-to-render">
-        <img src="icon-192.png" alt="Logo" class="receipt-logo-img" onerror="this.style.display='none'">
-        <div class="receipt-title">DayCambio</div>
-        <div class="receipt-amount" id="modal-amount">Bs. 0,00</div>
-        <div class="receipt-details" id="modal-details">--</div>
-        <div class="receipt-footer">Generado por DayCambio App</div>
+        <div class="receipt-header">
+          <div class="receipt-logo-wrap">
+            <img src="icon-192.png" alt="Logo" class="receipt-logo-img" crossOrigin="anonymous" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' rx=\'20\' fill=\'%23070d14\'/><path d=\'M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z\' fill=\'%23a855f7\'/></svg>'">
+          </div>
+          <div>
+            <div class="receipt-title">DayCambio</div>
+            <div class="receipt-subtitle">Recibo de conversión</div>
+          </div>
+        </div>
+
+        <div class="receipt-line"></div>
+
+        <div class="receipt-row">
+          <span class="lbl">FECHA</span>
+          <span class="val" id="rec-stamp">--</span>
+        </div>
+        <div class="receipt-row">
+          <span class="lbl">MONEDA</span>
+          <span class="val" id="rec-currency">--</span>
+        </div>
+        <div class="receipt-row">
+          <span class="lbl">MONTO</span>
+          <span class="val" id="rec-amount">--</span>
+        </div>
+
+        <div class="receipt-line"></div>
+
+        <div class="receipt-total-label">TOTAL EN BOLÍVARES</div>
+        <div class="receipt-total-amount" id="rec-total-bs">Bs. 0,00</div>
+        <div style="font-size:10px; font-weight:600; color:var(--text-muted); margin-top:4px;" id="rec-meta">--</div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:2px;" id="rec-rate">--</div>
+
+        <div class="receipt-line"></div>
+
+        <div class="receipt-row">
+          <span class="lbl">TRANSFERENCIA 1%</span>
+          <span class="val" id="rec-transf">Bs. 0,00</span>
+        </div>
+        <div class="receipt-row">
+          <span class="lbl">PAGO MÓVIL 1%</span>
+          <span class="val" id="rec-pmovil">Bs. 0,00</span>
+        </div>
+        <div class="receipt-row" id="rec-igtf-row">
+          <span class="lbl">IGTF 3%</span>
+          <span class="val" id="rec-igtf">Bs. 0,00</span>
+        </div>
+        <div class="receipt-row" style="margin-top:4px;">
+          <span class="lbl">TOTAL CON COMISIONES</span>
+          <span class="val strong" id="rec-total-final">Bs. 0,00</span>
+        </div>
+
+        <div class="receipt-line"></div>
+        <div class="receipt-footer-text">App Creada por DR 2026</div>
       </div>
       
-      <div style="display:flex; gap:8px;">
-        <button class="modal-btn" onclick="shareNativeImage()"><i data-lucide="send"></i> Compartir</button>
-        <button class="modal-btn" onclick="downloadImage()"><i data-lucide="download"></i> Guardar</button>
-        <button class="modal-btn" style="background:rgba(255,255,255,0.1); color:#fff;" onclick="closeModal()">Cerrar</button>
+      <div style="display:flex; gap:8px; width:100%;">
+        <button class="modal-btn" style="flex:1; justify-content:center;" onclick="downloadImage()"><i data-lucide="download"></i> Descargar</button>
+        <button class="modal-btn" style="flex:1; justify-content:center;" onclick="shareNativeImage()"><i data-lucide="send"></i> Compartir</button>
+        <button class="modal-btn" style="background:rgba(255,255,255,0.1); color:#fff;" onclick="closeReceiptModal()">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <script>
-    let selectedCurrency = 'USD';
-    let isVesToForeign = false;
-    let rateMode = 'today';
-    let customRate = parseFloat(localStorage.getItem('daycambio_custom_rate')) || 900.00;
-
-    let rates = { 
-      USD: 880.12, 
-      EUR: 985.73, 
-      USDT: 1002.65, 
-      BRL: 158.42,   
-      COP: 0.21,     
-      ARS: 0.73,     
-      MYRATE: customRate, 
-      VES: 1.0 
-    };
-
-    let ratesTomorrow = { USD: 885.00, EUR: 990.00 };
-
-    function setTheme(theme) {
-      document.body.setAttribute('data-theme', theme);
-      document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.remove('active'));
-      const activeDot = document.getElementById(`dot-${theme}`);
-      if(activeDot) activeDot.classList.add('active');
-      localStorage.setItem('daycambio_theme', theme);
-    }
-
-    function toggleLightMode() {
-      document.body.classList.toggle('light-mode');
-      const isLight = document.body.classList.contains('light-mode');
-      localStorage.setItem('daycambio_lightmode', isLight ? 'true' : 'false');
-    }
-
-    function loadSavedTheme() {
-      const savedTheme = localStorage.getItem('daycambio_theme') || 'purple';
-      setTheme(savedTheme);
-
-      const isLight = localStorage.getItem('daycambio_lightmode') === 'true';
-      if (isLight) {
-        document.body.classList.add('light-mode');
-      } else {
-        document.body.classList.remove('light-mode');
-      }
-    }
-
-    async function fetchRates() {
-      try {
-        const res = await fetch('https://ve.dolarapi.com/v1/dolares');
-        if (res.ok) {
-          const data = await res.json();
-          const bcv = data.find(d => d.fuente === 'oficial' || d.key === 'oficial');
-          const paralelo = data.find(d => d.fuente === 'paralelo' || d.key === 'enparalelovzla' || d.titulo?.toLowerCase().includes('paralelo'));
-          
-          if (bcv && bcv.promedio) {
-            const oldRate = rates.USD;
-            rates.USD = parseFloat(bcv.promedio);
-            rates.EUR = parseFloat((rates.USD * 1.12).toFixed(2));
-            rates.BRL = parseFloat((rates.USD * 0.18).toFixed(2));
-            rates.COP = parseFloat((rates.USD / 4150).toFixed(4));
-            rates.ARS = parseFloat((rates.USD / 1200).toFixed(4));
-
-            const now = new Date();
-            const dayOfWeek = now.getDay(); // 0 = Domingo, 6 = Sábado, 5 = Viernes
-            if (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0) {
-              ratesTomorrow.USD = rates.USD;
-              ratesTomorrow.EUR = rates.EUR;
-            } else {
-              ratesTomorrow.USD = parseFloat((rates.USD * 1.005).toFixed(2));
-              ratesTomorrow.EUR = parseFloat((rates.EUR * 1.005).toFixed(2));
-            }
-
-            checkAndNotifyRateChange(oldRate, rates.USD);
-          }
-          if (paralelo && paralelo.promedio) {
-            rates.USDT = parseFloat(paralelo.promedio);
-          }
-        }
-      } catch (e) {
-        console.log('Usando tasas de respaldo locales');
-      }
-
-      actualizarVistaTasas();
-    }
-
-    function actualizarVistaTasas() {
-      const activeBcv = rateMode === 'tomorrow' ? ratesTomorrow.USD : rates.USD;
-      const activeEur = rateMode === 'tomorrow' ? ratesTomorrow.EUR : rates.EUR;
-
-      const topBcv = document.getElementById('rate-bcv-top');
-      const topEur = document.getElementById('rate-eur-top');
-      const topUsdt = document.getElementById('rate-usdt-top');
-
-      if (topBcv) topBcv.innerText = activeBcv.toFixed(2) + ' Bs';
-      if (topEur) topEur.innerText = activeEur.toFixed(2) + ' Bs';
-      if (topUsdt) topUsdt.innerText = rates.USDT.toFixed(2) + ' Bs';
-
-      const today = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
-      const dateText = document.getElementById('date-text');
-      if (dateText) {
-        dateText.innerText = `Actualizado · ${today} (${rateMode === 'tomorrow' ? 'Tasa Mañana' : 'Tasa Hoy'})`;
-      }
-      calculate();
-    }
-
-    function requestNotificationPermission() {
-      if (!("Notification" in window)) {
-        alert("Tu dispositivo o navegador no soporta notificaciones.");
-        return;
-      }
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          alert("Notificaciones activadas. Recibirás alertas al actualizarse la tasa BCV.");
-        } else {
-          alert("Permiso de notificaciones denegado.");
-        }
-      });
-    }
-
-    function checkAndNotifyRateChange(oldRate, newRate) {
-      if (oldRate && oldRate !== newRate && Notification.permission === "granted") {
-        new Notification("DayCambio: Cambio de Tasa BCV", {
-          body: `La tasa oficial del BCV se ha actualizado a: Bs. ${newRate.toFixed(2)}`,
-          icon: "icon-192.png"
-        });
-      }
-    }
-
-    function selectCurrency(curr) {
-      selectedCurrency = curr;
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      const activeBtn = document.getElementById(`tab-${curr}`);
-      if(activeBtn) activeBtn.classList.add('active');
-
-      updateInputSymbol();
-      calculate();
-    }
-
-    function updateInputSymbol() {
-      const symElem = document.getElementById('input-symbol');
-      if (isVesToForeign) {
-        symElem.innerText = 'Bs.';
-        return;
-      }
-      switch (selectedCurrency) {
-        case 'EUR': symElem.innerText = '€'; break;
-        case 'BRL': symElem.innerText = 'R$'; break;
-        case 'COP': symElem.innerText = 'COL$'; break;
-        case 'ARS': symElem.innerText = 'ARS$'; break;
-        case 'MYRATE': symElem.innerText = '⭐'; break;
-        default: symElem.innerText = '$'; break;
-      }
-    }
-
-    function toggleDirection() {
-      isVesToForeign = !isVesToForeign;
-      updateInputSymbol();
-      calculate();
-    }
-
-    function setRateMode(mode) {
-      rateMode = mode;
-      const statusText = document.getElementById('tomorrow-status');
-      if (statusText) {
-        if (mode === 'tomorrow') {
-          statusText.innerText = 'Modo activo: Tasa Mañana / Próxima';
-        } else {
-          statusText.innerText = 'Modo activo: Tasa de Hoy';
-        }
-      }
-      actualizarVistaTasas();
-      closeTomorrowModal();
-    }
-
-    function calculate() {
-      const rawInput = document.getElementById('amount').value.replace(',', '.');
-      const amount = parseFloat(rawInput) || 0;
-      
-      let currentRate = rates[selectedCurrency] || rates.USD;
-      if (rateMode === 'tomorrow') {
-        if (selectedCurrency === 'USD') currentRate = ratesTomorrow.USD;
-        if (selectedCurrency === 'EUR') currentRate = ratesTomorrow.EUR;
-      }
-
-      let resultInBs = 0;
-      if (isVesToForeign) {
-        resultInBs = currentRate > 0 ? amount / currentRate : 0;
-      } else {
-        resultInBs = amount * currentRate;
-      }
-
-      const transfComm = resultInBs * 0.01;
-      const pmovComm = Math.max(resultInBs * 0.005, 14.00);
-      
-      const igtfChecked = document.getElementById('igtf-checkbox').checked;
-      let igtfAmount = 0;
-      let finalTotal = resultInBs;
-
-      if (igtfChecked && !isVesToForeign && (selectedCurrency === 'USD' || selectedCurrency === 'EUR' || selectedCurrency === 'USDT')) {
-        igtfAmount = resultInBs * 0.03;
-        finalTotal += igtfAmount;
-      }
-
-      document.getElementById('comm-transf-val').innerText = `Bs. ${transfComm.toFixed(2)}`;
-      document.getElementById('comm-pmov-val').innerText = `Bs. ${pmovComm.toFixed(2)}`;
-      document.getElementById('comm-igtf-val').innerText = `Bs. ${igtfAmount.toFixed(2)}`;
-
-      const resSymbol = document.getElementById('result-symbol');
-      const resVal = document.getElementById('result-val');
-
-      if (isVesToForeign) {
-        resSymbol.innerText = selectedCurrency === 'EUR' ? '€' : (selectedCurrency === 'USD' ? '$' : selectedCurrency);
-        resVal.innerText = resultInBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      } else {
-        resSymbol.innerText = 'Bs.';
-        resVal.innerText = finalTotal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      }
-
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    }
-
-    function clearInput() {
-      document.getElementById('amount').value = '';
-      calculate();
-    }
-
-    function copyResult() {
-      const val = document.getElementById('result-val').innerText;
-      const sym = document.getElementById('result-symbol').innerText;
-      navigator.clipboard.writeText(`${sym} ${val}`).then(() => {
-        alert("¡Resultado copiado al portapapeles!");
-      });
-    }
-
-    function openChangeModal() { document.getElementById('change-modal').style.display = 'flex'; }
-    function closeChangeModal() { document.getElementById('change-modal').style.display = 'none'; }
-    function calculateChange() {
-      const cost = parseFloat(document.getElementById('change-cost').value) || 0;
-      const pay = parseFloat(document.getElementById('change-pay').value) || 0;
-      const diff = pay - cost;
-      const resDiv = document.getElementById('change-result');
-      if (diff >= 0) {
-        const bcv = rateMode === 'tomorrow' ? ratesTomorrow.USD : rates.USD;
-        const diffBs = diff * bcv;
-        resDiv.innerText = `Vuelto: $${diff.toFixed(2)} (Bs. ${diffBs.toFixed(2)})`;
-      } else {
-        resDiv.innerText = `Faltan: $${Math.abs(diff).toFixed(2)}`;
-      }
-    }
-
-    function openCalendarModal() { document.getElementById('calendar-modal').style.display = 'flex'; }
-    function closeCalendarModal() { document.getElementById('calendar-modal').style.display = 'none'; }
-    function consultarTasaFecha() {
-      const fecha = document.getElementById('selected-date').value;
-      const res = document.getElementById('calendar-result');
-      if(fecha) {
-        res.innerText = `Tasa oficial para ${fecha}: Bs. ${rates.USD.toFixed(2)} (Ref histórica)`;
-      }
-    }
-
-    function openHistoryModal() {
-      document.getElementById('hist-bcv').innerText = `Bs. ${rates.USD.toFixed(2)}`;
-      document.getElementById('hist-eur').innerText = `Bs. ${rates.EUR.toFixed(2)}`;
-      document.getElementById('hist-usdt').innerText = `Bs. ${rates.USDT.toFixed(2)}`;
-      document.getElementById('brecha-eur').innerText = `${(((rates.EUR / rates.USD) - 1) * 100).toFixed(1)}%`;
-      document.getElementById('brecha-usdt').innerText = `${(((rates.USDT / rates.USD) - 1) * 100).toFixed(1)}%`;
-      document.getElementById('history-modal').style.display = 'flex';
-    }
-    function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
-
-    function openRegionalModal() {
-      document.getElementById('reg-brl').innerText = `Bs. ${rates.BRL.toFixed(2)}`;
-      document.getElementById('reg-cop').innerText = `Bs. ${(1 / rates.COP).toFixed(4)}`;
-      document.getElementById('reg-ars').innerText = `Bs. ${(rates.USD / 1200).toFixed(4)}`;
-      document.getElementById('regional-modal').style.display = 'flex';
-    }
-    function closeRegionalModal() { document.getElementById('regional-modal').style.display = 'none'; }
-
-    function openInterventionModal() { document.getElementById('intervention-modal').style.display = 'flex'; }
-    function closeInterventionModal() { document.getElementById('intervention-modal').style.display = 'none'; }
-
-    function openTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'flex'; }
-    function closeTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'none'; }
-
-    function openMyRateModal() {
-      document.getElementById('custom-rate-input').value = customRate;
-      document.getElementById('myrate-modal').style.display = 'flex';
-    }
-    function closeMyRateModal() { document.getElementById('myrate-modal').style.display = 'none'; }
-    function saveCustomRate() {
-      const val = parseFloat(document.getElementById('custom-rate-input').value);
-      if(val && val > 0) {
-        customRate = val;
-        rates.MYRATE = val;
-        localStorage.setItem('daycambio_custom_rate', val);
-        alert('¡Mi Tasa guardada con éxito!');
-        closeMyRateModal();
-        if(selectedCurrency === 'MYRATE') calculate();
-      }
-    }
-
-    function openModal() {
-      const val = document.getElementById('result-val').innerText;
-      const sym = document.getElementById('result-symbol').innerText;
-      const amt = document.getElementById('amount').value || '1,00';
-      const cur = document.getElementById('input-symbol').innerText;
-      
-      const activeBcv = rateMode === 'tomorrow' ? ratesTomorrow.USD : rates.USD;
-      document.getElementById('modal-amount').innerText = `${sym} ${val}`;
-      document.getElementById('modal-details').innerHTML = `Tasa aplicada: Bs. ${activeBcv.toFixed(2)}<br>Monto base: ${cur} ${amt}`;
-      document.getElementById('receipt-modal').style.display = 'flex';
-    }
-    function closeModal() { document.getElementById('receipt-modal').style.display = 'none'; }
-
-    async function shareNativeImage() {
-      const card = document.getElementById('receipt-to-render');
-      try {
-        const canvas = await html2canvas(card, { backgroundColor: '#090d14', scale: 2 });
-        canvas.toBlob(async (blob) => {
-          const file = new File([blob], "DayCambio-Recibo.png", { type: "png" });
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({ files: [file], title: 'DayCambio', text: 'Recibo generado por DayCambio' });
-          } else {
-            downloadImage();
-          }
-        });
-      } catch (e) {
-        alert("No se pudo generar la imagen para compartir.");
-      }
-    }
-
-    function downloadImage() {
-      const card = document.getElementById('receipt-to-render');
-      html2canvas(card, { backgroundColor: '#090d14', scale: 2 }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'DayCambio-Recibo.png';
-        link.href = canvas.toDataURL('png');
-        link.click();
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    });
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
