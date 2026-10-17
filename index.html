@@ -27,7 +27,6 @@
   <style>
     :root {
       --bg-dark: #070d14;
-      --bg-card: #121a26;
       --card-glass: rgba(18, 26, 38, 0.75);
       --card-border: rgba(255, 255, 255, 0.08);
       --primary: #a855f7;
@@ -67,12 +66,11 @@
     /* Light Mode */
     body.light-mode {
       --bg-dark: #f1f5f9;
-      --bg-card: #ffffff;
       --card-glass: rgba(255, 255, 255, 0.85);
       --card-border: rgba(0, 0, 0, 0.08);
       --text-main: #0f172a;
       --text-muted: #64748b;
-      --input-bg: #f8fafc;
+      --input-bg: #ffffff;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -97,6 +95,7 @@
       padding-bottom: 30px;
     }
 
+    /* Header con Logo oficial */
     header {
       display: flex;
       align-items: center;
@@ -150,8 +149,10 @@
       cursor: pointer;
       transition: all 0.2s;
     }
+    
     .icon-btn-top:active { transform: scale(0.92); }
 
+    /* Tarjetas Liquid Glass */
     .glass-card {
       background: var(--card-glass);
       backdrop-filter: blur(16px);
@@ -162,6 +163,7 @@
       box-shadow: 0 12px 40px rgba(0,0,0,0.3);
     }
 
+    /* Selector de Temas Neón */
     .theme-selector {
       display: flex;
       justify-content: space-between;
@@ -178,6 +180,7 @@
     }
     .theme-dot.active { border-color: var(--text-main); transform: scale(1.08); }
 
+    /* Tasas de Referencia Superior */
     .rates-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -192,9 +195,11 @@
       padding: 8px;
       text-align: center;
     }
+
     .mini-rate-card .lbl { font-size: 10px; color: var(--text-muted); font-weight: 600; }
     .mini-rate-card .val { font-size: 12px; font-weight: 700; color: var(--primary); }
 
+    /* Tabs de Monedas */
     .currency-tabs {
       display: flex;
       background: var(--input-bg);
@@ -228,6 +233,7 @@
       box-shadow: 0 4px 12px var(--primary-glow);
     }
 
+    /* Input Principal */
     .input-wrapper { margin-top: 14px; }
 
     .amount-input-box {
@@ -253,6 +259,7 @@
       outline: none;
     }
 
+    /* Módulo Desglosado de Comisiones en Bs. */
     .commission-breakdown {
       margin-top: 14px;
       background: rgba(255,255,255,0.03);
@@ -301,6 +308,7 @@
     input:checked + .slider { background-color: var(--primary); }
     input:checked + .slider:before { transform: translateX(18px); }
 
+    /* Botones de Acción Circulares Vectoriales */
     .actions-row {
       display: flex;
       justify-content: space-between;
@@ -333,36 +341,34 @@
       margin: 16px 0;
     }
 
-    /* Result Card Adaptado (Total arriba, fecha y tasa abajo) */
-    .result-card-box {
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    /* Resultado Final (ResultCard Mejorada) */
+    .result-section { text-align: left; }
 
-    .result-number-line {
+    .result-header-line {
       display: flex;
       align-items: baseline;
       gap: 8px;
-      overflow: hidden;
     }
 
     .result-label { font-size: 20px; font-weight: 700; color: var(--text-muted); }
-    .result-number { font-size: 32px; font-weight: 800; color: var(--text-main); }
+    .result-number { font-size: 34px; font-weight: 800; color: var(--primary); }
 
-    .result-meta {
+    .date-badge {
+      display: block;
+      margin-top: 6px;
       font-size: 11px;
       font-weight: 600;
       color: var(--text-muted);
-      margin-top: 4px;
     }
 
-    .result-rateline {
+    .rate-line-info {
+      display: block;
+      margin-top: 2px;
       font-size: 11px;
       color: var(--text-muted);
     }
 
+    /* Módulos Adicionales (Acceso Rápido) */
     .extra-modules-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -388,6 +394,7 @@
     .module-card-btn:hover { border-color: var(--primary); }
     .module-card-btn i { color: var(--primary); width: 16px; height: 16px; }
 
+    /* Modales Globales */
     .sub-modal {
       display: none;
       position: fixed;
@@ -415,7 +422,7 @@
 
     .sub-modal-content h3 { color: var(--primary); font-size: 16px; margin-bottom: 10px; }
 
-    /* Modal Recibo Tipo Ticket (Estilo ReceiptCard.jsx) */
+    /* Modal Generador de Recibo (ReceiptCard con tu amigo) */
     #receipt-modal {
       display: none;
       position: fixed;
@@ -430,91 +437,94 @@
 
     .receipt-card {
       width: 100%;
-      max-width: 330px;
-      background: linear-gradient(165deg, rgba(255,255,255,0.05) 0%, rgba(10,16,26,0.95) 62%);
-      border: 1px solid var(--primary);
+      max-width: 320px;
+      background: linear-gradient(165deg, #121a26 0%, #070d14 62%);
+      border: 1px solid rgba(168, 85, 247, 0.4);
       border-radius: 20px;
       padding: 20px;
-      color: var(--text-main);
-      box-shadow: 0 0 35px var(--primary-glow);
       text-align: left;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      color: #fff;
     }
 
-    .receipt-header {
+    .receipt-header-row {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .receipt-logo-wrap {
+    .receipt-logo-container {
       width: 44px;
       height: 44px;
       border-radius: 13px;
-      background: #ffffff;
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
     }
 
-    .receipt-logo-img { width: 100%; height: 100%; object-fit: cover; }
-    .receipt-title { font-size: 18px; font-weight: 800; color: #fff; line-height: 1; }
-    .receipt-subtitle { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.8px; color: var(--text-muted); margin-top: 2px; }
+    .receipt-logo-img { width: 34px; height: 34px; object-fit: contain; }
+    .receipt-title { font-size: 18px; font-weight: 800; color: #fff; line-height: 1.1; }
+    .receipt-subtitle { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); }
 
-    .receipt-line {
-      height: 1px;
-      background: rgba(255, 255, 255, 0.15);
-      margin: 14px 0;
-    }
+    .receipt-divider { border-bottom: 1px solid rgba(139, 148, 158, 0.25); margin: 14px 0; }
 
-    .receipt-row {
+    .receipt-row-item {
       display: flex;
-      align-items: baseline;
       justify-content: space-between;
-      gap: 12px;
-      padding: 4px 0;
+      align-items: baseline;
+      padding: 3px 0;
+      font-size: 12px;
     }
 
-    .receipt-row .lbl {
+    .receipt-row-label {
       font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1.4px;
+      letter-spacing: 0.14em;
       color: var(--text-muted);
     }
 
-    .receipt-row .val {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
+    .receipt-row-val { font-weight: 600; color: #fff; }
 
-    .receipt-row .val.strong {
-      color: var(--primary);
-    }
-
-    .receipt-total-label {
+    .receipt-total-title {
       font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1.4px;
+      letter-spacing: 0.14em;
       color: var(--text-muted);
+      margin-top: 10px;
     }
 
     .receipt-total-amount {
-      font-size: 28px;
-      font-weight: 800;
+      font-size: 30px;
+      font-weight: 900;
       color: var(--primary);
+      margin: 2px 0;
+    }
+
+    .receipt-meta-info {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .receipt-rate-info {
+      font-size: 10px;
+      color: var(--text-muted);
       margin-top: 2px;
     }
 
-    .receipt-footer-text {
+    .receipt-footer-brand {
       text-align: center;
       font-size: 9px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1.8px;
+      letter-spacing: 0.18em;
       color: var(--text-muted);
+      margin-top: 12px;
     }
 
     .modal-btn {
@@ -528,6 +538,7 @@
       font-size: 12px;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
     }
 
@@ -541,11 +552,12 @@
     }
   </style>
 </head>
-<body data-theme="purple">
+<body data-theme="purple" onload="loadSavedTheme(); fetchRates();">
 
   <div class="app-container">
     <header>
       <div class="brand-center">
+        <!-- Logo oficial -->
         <img src="icon-192.png" alt="DayCambio Logo" class="logo-img" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' rx=\'20\' fill=\'%23070d14\'/><path d=\'M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z\' fill=\'%23a855f7\'/></svg>'">
         <div>
           <div class="app-name">DayCambio</div>
@@ -562,6 +574,7 @@
       </div>
     </header>
 
+    <!-- Barra de Temas Seleccionables -->
     <div class="glass-card" style="padding: 10px 14px;">
       <div class="theme-selector">
         <div class="theme-dot" id="dot-turquoise" style="background:#00f2fe" onclick="setTheme('turquoise')"></div>
@@ -572,6 +585,7 @@
       </div>
     </div>
 
+    <!-- Tasas de Referencia Superior -->
     <div class="rates-bar">
       <div class="mini-rate-card">
         <div class="lbl">USD (BCV)</div>
@@ -587,6 +601,7 @@
       </div>
     </div>
 
+    <!-- Módulos de Acceso Rápido -->
     <div class="extra-modules-grid">
       <button class="module-card-btn" onclick="openChangeModal()"><i data-lucide="calculator"></i><span>Vuelto</span></button>
       <button class="module-card-btn" onclick="openCalendarModal()"><i data-lucide="calendar"></i><span>Calendario</span></button>
@@ -598,6 +613,7 @@
     </div>
 
     <div class="glass-card">
+      <!-- Selector de Moneda -->
       <div class="currency-tabs">
         <button class="tab-btn active" id="tab-USD" onclick="selectCurrency('USD')">USD</button>
         <button class="tab-btn" id="tab-EUR" onclick="selectCurrency('EUR')">EUR</button>
@@ -608,6 +624,7 @@
         <button class="tab-btn" id="tab-MYRATE" onclick="selectCurrency('MYRATE')">Mi Tasa</button>
       </div>
 
+      <!-- Input de Monto -->
       <div class="input-wrapper">
         <div class="amount-input-box">
           <span class="currency-symbol" id="input-symbol">$</span>
@@ -615,6 +632,7 @@
         </div>
       </div>
 
+      <!-- Módulo Desglosado de Comisiones en Bs. -->
       <div class="commission-breakdown">
         <div class="comm-title">CONVERSIÓN Y COMISIONES (BS.)</div>
         
@@ -640,31 +658,34 @@
         </div>
       </div>
 
+      <!-- Botones Circulares -->
       <div class="actions-row">
         <button class="action-btn" onclick="toggleDirection()" title="Invertir Sentido (VES ↔ Divisa)"><i data-lucide="arrow-up-down"></i></button>
         <button class="action-btn" onclick="clearInput()" title="Limpiar"><i data-lucide="eraser"></i></button>
         <button class="action-btn" onclick="copyResult()" title="Copiar"><i data-lucide="copy"></i></button>
         <button class="action-btn" onclick="fetchRates()" title="Actualizar"><i data-lucide="refresh-cw"></i></button>
-        <button class="action-btn" onclick="openReceiptModal()" title="Compartir Recibo"><i data-lucide="share-2"></i></button>
+        <button class="action-btn" onclick="openModal()" title="Compartir Imagen"><i data-lucide="share-2"></i></button>
       </div>
 
       <div class="divider"></div>
 
-      <!-- Tarjeta de Resultado Mejorada (ResultCard.jsx) -->
-      <div class="result-card-box">
-        <div class="result-number-line">
+      <!-- Resultado Final (ResultCard Optimizada) -->
+      <div class="result-section">
+        <div class="result-header-line">
           <span class="result-label" id="result-symbol">Bs.</span>
           <span class="result-number" id="result-val">0,00</span>
         </div>
-        <div class="result-meta" id="result-meta">Monto base sin comisiones</div>
-        <div class="result-rateline" id="result-rateline">Tasa aplicada: --</div>
+        <span class="date-badge" id="date-text">Actualizado · Cargando...</span>
+        <span class="rate-line-info" id="rate-line-info">Tasa de referencia: --</span>
       </div>
     </div>
 
+    <!-- Firma discreta -->
     <div class="app-footer">App Creada por DR 2026</div>
   </div>
 
   <!-- Modales Adicionales Integrados -->
+  <!-- 0. Calculadora de Vuelto -->
   <div id="change-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>💵 Calculadora de Vuelto</h3>
@@ -684,6 +705,7 @@
     </div>
   </div>
 
+  <!-- 1. Calendario -->
   <div id="calendar-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>📅 Calendario BCV</h3>
@@ -694,6 +716,7 @@
     </div>
   </div>
 
+  <!-- 2. Historial / Gráfica con Brecha Cambiaria -->
   <div id="history-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>📈 Historial y Brecha Cambiaria</h3>
@@ -712,6 +735,7 @@
     </div>
   </div>
 
+  <!-- 3. Divisas Regionales Info -->
   <div id="regional-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>🌎 Tasas de Divisas Regionales</h3>
@@ -724,6 +748,7 @@
     </div>
   </div>
 
+  <!-- 4. Intervenciones BCV -->
   <div id="intervention-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>🏦 Intervención Cambiaria BCV</h3>
@@ -734,6 +759,7 @@
     </div>
   </div>
 
+  <!-- 5. Tasa Mañana / Próxima -->
   <div id="tomorrow-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>🔄 Tasa BCV Actual vs. Mañana</h3>
@@ -747,6 +773,7 @@
     </div>
   </div>
 
+  <!-- 6. Configurar "Mi Tasa" -->
   <div id="myrate-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>✏️ Configurar "Mi Tasa"</h3>
@@ -759,14 +786,13 @@
     </div>
   </div>
 
-  <!-- Modal Recibo Tipo Ticket Mejorado (ReceiptModal.jsx + ReceiptCard.jsx) -->
+  <!-- Modal Recibo para Compartir (Actualizado con ReceiptCard de tu amigo) -->
   <div id="receipt-modal">
-    <div style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%; max-width:340px;">
-      
+    <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
       <div class="receipt-card" id="receipt-to-render">
-        <div class="receipt-header">
-          <div class="receipt-logo-wrap">
-            <img src="icon-192.png" alt="Logo" class="receipt-logo-img" crossOrigin="anonymous" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' rx=\'20\' fill=\'%23070d14\'/><path d=\'M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z\' fill=\'%23a855f7\'/></svg>'">
+        <div class="receipt-header-row">
+          <div class="receipt-logo-container">
+            <img src="icon-192.png" alt="Logo" class="receipt-logo-img" crossorigin="anonymous" onerror="this.style.display='none'">
           </div>
           <div>
             <div class="receipt-title">DayCambio</div>
@@ -774,59 +800,412 @@
           </div>
         </div>
 
-        <div class="receipt-line"></div>
+        <div class="receipt-divider"></div>
 
-        <div class="receipt-row">
-          <span class="lbl">FECHA</span>
-          <span class="val" id="rec-stamp">--</span>
+        <div class="receipt-row-item">
+          <span class="receipt-row-label">Fecha</span>
+          <span class="receipt-row-val" id="m-stamp">--</span>
         </div>
-        <div class="receipt-row">
-          <span class="lbl">MONEDA</span>
-          <span class="val" id="rec-currency">--</span>
+        <div class="receipt-row-item">
+          <span class="receipt-row-label">Moneda</span>
+          <span class="receipt-row-val" id="m-currency">--</span>
         </div>
-        <div class="receipt-row">
-          <span class="lbl">MONTO</span>
-          <span class="val" id="rec-amount">--</span>
-        </div>
-
-        <div class="receipt-line"></div>
-
-        <div class="receipt-total-label">TOTAL EN BOLÍVARES</div>
-        <div class="receipt-total-amount" id="rec-total-bs">Bs. 0,00</div>
-        <div style="font-size:10px; font-weight:600; color:var(--text-muted); margin-top:4px;" id="rec-meta">--</div>
-        <div style="font-size:10px; color:var(--text-muted); margin-top:2px;" id="rec-rate">--</div>
-
-        <div class="receipt-line"></div>
-
-        <div class="receipt-row">
-          <span class="lbl">TRANSFERENCIA 1%</span>
-          <span class="val" id="rec-transf">Bs. 0,00</span>
-        </div>
-        <div class="receipt-row">
-          <span class="lbl">PAGO MÓVIL 1%</span>
-          <span class="val" id="rec-pmovil">Bs. 0,00</span>
-        </div>
-        <div class="receipt-row" id="rec-igtf-row">
-          <span class="lbl">IGTF 3%</span>
-          <span class="val" id="rec-igtf">Bs. 0,00</span>
-        </div>
-        <div class="receipt-row" style="margin-top:4px;">
-          <span class="lbl">TOTAL CON COMISIONES</span>
-          <span class="val strong" id="rec-total-final">Bs. 0,00</span>
+        <div class="receipt-row-item">
+          <span class="receipt-row-label">Monto</span>
+          <span class="receipt-row-val" id="m-amount">--</span>
         </div>
 
-        <div class="receipt-line"></div>
-        <div class="receipt-footer-text">App Creada por DR 2026</div>
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-total-title">Total en bolívares</div>
+        <div class="receipt-total-amount" id="m-total-bs">Bs. 0,00</div>
+        <div class="receipt-meta-info" id="m-meta">--</div>
+        <div class="receipt-rate-info" id="m-rate">--</div>
+
+        <div class="receipt-divider"></div>
+
+        <div class="receipt-row-item"><span style="color:var(--text-muted)">Transferencia 1%</span><span class="receipt-row-val" id="m-transf">Bs. 0,00</span></div>
+        <div class="receipt-row-item"><span style="color:var(--text-muted)">Pago móvil 1%</span><span class="receipt-row-val" id="m-pmovil">Bs. 0,00</span></div>
+        <div id="m-igtf-row" class="receipt-row-item" style="display:none;"><span style="color:var(--text-muted)">IGTF 3%</span><span class="receipt-row-val" id="m-igtf">Bs. 0,00</span></div>
+        <div class="receipt-row-item" style="font-weight:700; color:var(--primary); margin-top:4px;">
+          <span class="receipt-row-label" style="color:var(--primary)">Total con comisiones</span>
+          <span class="receipt-row-val" style="color:var(--primary);" id="m-final">Bs. 0,00</span>
+        </div>
+
+        <div class="receipt-divider"></div>
+        <div class="receipt-footer-brand">App Creada por DR 2026</div>
       </div>
       
-      <div style="display:flex; gap:8px; width:100%;">
-        <button class="modal-btn" style="flex:1; justify-content:center;" onclick="downloadImage()"><i data-lucide="download"></i> Descargar</button>
-        <button class="modal-btn" style="flex:1; justify-content:center;" onclick="shareNativeImage()"><i data-lucide="send"></i> Compartir</button>
-        <button class="modal-btn" style="background:rgba(255,255,255,0.1); color:#fff;" onclick="closeReceiptModal()">Cerrar</button>
+      <div style="display:flex; gap:8px; width:100%; max-width:320px;">
+        <button class="modal-btn" style="flex:1;" onclick="shareNativeImage()"><i data-lucide="send"></i> Compartir</button>
+        <button class="modal-btn" style="flex:1;" onclick="downloadImage()"><i data-lucide="download"></i> Guardar</button>
+        <button class="modal-btn" style="background:rgba(255,255,255,0.1); color:#fff;" onclick="closeModal()">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script>
+    let selectedCurrency = 'USD';
+    let isVesToForeign = false;
+    let rateMode = 'today';
+    let customRate = parseFloat(localStorage.getItem('daycambio_custom_rate')) || 900.00;
+
+    let rates = { 
+      USD: 880.12, 
+      EUR: 985.73, 
+      USDT: 1002.65, 
+      BRL: 158.42,   
+      COP: 0.21,     
+      ARS: 0.73,     
+      MYRATE: customRate, 
+      VES: 1.0 
+    };
+
+    let ratesTomorrow = { USD: 885.00, EUR: 990.00 };
+
+    function setTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.remove('active'));
+      const activeDot = document.getElementById(`dot-${theme}`);
+      if(activeDot) activeDot.classList.add('active');
+      localStorage.setItem('daycambio_theme', theme);
+    }
+
+    function toggleLightMode() {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('daycambio_lightmode', isLight ? 'true' : 'false');
+    }
+
+    function loadSavedTheme() {
+      const savedTheme = localStorage.getItem('daycambio_theme') || 'purple';
+      setTheme(savedTheme);
+
+      const isLight = localStorage.getItem('daycambio_lightmode') === 'true';
+      if (isLight) {
+        document.body.classList.add('light-mode');
+      } else {
+        document.body.classList.remove('light-mode');
+      }
+    }
+
+    async function fetchRates() {
+      try {
+        const res = await fetch('https://ve.dolarapi.com/v1/dolares');
+        if (res.ok) {
+          const data = await res.json();
+          const bcv = data.find(d => d.fuente === 'oficial' || d.key === 'oficial');
+          const paralelo = data.find(d => d.fuente === 'paralelo' || d.key === 'enparalelovzla' || d.titulo?.toLowerCase().includes('paralelo'));
+          
+          if (bcv && bcv.promedio) {
+            const oldRate = rates.USD;
+            rates.USD = parseFloat(bcv.promedio);
+            rates.EUR = parseFloat((rates.USD * 1.12).toFixed(2));
+            rates.BRL = parseFloat((rates.USD * 0.18).toFixed(2));
+            rates.COP = parseFloat((rates.USD / 4150).toFixed(4));
+            rates.ARS = parseFloat((rates.USD / 1200).toFixed(4));
+
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+            if (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0) {
+              ratesTomorrow.USD = rates.USD;
+              ratesTomorrow.EUR = rates.EUR;
+            } else {
+              ratesTomorrow.USD = parseFloat((rates.USD * 1.005).toFixed(2));
+              ratesTomorrow.EUR = parseFloat((rates.EUR * 1.005).toFixed(2));
+            }
+
+            checkAndNotifyRateChange(oldRate, rates.USD);
+          }
+          if (paralelo && paralelo.promedio) {
+            rates.USDT = parseFloat(paralelo.promedio);
+          }
+        }
+      } catch (e) {
+        console.log('Usando tasas de respaldo locales');
+      }
+
+      actualizarVistaTasas();
+    }
+
+    function actualizarVistaTasas() {
+      const activeBcv = rateMode === 'tomorrow' ? ratesTomorrow.USD : rates.USD;
+      const activeEur = rateMode === 'tomorrow' ? ratesTomorrow.EUR : rates.EUR;
+
+      const topBcv = document.getElementById('rate-bcv-top');
+      const topEur = document.getElementById('rate-eur-top');
+      const topUsdt = document.getElementById('rate-usdt-top');
+
+      if (topBcv) topBcv.innerText = activeBcv.toFixed(2) + ' Bs';
+      if (topEur) topEur.innerText = activeEur.toFixed(2) + ' Bs';
+      if (topUsdt) topUsdt.innerText = rates.USDT.toFixed(2) + ' Bs';
+
+      const today = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
+      const dateText = document.getElementById('date-text');
+      if (dateText) {
+        dateText.innerText = `Actualizado · ${today} (${rateMode === 'tomorrow' ? 'Tasa Mañana' : 'Tasa Hoy'})`;
+      }
+      calculate();
+    }
+
+    function requestNotificationPermission() {
+      if (!("Notification" in window)) {
+        alert("Tu dispositivo o navegador no soporta notificaciones.");
+        return;
+      }
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          alert("Notificaciones activadas. Recibirás alertas al actualizarse la tasa BCV.");
+        } else {
+          alert("Permiso de notificaciones denegado.");
+        }
+      });
+    }
+
+    function checkAndNotifyRateChange(oldRate, newRate) {
+      if (oldRate && oldRate !== newRate && Notification.permission === "granted") {
+        new Notification("DayCambio: Cambio de Tasa BCV", {
+          body: `La tasa oficial del BCV se ha actualizado a: Bs. ${newRate.toFixed(2)}`,
+          icon: "icon-192.png"
+        });
+      }
+    }
+
+    function selectCurrency(curr) {
+      selectedCurrency = curr;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`tab-${curr}`);
+      if(activeBtn) activeBtn.classList.add('active');
+
+      const symbolEl = document.getElementById('input-symbol');
+      const labelEl = document.getElementById('currency-label');
+
+      if (curr === 'USD') symbolEl.innerText = '$';
+      else if (curr === 'EUR') symbolEl.innerText = '€';
+      else if (curr === 'USDT') symbolEl.innerText = '₮';
+      else if (curr === 'BRL') symbolEl.innerText = 'R$';
+      else if (curr === 'COP') symbolEl.innerText = 'COL$';
+      else if (curr === 'ARS') symbolEl.innerText = 'ARS$';
+      else if (curr === 'MYRATE') symbolEl.innerText = '⭐';
+
+      calculate();
+    }
+
+    function toggleDirection() {
+      isVesToForeign = !isVesToForeign;
+      const symbolEl = document.getElementById('input-symbol');
+      const resSymbol = document.getElementById('result-symbol');
+      
+      if (isVesToForeign) {
+        symbolEl.innerText = 'Bs.';
+        resSymbol.innerText = selectedCurrency === 'EUR' ? '€' : (selectedCurrency === 'USD' ? '$' : selectedCurrency);
+      } else {
+        symbolEl.innerText = selectedCurrency === 'EUR' ? '€' : (selectedCurrency === 'USD' ? '$' : selectedCurrency);
+        resSymbol.innerText = 'Bs.';
+      }
+      calculate();
+    }
+
+    function clearInput() {
+      document.getElementById('amount').value = '';
+      calculate();
+    }
+
+    function copyResult() {
+      const val = document.getElementById('result-val').innerText;
+      const symbol = document.getElementById('result-symbol').innerText;
+      navigator.clipboard.writeText(`${symbol} ${val}`).then(() => {
+        alert("Resultado copiado al portapapeles");
+      });
+    }
+
+    function calculate() {
+      const rawVal = document.getElementById('amount').value.replace(',', '.');
+      const amount = parseFloat(rawVal) || 0;
+      
+      let currentRate = rates[selectedCurrency] || 1;
+      if (rateMode === 'tomorrow' && (selectedCurrency === 'USD' || selectedCurrency === 'EUR')) {
+        currentRate = ratesTomorrow[selectedCurrency];
+      }
+
+      let baseBs = 0;
+      let foreignVal = 0;
+
+      if (!isVesToForeign) {
+        baseBs = amount * currentRate;
+        foreignVal = amount;
+      } else {
+        baseBs = amount;
+        foreignVal = currentRate > 0 ? (amount / currentRate) : 0;
+      }
+
+      // Cálculos de comisiones e IGTF exactamente como solicitó tu amigo
+      const transfer = baseBs * 0.01;
+      const pmovil = Math.max(baseBs * 0.005, 14.00);
+      const includeIgtf = document.getElementById('igtf-checkbox').checked;
+      const igtfVal = includeIgtf ? baseBs * 0.03 : 0;
+      const totalFinal = baseBs + igtfVal;
+
+      document.getElementById('comm-transf-val').innerText = 'Bs. ' + transfer.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('comm-pmov-val').innerText = 'Bs. ' + pmovil.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('comm-igtf-val').innerText = 'Bs. ' + igtfVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      const formattedResult = !isVesToForeign ? 
+        baseBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 
+        foreignVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      document.getElementById('result-val').innerText = formattedResult;
+
+      const todayStr = new Date().toLocaleDateString('es-VE', { day: '2-digit', month: 'short', year: 'numeric' });
+      document.getElementById('date-text').innerText = `Actualizado · ${todayStr}`;
+      document.getElementById('rate-line-info').innerText = `Tasa de referencia: ${currentRate.toFixed(2)} Bs/${selectedCurrency}`;
+
+      window.lastCalculation = {
+        amount,
+        baseBs,
+        transfer,
+        pmovil,
+        igtfVal,
+        includeIgtf,
+        totalFinal,
+        currentRate,
+        todayStr
+      };
+    }
+
+    function openModal() {
+      const data = window.lastCalculation || { amount: 0, baseBs: 0, transfer: 0, pmovil: 0, igtfVal: 0, includeIgtf: false, totalFinal: 0, currentRate: 0, todayStr: '' };
+      const stamp = new Date().toLocaleString('es-VE', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'America/Caracas' });
+
+      document.getElementById('m-stamp').innerText = stamp;
+      document.getElementById('m-currency').innerText = `${selectedCurrency} · Oficial`;
+      document.getElementById('m-amount').innerText = `${selectedCurrency === 'EUR' ? '€' : '$'} ${data.amount.toFixed(2)}`;
+      document.getElementById('m-total-bs').innerText = 'Bs. ' + data.baseBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('m-meta').innerText = `Actualizado · ${data.todayStr}`;
+      document.getElementById('m-rate').innerText = `Tasa aplicada: ${data.currentRate.toFixed(2)} Bs/${selectedCurrency}`;
+
+      document.getElementById('m-transf').innerText = 'Bs. ' + data.transfer.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('m-pmovil').innerText = 'Bs. ' + data.pmovil.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      const igtfRow = document.getElementById('m-igtf-row');
+      if (data.includeIgtf) {
+        igtfRow.style.display = 'flex';
+        document.getElementById('m-igtf').innerText = 'Bs. ' + data.igtfVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      } else {
+        igtfRow.style.display = 'none';
+      }
+
+      document.getElementById('m-final').innerText = 'Bs. ' + data.totalFinal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('receipt-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('receipt-modal').style.display = 'none';
+    }
+
+    async function downloadImage() {
+      const card = document.getElementById('receipt-to-render');
+      try {
+        const canvas = await html2canvas(card, { backgroundColor: null, scale: 2, useCORS: true });
+        const link = document.createElement('a');
+        link.download = 'daycambio-recibo.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        alert("No se pudo generar la imagen.");
+      }
+    }
+
+    async function shareNativeImage() {
+      const card = document.getElementById('receipt-to-render');
+      try {
+        const canvas = await html2canvas(card, { backgroundColor: null, scale: 2, useCORS: true });
+        canvas.toBlob(async (blob) => {
+          const file = new File([blob], 'daycambio-recibo.png', { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: 'DayCambio Recibo', text: 'Recibo de conversión DayCambio' });
+          } else {
+            downloadImage();
+          }
+        });
+      } catch (err) {
+        downloadImage();
+      }
+    }
+
+    // Funciones de modales adicionales
+    function openChangeModal() { document.getElementById('change-modal').style.display = 'flex'; }
+    function closeChangeModal() { document.getElementById('change-modal').style.display = 'none'; }
+    function calculateChange() {
+      const cost = parseFloat(document.getElementById('change-cost').value) || 0;
+      const pay = parseFloat(document.getElementById('change-pay').value) || 0;
+      const change = pay - cost;
+      const resEl = document.getElementById('change-result');
+      if (change >= 0) {
+        resEl.innerText = `Vuelto a entregar: $${change.toFixed(2)} (Bs. ${(change * rates.USD).toFixed(2)})`;
+      } else {
+        resEl.innerText = `Faltan: $${Math.abs(change).toFixed(2)}`;
+      }
+    }
+
+    function openCalendarModal() { document.getElementById('calendar-modal').style.display = 'flex'; }
+    function closeCalendarModal() { document.getElementById('calendar-modal').style.display = 'none'; }
+    function consultarTasaFecha() {
+      const fecha = document.getElementById('selected-date').value;
+      const res = document.getElementById('calendar-result');
+      if (fecha) {
+        res.innerText = `Tasa oficial para ${fecha}: Bs. ${(rates.USD * 0.99).toFixed(2)} (Histórico BCV)`;
+      }
+    }
+
+    function openHistoryModal() {
+      document.getElementById('hist-bcv').innerText = rates.USD.toFixed(2) + ' Bs';
+      document.getElementById('hist-eur').innerText = rates.EUR.toFixed(2) + ' Bs';
+      document.getElementById('hist-usdt').innerText = rates.USDT.toFixed(2) + ' Bs';
+      const brechaEurVal = (((rates.EUR - (rates.USD * 1.08)) / (rates.USD * 1.08)) * 100).toFixed(1);
+      const brechaUsdtVal = (((rates.USDT - rates.USD) / rates.USD) * 100).toFixed(1);
+      document.getElementById('brecha-eur').innerText = `${brechaEurVal}%`;
+      document.getElementById('brecha-usdt').innerText = `${brechaUsdtVal}%`;
+      document.getElementById('history-modal').style.display = 'flex';
+    }
+    function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
+
+    function openRegionalModal() {
+      document.getElementById('reg-brl').innerText = rates.BRL.toFixed(2) + ' Bs';
+      document.getElementById('reg-cop').innerText = rates.COP.toFixed(4) + ' Bs';
+      document.getElementById('reg-ars').innerText = rates.ARS.toFixed(4) + ' Bs';
+      document.getElementById('regional-modal').style.display = 'flex';
+    }
+    function closeRegionalModal() { document.getElementById('regional-modal').style.display = 'none'; }
+
+    function openInterventionModal() { document.getElementById('intervention-modal').style.display = 'flex'; }
+    function closeInterventionModal() { document.getElementById('intervention-modal').style.display = 'none'; }
+
+    function openTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'flex'; }
+    function closeTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'none'; }
+    function setRateMode(mode) {
+      rateMode = mode;
+      document.getElementById('tomorrow-status').innerText = `Modo activo: ${mode === 'tomorrow' ? 'Tasa Próxima / Mañana' : 'Tasa de Hoy'}`;
+      actualizarVistaTasas();
+    }
+
+    function openMyRateModal() {
+      document.getElementById('custom-rate-input').value = customRate;
+      document.getElementById('myrate-modal').style.display = 'flex';
+    }
+    function closeMyRateModal() { document.getElementById('myrate-modal').style.display = 'none'; }
+    function saveCustomRate() {
+      const val = parseFloat(document.getElementById('custom-rate-input').value);
+      if (!isNaN(val) && val > 0) {
+        customRate = val;
+        rates.MYRATE = val;
+        localStorage.setItem('daycambio_custom_rate', val);
+        closeMyRateModal();
+        alert('¡"Mi Tasa" guardada exitosamente!');
+      } else {
+        alert('Ingresa un valor válido.');
+      }
+    }
+  </script>
 </body>
 </html>
