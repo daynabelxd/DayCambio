@@ -735,7 +735,6 @@
       VES: 1.0 
     };
 
-    // Lógica inteligente para Tasa Mañana (Manejo de fines de semana y feriados)
     let ratesTomorrow = { USD: 885.00, EUR: 990.00 };
 
     function setTheme(theme) {
@@ -780,15 +779,13 @@
             rates.COP = parseFloat((rates.USD / 4150).toFixed(4));
             rates.ARS = parseFloat((rates.USD / 1200).toFixed(4));
 
-            // Ajuste automático para "Tasa Mañana" considerando fines de semana
             const now = new Date();
             const dayOfWeek = now.getDay(); // 0 = Domingo, 6 = Sábado, 5 = Viernes
             if (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0) {
-              // Fin de semana: El BCV repite tasa o usa la última hábil
               ratesTomorrow.USD = rates.USD;
               ratesTomorrow.EUR = rates.EUR;
             } else {
-              ratesTomorrow.USD = parseFloat((rates.USD * 1.005).toFixed(2)); // Estimado próximo día hábil
+              ratesTomorrow.USD = parseFloat((rates.USD * 1.005).toFixed(2));
               ratesTomorrow.EUR = parseFloat((rates.EUR * 1.005).toFixed(2));
             }
 
@@ -802,15 +799,26 @@
         console.log('Usando tasas de respaldo locales');
       }
 
+      actualizarVistaTasas();
+    }
+
+    function actualizarVistaTasas() {
       const activeBcv = rateMode === 'tomorrow' ? ratesTomorrow.USD : rates.USD;
       const activeEur = rateMode === 'tomorrow' ? ratesTomorrow.EUR : rates.EUR;
 
-      document.getElementById('rate-bcv-top').innerText = activeBcv.toFixed(2) + ' Bs';
-      document.getElementById('rate-eur-top').innerText = activeEur.toFixed(2) + ' Bs';
-      document.getElementById('rate-usdt-top').innerText = rates.USDT.toFixed(2) + ' Bs';
+      const topBcv = document.getElementById('rate-bcv-top');
+      const topEur = document.getElementById('rate-eur-top');
+      const topUsdt = document.getElementById('rate-usdt-top');
+
+      if (topBcv) topBcv.innerText = activeBcv.toFixed(2) + ' Bs';
+      if (topEur) topEur.innerText = activeEur.toFixed(2) + ' Bs';
+      if (topUsdt) topUsdt.innerText = rates.USDT.toFixed(2) + ' Bs';
 
       const today = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
-      document.getElementById('date-text').innerText = `Actualizado · ${today} (${rateMode === 'tomorrow' ? 'Mañana' : 'Hoy'})`;
+      const dateText = document.getElementById('date-text');
+      if (dateText) {
+        dateText.innerText = `Actualizado · ${today} (${rateMode === 'tomorrow' ? 'Tasa Mañana' : 'Tasa Hoy'})`;
+      }
       calculate();
     }
 
@@ -872,16 +880,17 @@
     function setRateMode(mode) {
       rateMode = mode;
       const statusText = document.getElementById('tomorrow-status');
-      if (mode === 'tomorrow') {
-        statusText.innerText = 'Modo activo: Tasa Mañana / Próxima';
-      } else {
-        statusText.innerText = 'Modo activo: Tasa de Hoy';
+      if (statusText) {
+        if (mode === 'tomorrow') {
+          statusText.innerText = 'Modo activo: Tasa Mañana / Próxima';
+        } else {
+          statusText.innerText = 'Modo activo: Tasa de Hoy';
+        }
       }
-      fetchRates();
+      actualizarVistaTasas();
       closeTomorrowModal();
     }
 
-    // Funciones principales de cálculo y conversión
     function calculate() {
       const rawInput = document.getElementById('amount').value.replace(',', '.');
       const amount = parseFloat(rawInput) || 0;
@@ -894,16 +903,13 @@
 
       let resultInBs = 0;
       if (isVesToForeign) {
-        // Invertido: Bolívares hacia Divisa
         resultInBs = currentRate > 0 ? amount / currentRate : 0;
       } else {
-        // Normal: Divisa hacia Bolívares
         resultInBs = amount * currentRate;
       }
 
-      // Comisiones
       const transfComm = resultInBs * 0.01;
-      const pmovComm = Math.max(resultInBs * 0.005, 14.00); // Mínimo Bs. 14,00
+      const pmovComm = Math.max(resultInBs * 0.005, 14.00);
       
       const igtfChecked = document.getElementById('igtf-checkbox').checked;
       let igtfAmount = 0;
@@ -914,7 +920,6 @@
         finalTotal += igtfAmount;
       }
 
-      // Actualizar interfaz
       document.getElementById('comm-transf-val').innerText = `Bs. ${transfComm.toFixed(2)}`;
       document.getElementById('comm-pmov-val').innerText = `Bs. ${pmovComm.toFixed(2)}`;
       document.getElementById('comm-igtf-val').innerText = `Bs. ${igtfAmount.toFixed(2)}`;
@@ -930,7 +935,6 @@
         resVal.innerText = finalTotal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       }
 
-      // Actualizar iconos Lucide
       if (typeof lucide !== 'undefined') {
         lucide.createIcons();
       }
@@ -949,7 +953,6 @@
       });
     }
 
-    // Funciones de Modales
     function openChangeModal() { document.getElementById('change-modal').style.display = 'flex'; }
     function closeChangeModal() { document.getElementById('change-modal').style.display = 'none'; }
     function calculateChange() {
@@ -958,7 +961,7 @@
       const diff = pay - cost;
       const resDiv = document.getElementById('change-result');
       if (diff >= 0) {
-        const bcv = rates.USD;
+        const bcv = rateMode === 'tomorrow' ? ratesTomorrow.USD : rates.USD;
         const diffBs = diff * bcv;
         resDiv.innerText = `Vuelto: $${diff.toFixed(2)} (Bs. ${diffBs.toFixed(2)})`;
       } else {
@@ -988,7 +991,6 @@
 
     function openRegionalModal() {
       document.getElementById('reg-brl').innerText = `Bs. ${rates.BRL.toFixed(2)}`;
-      document.getElementById('reg-cop5').innerText = `${rates.COP}`;
       document.getElementById('reg-cop').innerText = `Bs. ${(1 / rates.COP).toFixed(4)}`;
       document.getElementById('reg-ars').innerText = `Bs. ${(rates.USD / 1200).toFixed(4)}`;
       document.getElementById('regional-modal').style.display = 'flex';
@@ -1024,8 +1026,9 @@
       const amt = document.getElementById('amount').value || '1,00';
       const cur = document.getElementById('input-symbol').innerText;
       
+      const activeBcv = rateMode === 'tomorrow' ? ratesTomorrow.USD : rates.USD;
       document.getElementById('modal-amount').innerText = `${sym} ${val}`;
-      document.getElementById('modal-details').innerHTML = `Tasa aplicada: Bs. ${rates[selectedCurrency] || rates.USD}<br>Monto base: ${cur} ${amt}`;
+      document.getElementById('modal-details').innerHTML = `Tasa aplicada: Bs. ${activeBcv.toFixed(2)}<br>Monto base: ${cur} ${amt}`;
       document.getElementById('receipt-modal').style.display = 'flex';
     }
     function closeModal() { document.getElementById('receipt-modal').style.display = 'none'; }
@@ -1057,7 +1060,6 @@
       });
     }
 
-    // Inicializar iconos al cargar
     document.addEventListener("DOMContentLoaded", () => {
       if (typeof lucide !== 'undefined') {
         lucide.createIcons();
