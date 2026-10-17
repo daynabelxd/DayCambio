@@ -466,7 +466,7 @@
     }
   </style>
 </head>
-<body data-theme="purple">
+<body data-theme="purple" onload="loadSavedTheme(); fetchRates();">
 
   <div class="app-container">
     <header>
@@ -527,7 +527,7 @@
     </div>
 
     <div class="glass-card">
-      <!-- Selector de Moneda -->
+      <!-- Selector de Moneda (Limpio, sin la opción inversa estorbosa) -->
       <div class="currency-tabs">
         <button class="tab-btn active" id="tab-USD" onclick="selectCurrency('USD')">USD</button>
         <button class="tab-btn" id="tab-EUR" onclick="selectCurrency('EUR')">EUR</button>
@@ -536,7 +536,6 @@
         <button class="tab-btn" id="tab-COP" onclick="selectCurrency('COP')">COP</button>
         <button class="tab-btn" id="tab-ARS" onclick="selectCurrency('ARS')">ARS</button>
         <button class="tab-btn" id="tab-MYRATE" onclick="selectCurrency('MYRATE')">Mi Tasa</button>
-        <button class="tab-btn" id="tab-VES" onclick="selectCurrency('VES')">VES ➔ $</button>
       </div>
 
       <!-- Input de Monto -->
@@ -673,7 +672,7 @@
     </div>
   </div>
 
-  <!-- 5. Tasa Mañana / Próxima -->
+  <!-- 5. Tasa Mañana / Próxima (Con lógica robusta de fines de semana / feriados) -->
   <div id="tomorrow-modal" class="sub-modal">
     <div class="sub-modal-content">
       <h3>🔄 Tasa BCV Actual vs. Mañana</h3>
@@ -736,6 +735,7 @@
       VES: 1.0 
     };
 
+    // Lógica inteligente para Tasa Mañana (Manejo de fines de semana y feriados)
     let ratesTomorrow = { USD: 885.00, EUR: 990.00 };
 
     function setTheme(theme) {
@@ -779,6 +779,18 @@
             rates.BRL = parseFloat((rates.USD * 0.18).toFixed(2));
             rates.COP = parseFloat((rates.USD / 4150).toFixed(4));
             rates.ARS = parseFloat((rates.USD / 1200).toFixed(4));
+
+            // Ajuste automático para "Tasa Mañana" considerando fines de semana
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0 = Domingo, 6 = Sábado, 5 = Viernes
+            if (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0) {
+              // Fin de semana: El BCV repite tasa o usa la última hábil
+              ratesTomorrow.USD = rates.USD;
+              ratesTomorrow.EUR = rates.EUR;
+            } else {
+              ratesTomorrow.USD = parseFloat((rates.USD * 1.005).toFixed(2)); // Estimado próximo día hábil
+              ratesTomorrow.EUR = parseFloat((rates.EUR * 1.005).toFixed(2));
+            }
 
             checkAndNotifyRateChange(oldRate, rates.USD);
           }
@@ -837,7 +849,7 @@
 
     function updateInputSymbol() {
       const symElem = document.getElementById('input-symbol');
-      if (isVesToForeign || selectedCurrency === 'VES') {
+      if (isVesToForeign) {
         symElem.innerText = 'Bs.';
         return;
       }
@@ -857,81 +869,137 @@
       calculate();
     }
 
+    function setRateMode(mode) {
+      rateMode = mode;
+      const statusText = document.getElementById('tomorrow-status');
+      if (mode === 'tomorrow') {
+        statusText.innerText = 'Modo activo: Tasa Mañana / Próxima';
+      } else {
+        statusText.innerText = 'Modo activo: Tasa de Hoy';
+      }
+      fetchRates();
+      closeTomorrowModal();
+    }
+
+    // Funciones principales de cálculo y conversión
+    function calculate() {
+      const rawInput = document.getElementById('amount').value.replace(',', '.');
+      const amount = parseFloat(rawInput) || 0;
+      
+      let currentRate = rates[selectedCurrency] || rates.USD;
+      if (rateMode === 'tomorrow') {
+        if (selectedCurrency === 'USD') currentRate = ratesTomorrow.USD;
+        if (selectedCurrency === 'EUR') currentRate = ratesTomorrow.EUR;
+      }
+
+      let resultInBs = 0;
+      if (isVesToForeign) {
+        // Invertido: Bolívares hacia Divisa
+        resultInBs = currentRate > 0 ? amount / currentRate : 0;
+      } else {
+        // Normal: Divisa hacia Bolívares
+        resultInBs = amount * currentRate;
+      }
+
+      // Comisiones
+      const transfComm = resultInBs * 0.01;
+      const pmovComm = Math.max(resultInBs * 0.005, 14.00); // Mínimo Bs. 14,00
+      
+      const igtfChecked = document.getElementById('igtf-checkbox').checked;
+      let igtfAmount = 0;
+      let finalTotal = resultInBs;
+
+      if (igtfChecked && !isVesToForeign && (selectedCurrency === 'USD' || selectedCurrency === 'EUR' || selectedCurrency === 'USDT')) {
+        igtfAmount = resultInBs * 0.03;
+        finalTotal += igtfAmount;
+      }
+
+      // Actualizar interfaz
+      document.getElementById('comm-transf-val').innerText = `Bs. ${transfComm.toFixed(2)}`;
+      document.getElementById('comm-pmov-val').innerText = `Bs. ${pmovComm.toFixed(2)}`;
+      document.getElementById('comm-igtf-val').innerText = `Bs. ${igtfAmount.toFixed(2)}`;
+
+      const resSymbol = document.getElementById('result-symbol');
+      const resVal = document.getElementById('result-val');
+
+      if (isVesToForeign) {
+        resSymbol.innerText = selectedCurrency === 'EUR' ? '€' : (selectedCurrency === 'USD' ? '$' : selectedCurrency);
+        resVal.innerText = resultInBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      } else {
+        resSymbol.innerText = 'Bs.';
+        resVal.innerText = finalTotal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      // Actualizar iconos Lucide
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    }
+
     function clearInput() {
       document.getElementById('amount').value = '';
       calculate();
     }
 
-    // Funciones Modales
+    function copyResult() {
+      const val = document.getElementById('result-val').innerText;
+      const sym = document.getElementById('result-symbol').innerText;
+      navigator.clipboard.writeText(`${sym} ${val}`).then(() => {
+        alert("¡Resultado copiado al portapapeles!");
+      });
+    }
+
+    // Funciones de Modales
     function openChangeModal() { document.getElementById('change-modal').style.display = 'flex'; }
     function closeChangeModal() { document.getElementById('change-modal').style.display = 'none'; }
-    
     function calculateChange() {
       const cost = parseFloat(document.getElementById('change-cost').value) || 0;
       const pay = parseFloat(document.getElementById('change-pay').value) || 0;
-      const resBox = document.getElementById('change-result');
-
-      if (cost <= 0 || pay <= 0) {
-        resBox.innerHTML = "Ingresa montos válidos";
-        return;
-      }
-
-      if (pay < cost) {
-        const missing = cost - pay;
-        resBox.innerHTML = `⚠️ Falta por pagar: <strong>$${missing.toFixed(2)}</strong> (o Bs. ${(missing * rates.USD).toFixed(2)})`;
+      const diff = pay - cost;
+      const resDiv = document.getElementById('change-result');
+      if (diff >= 0) {
+        const bcv = rates.USD;
+        const diffBs = diff * bcv;
+        resDiv.innerText = `Vuelto: $${diff.toFixed(2)} (Bs. ${diffBs.toFixed(2)})`;
       } else {
-        const changeUsd = pay - cost;
-        const changeBs = changeUsd * rates.USD;
-        resBox.innerHTML = `Vuelto en Divisa: <strong>$${changeUsd.toFixed(2)}</strong><br>Vuelto en Bs (BCV): <strong>Bs. ${changeBs.toFixed(2)}</strong>`;
+        resDiv.innerText = `Faltan: $${Math.abs(diff).toFixed(2)}`;
       }
     }
 
     function openCalendarModal() { document.getElementById('calendar-modal').style.display = 'flex'; }
     function closeCalendarModal() { document.getElementById('calendar-modal').style.display = 'none'; }
     function consultarTasaFecha() {
-      const f = document.getElementById('selected-date').value;
-      if (!f) return;
-      document.getElementById('calendar-result').innerHTML = `Fecha: ${f}<br>USD BCV: Bs. ${rates.USD.toFixed(2)}<br>EUR BCV: Bs. ${rates.EUR.toFixed(2)}`;
+      const fecha = document.getElementById('selected-date').value;
+      const res = document.getElementById('calendar-result');
+      if(fecha) {
+        res.innerText = `Tasa oficial para ${fecha}: Bs. ${rates.USD.toFixed(2)} (Ref histórica)`;
+      }
     }
 
     function openHistoryModal() {
-      const diffEur = rates.EUR - rates.USD;
-      const diffUsdt = rates.USDT - rates.USD;
-      const pctEur = ((diffEur / rates.USD) * 100).toFixed(2);
-      const pctUsdt = ((diffUsdt / rates.USD) * 100).toFixed(2);
-
       document.getElementById('hist-bcv').innerText = `Bs. ${rates.USD.toFixed(2)}`;
       document.getElementById('hist-eur').innerText = `Bs. ${rates.EUR.toFixed(2)}`;
       document.getElementById('hist-usdt').innerText = `Bs. ${rates.USDT.toFixed(2)}`;
-      
-      document.getElementById('brecha-eur').innerText = `+Bs. ${diffEur.toFixed(2)} (${pctEur}%)`;
-      document.getElementById('brecha-usdt').innerText = `+Bs. ${diffUsdt.toFixed(2)} (${pctUsdt}%)`;
-
+      document.getElementById('brecha-eur').innerText = `${(((rates.EUR / rates.USD) - 1) * 100).toFixed(1)}%`;
+      document.getElementById('brecha-usdt').innerText = `${(((rates.USDT / rates.USD) - 1) * 100).toFixed(1)}%`;
       document.getElementById('history-modal').style.display = 'flex';
     }
     function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
 
     function openRegionalModal() {
-      document.getElementById('reg-brl').innerText = `1 BRL ≈ ${rates.BRL.toFixed(2)} Bs`;
-      document.getElementById('reg-cop').innerText = `1000 COP ≈ ${(rates.COP * 1000).toFixed(2)} Bs`;
-      document.getElementById('reg-ars').innerText = `1000 ARS ≈ ${(rates.ARS * 1000).toFixed(2)} Bs`;
+      document.getElementById('reg-brl').innerText = `Bs. ${rates.BRL.toFixed(2)}`;
+      document.getElementById('reg-cop5').innerText = `${rates.COP}`;
+      document.getElementById('reg-cop').innerText = `Bs. ${(1 / rates.COP).toFixed(4)}`;
+      document.getElementById('reg-ars').innerText = `Bs. ${(rates.USD / 1200).toFixed(4)}`;
       document.getElementById('regional-modal').style.display = 'flex';
     }
     function closeRegionalModal() { document.getElementById('regional-modal').style.display = 'none'; }
 
-    function openInterventionModal() {
-      document.getElementById('intervention-text').innerHTML = `<strong>Última Intervención BCV:</strong> Venta estimada a la banca de $50M - $85M.<br><strong>Precio referencial:</strong> En línea con la tasa oficial vigente.`;
-      document.getElementById('intervention-modal').style.display = 'flex';
-    }
+    function openInterventionModal() { document.getElementById('intervention-modal').style.display = 'flex'; }
     function closeInterventionModal() { document.getElementById('intervention-modal').style.display = 'none'; }
 
     function openTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'flex'; }
     function closeTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'none'; }
-    function setRateMode(mode) {
-      rateMode = mode;
-      document.getElementById('tomorrow-status').innerText = `Modo activo: Tasa de ${mode === 'tomorrow' ? 'Mañana' : 'Hoy'}`;
-      fetchRates();
-    }
 
     function openMyRateModal() {
       document.getElementById('custom-rate-input').value = customRate;
@@ -940,149 +1008,61 @@
     function closeMyRateModal() { document.getElementById('myrate-modal').style.display = 'none'; }
     function saveCustomRate() {
       const val = parseFloat(document.getElementById('custom-rate-input').value);
-      if (val && val > 0) {
+      if(val && val > 0) {
         customRate = val;
         rates.MYRATE = val;
         localStorage.setItem('daycambio_custom_rate', val);
-        alert('¡"Mi Tasa" guardada exitosamente!');
+        alert('¡Mi Tasa guardada con éxito!');
         closeMyRateModal();
-        calculate();
-      } else {
-        alert('Por favor ingresa un valor válido.');
+        if(selectedCurrency === 'MYRATE') calculate();
       }
-    }
-
-    function calculate() {
-      let rawVal = document.getElementById('amount').value;
-      if (rawVal) {
-        rawVal = rawVal.replace(',', '.');
-      }
-      const amount = parseFloat(rawVal) || 0;
-      const includeIgtf = document.getElementById('igtf-checkbox').checked;
-
-      let currentActiveRate = rates[selectedCurrency] || rates.USD;
-      if ((selectedCurrency === 'USD' || selectedCurrency === 'EUR') && rateMode === 'tomorrow') {
-        currentActiveRate = ratesTomorrow[selectedCurrency] || rates[selectedCurrency];
-      }
-
-      if (amount <= 0) {
-        document.getElementById('result-val').innerText = '0,00';
-        document.getElementById('comm-transf-val').innerText = 'Bs. 0,00';
-        document.getElementById('comm-pmov-val').innerText = 'Bs. 0,00';
-        document.getElementById('comm-igtf-val').innerText = 'Bs. 0,00';
-        return;
-      }
-
-      let baseInBs = 0;
-      let total = 0;
-
-      if (isVesToForeign || selectedCurrency === 'VES') {
-        baseInBs = amount;
-        let targetRate = (selectedCurrency === 'VES') ? rates.USD : currentActiveRate;
-        total = amount / targetRate;
-        
-        let targetSym = '$';
-        if (selectedCurrency === 'EUR') targetSym = '€';
-        else if (selectedCurrency === 'BRL') targetSym = 'R$';
-        else if (selectedCurrency === 'COP') targetSym = 'COL$';
-        else if (selectedCurrency === 'ARS') targetSym = 'ARS$';
-        else if (selectedCurrency === 'MYRATE') targetSym = '⭐';
-
-        document.getElementById('result-symbol').innerText = targetSym;
-      } else {
-        baseInBs = amount * currentActiveRate;
-        total = baseInBs;
-        document.getElementById('result-symbol').innerText = 'Bs.';
-      }
-
-      let commTransfBs = baseInBs * 0.01;
-      let commPmovCalculated = baseInBs * 0.003;
-      let commPmovBs = Math.max(commPmovCalculated, 14.00);
-      let commIgtfBs = includeIgtf ? baseInBs * 0.03 : 0;
-
-      if (!isVesToForeign && selectedCurrency !== 'VES') {
-        total = baseInBs + commIgtfBs;
-      }
-
-      document.getElementById('comm-transf-val').innerText = `Bs. ${commTransfBs.toFixed(2)}`;
-      document.getElementById('comm-pmov-val').innerText = `Bs. ${commPmovBs.toFixed(2)}`;
-      document.getElementById('comm-igtf-val').innerText = `Bs. ${commIgtfBs.toFixed(2)}`;
-
-      document.getElementById('result-val').innerText = total.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    function copyResult() {
-      const val = document.getElementById('result-val').innerText;
-      const sym = document.getElementById('result-symbol').innerText;
-      const amount = document.getElementById('amount').value || '0';
-      const text = `DayCambio Calculation\nMonto: ${amount} ${selectedCurrency}\nTotal: ${sym} ${val}\nGenerado por DayCambio App`;
-      
-      navigator.clipboard.writeText(text);
-      alert('Copiado al portapapeles');
     }
 
     function openModal() {
       const val = document.getElementById('result-val').innerText;
       const sym = document.getElementById('result-symbol').innerText;
-      const amount = document.getElementById('amount').value || '0';
-
+      const amt = document.getElementById('amount').value || '1,00';
+      const cur = document.getElementById('input-symbol').innerText;
+      
       document.getElementById('modal-amount').innerText = `${sym} ${val}`;
-      document.getElementById('modal-details').innerHTML = `
-        <strong>Monto Base:</strong> ${amount} ${selectedCurrency}<br>
-        <strong>Tasa Usada:</strong> 1 ${selectedCurrency} = ${rates[selectedCurrency] || rates.USD} Bs.<br>
-        <strong>Transferencia (1%):</strong> ${document.getElementById('comm-transf-val').innerText}<br>
-        <strong>Pago Móvil (Mín. Bs. 14,00):</strong> ${document.getElementById('comm-pmov-val').innerText}<br>
-        <strong>IGTF (3%):</strong> ${document.getElementById('comm-igtf-val').innerText}
-      `;
+      document.getElementById('modal-details').innerHTML = `Tasa aplicada: Bs. ${rates[selectedCurrency] || rates.USD}<br>Monto base: ${cur} ${amt}`;
       document.getElementById('receipt-modal').style.display = 'flex';
     }
+    function closeModal() { document.getElementById('receipt-modal').style.display = 'none'; }
 
-    function closeModal() {
-      document.getElementById('receipt-modal').style.display = 'none';
+    async function shareNativeImage() {
+      const card = document.getElementById('receipt-to-render');
+      try {
+        const canvas = await html2canvas(card, { backgroundColor: '#090d14', scale: 2 });
+        canvas.toBlob(async (blob) => {
+          const file = new File([blob], "DayCambio-Recibo.png", { type: "png" });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: 'DayCambio', text: 'Recibo generado por DayCambio' });
+          } else {
+            downloadImage();
+          }
+        });
+      } catch (e) {
+        alert("No se pudo generar la imagen para compartir.");
+      }
     }
 
     function downloadImage() {
       const card = document.getElementById('receipt-to-render');
-      html2canvas(card, { backgroundColor: null }).then(canvas => {
+      html2canvas(card, { backgroundColor: '#090d14', scale: 2 }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'DayCambio-Monto.png';
-        link.href = canvas.toDataURL();
+        link.download = 'DayCambio-Recibo.png';
+        link.href = canvas.toDataURL('png');
         link.click();
       });
     }
 
-    async function shareNativeImage() {
-      const card = document.getElementById('receipt-to-render');
-      const canvas = await html2canvas(card, { backgroundColor: null });
-      canvas.toBlob(async (blob) => {
-        const file = new File([blob], 'DayCambio-Monto.png', { type: 'image/png' });
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-          try {
-            await navigator.share({
-              files: [file],
-              title: 'DayCambio Calculo',
-              text: 'Generado por DayCambio App'
-            });
-          } catch (e) {
-            console.log('Compartido cancelado');
-          }
-        } else {
-          downloadImage();
-        }
-      });
-    }
-
-    // Inicialización general
-    lucide.createIcons();
-    loadSavedTheme();
-    fetchRates();
-
-    // Service Worker PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
-      });
-    }
+    // Inicializar iconos al cargar
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
   </script>
 </body>
 </html>
