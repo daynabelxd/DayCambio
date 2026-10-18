@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>DayCambio · Conversor de divisas a bolívares</title>
-    <meta name="description" content="Convierte USD, EUR, USDT y divisas regionales a bolívares con tasas BCV, comisiones, IGTF, calculadora de vuelto, historial y temas de color personalizables."/>
+    <meta name="description" content="Convierte USD, EUR, USDT y divisas regionales a bolívares con tasas BCV, comisiones e IGTF."/>
     
     <!-- Open Sans Fonts & Tailwind CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +36,7 @@
             --dc-accent-glow: rgba(168, 85, 247, 0.25);
         }
 
-        /* Open Sans for all elements & Performance Boost */
+        /* Open Sans para todo el documento */
         body, input, button, select, textarea, .dc-num, .font-mono {
             font-family: 'Open Sans', sans-serif !important;
         }
@@ -55,58 +55,29 @@
             color: #0f172a;
         }
 
-        /* Simplified & Lightweight Ambient Background */
-        .ambient-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(60px);
-            z-index: 0;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .orb-1 {
-            width: 280px;
-            height: 280px;
-            top: -40px;
-            left: -40px;
-            background: var(--dc-accent-glow);
-        }
-
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            bottom: -60px;
-            right: -40px;
-            background: rgba(59, 130, 246, 0.15);
-        }
-
-        /* Optimized Liquid Glass Card Styling (Hardware Accelerated) */
+        /* Liquid Glass Optimizado (Ligero para procesadores móviles) */
         .dc-glass {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(22, 28, 45, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             border-radius: 20px;
-            transform: translateZ(0);
         }
 
         body.light .dc-glass {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 20px 0 rgba(31, 38, 135, 0.05);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }
 
         .dc-glass-soft {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
             border-radius: 14px;
         }
 
         body.light .dc-glass-soft {
-            background: rgba(241, 245, 249, 0.7);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            background: rgba(241, 245, 249, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.9);
         }
 
         /* Neon Color Dots */
@@ -115,21 +86,17 @@
             height: 22px;
             border-radius: 50%;
             cursor: pointer;
-            transition: transform 0.15s ease;
+            transition: transform 0.1s ease;
             border: 2px solid transparent;
-        }
-
-        .dc-dot:hover {
-            transform: scale(1.1);
         }
 
         .dc-dot.is-active {
             border-color: #ffffff;
-            box-shadow: 0 0 10px var(--dc-accent);
+            box-shadow: 0 0 8px var(--dc-accent);
             transform: scale(1.1);
         }
 
-        /* Buttons & Switches */
+        /* Controls */
         .dc-icon-btn {
             display: inline-flex;
             align-items: center;
@@ -141,17 +108,12 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #e5e7eb;
             cursor: pointer;
-            transition: background 0.15s ease;
         }
 
         body.light .dc-icon-btn {
-            background: rgba(0, 0, 0, 0.03);
-            border-color: rgba(0, 0, 0, 0.06);
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
             color: #374151;
-        }
-
-        .dc-icon-btn:hover {
-            background: rgba(255, 255, 255, 0.12);
         }
 
         .dc-tab {
@@ -160,8 +122,8 @@
             font-size: 12px;
             font-weight: 600;
             white-space: nowrap;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: #9ca3af;
             cursor: pointer;
         }
@@ -170,7 +132,6 @@
             background: var(--dc-accent);
             color: #ffffff;
             border-color: var(--dc-accent);
-            box-shadow: 0 2px 8px var(--dc-accent-glow);
         }
 
         .dc-switch {
@@ -180,7 +141,6 @@
             background: rgba(255, 255, 255, 0.15);
             position: relative;
             cursor: pointer;
-            transition: background 0.2s ease;
         }
 
         body.light .dc-switch {
@@ -199,8 +159,7 @@
             position: absolute;
             top: 3px;
             left: 3px;
-            transition: transform 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: transform 0.15s ease;
         }
 
         .dc-switch.is-checked .dc-switch-knob {
@@ -249,14 +208,12 @@
             border-radius: 10px;
         }
 
-        /* Fast Modal Backdrop */
+        /* Modal Backdrop */
         .dc-modal-backdrop {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.7);
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.15s ease;
         }
 
         .dc-modal-backdrop.is-open {
@@ -266,7 +223,7 @@
 
         .dc-modal-content {
             transform: scale(0.97);
-            transition: transform 0.2s ease;
+            transition: transform 0.15s ease;
         }
 
         .dc-modal-backdrop.is-open .dc-modal-content {
@@ -299,17 +256,14 @@
         }
 
         @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(15px); }
+            0% { opacity: 0; transform: translateY(10px); }
             15% { opacity: 1; transform: translateY(0); }
             85% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 0; transform: translateY(10px); }
         }
     </style>
 </head>
 <body>
-
-    <div class="ambient-orb orb-1"></div>
-    <div class="ambient-orb orb-2"></div>
 
     <div class="relative z-10 flex min-h-screen flex-col items-center justify-between p-3 sm:p-5">
         
@@ -338,7 +292,7 @@
                 </div>
             </div>
 
-            <!-- THEME COLOR PALETTE SELECTION BAR -->
+            <!-- PALETA DE TEMAS NEÓN -->
             <div class="dc-glass flex items-center justify-between px-4 py-2.5">
                 <div class="text-xs font-semibold dc-muted">Tema Neon:</div>
                 <div class="flex flex-1 items-center justify-center gap-2.5 px-2">
@@ -354,7 +308,7 @@
                 </button>
             </div>
 
-            <!-- TOP CARDS: BCV USD, EUR & USDT TASAS -->
+            <!-- TARJETAS PRINCIPALES DE TASAS -->
             <div class="grid grid-cols-3 gap-2">
                 <div class="dc-glass px-3 py-2.5 cursor-pointer hover:border-purple-500/40 transition-all" onclick="selectTab('USD')">
                     <div class="dc-muted truncate text-[11px] font-semibold flex items-center justify-between">
@@ -381,43 +335,43 @@
                 </div>
             </div>
 
-            <!-- FEATURE NAVIGATION BUTTONS -->
+            <!-- NAVEGACIÓN DE HERRAMIENTAS -->
             <div class="grid grid-cols-4 gap-2">
-                <button type="button" onclick="openModal('modal-vuelto')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                <button type="button" onclick="openModal('modal-vuelto')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="calculator" class="h-4 w-4" style="color:var(--dc-accent)"></i>
                     <span class="text-[10px] font-semibold">Vuelto</span>
                 </button>
-                <button type="button" onclick="openModal('modal-calendar')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                <button type="button" onclick="openModal('modal-calendar')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="calendar" class="h-4 w-4" style="color:var(--dc-accent)"></i>
                     <span class="text-[10px] font-semibold">Calendario</span>
                 </button>
-                <button type="button" onclick="openModal('modal-chart')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                <button type="button" onclick="openModal('modal-chart')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="trending-up" class="h-4 w-4" style="color:var(--dc-accent)"></i>
                     <span class="text-[10px] font-semibold">Historial/Brecha</span>
                 </button>
-                <button type="button" onclick="openModal('modal-regional')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                <button type="button" onclick="openModal('modal-regional')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="globe" class="h-4 w-4" style="color:var(--dc-accent)"></i>
                     <span class="text-[10px] font-semibold">Regionales</span>
                 </button>
-                <button type="button" onclick="openModal('modal-intervencion')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                <button type="button" onclick="openModal('modal-intervencion')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="shield-alert" class="h-4 w-4" style="color:var(--dc-accent)"></i>
                     <span class="text-[10px] font-semibold">Intervención</span>
                 </button>
-                <button type="button" onclick="toggleTomorrowRate()" id="btn-tasa-manana" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                <button type="button" onclick="toggleTomorrowRate()" id="btn-tasa-manana" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="clock" class="h-4 w-4" style="color:var(--dc-accent)"></i>
                     <span class="text-[10px] font-semibold" id="lbl-tasa-manana">Tasa Mañana</span>
                 </button>
-                <button type="button" onclick="openModal('modal-custom-rate')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                <button type="button" onclick="openModal('modal-custom-rate')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="sliders-vertical" class="h-4 w-4" style="color:var(--dc-accent)"></i>
                     <span class="text-[10px] font-semibold">Mi Tasa</span>
                 </button>
-                <button type="button" onclick="generateReceipt()" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                <button type="button" onclick="generateReceipt()" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="receipt" class="h-4 w-4" style="color:var(--dc-accent)"></i>
                     <span class="text-[10px] font-semibold">Recibo</span>
                 </button>
             </div>
 
-            <!-- MAIN CURRENCY CONVERTER CARD -->
+            <!-- CONVERSOR PRINCIPAL -->
             <div class="dc-glass space-y-3.5 p-4 relative overflow-hidden">
                 
                 <div class="dc-scroll flex gap-2 overflow-x-auto pb-1">
@@ -441,7 +395,7 @@
                     </div>
                 </div>
 
-                <!-- Fee Desglose Panel -->
+                <!-- DESGLOSE DE COMISIONES -->
                 <div class="dc-glass-soft p-3.5 space-y-2.5">
                     <div class="dc-label text-xs font-semibold text-gray-300">Conversión y comisiones (Bs.)</div>
                     
@@ -475,7 +429,7 @@
                     </div>
                 </div>
 
-                <!-- Quick Actions Floating Toolbar -->
+                <!-- BARRA DE ACCIONES RÁPIDAS -->
                 <div class="flex items-center justify-center gap-2.5 pt-1">
                     <button type="button" onclick="invertDirection()" class="dc-icon-btn" title="Invertir" aria-label="Invertir">
                         <i data-lucide="arrow-up-down" class="h-4 w-4"></i>
@@ -496,7 +450,7 @@
 
                 <div class="dc-divider"></div>
 
-                <!-- MAIN RESULT DISPLAY AREA -->
+                <!-- RESULTADO PRINCIPAL -->
                 <div class="min-w-0">
                     <div class="dc-label text-xs font-semibold dc-muted">Resultado Convertido</div>
                     <div class="dc-num flex items-baseline gap-2 text-3xl font-extrabold text-white mt-1">
@@ -512,7 +466,7 @@
 
             </div>
 
-            <!-- FOOTER CREDIT -->
+            <!-- PIE DE PÁGINA -->
             <div class="dc-muted text-center text-[10px] tracking-wide pt-1">
                 App Creada por <strong class="text-gray-300">DR 2026</strong> · DayCambio LiquidGlass v2.5
             </div>
@@ -521,7 +475,7 @@
     </div>
 
 
-    <!-- ==================== MODAL WINDOWS ==================== -->
+    <!-- ==================== MODALES ==================== -->
 
     <!-- MODAL 1: CALCULADORA DE VUELTO -->
     <div id="modal-vuelto" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -553,7 +507,7 @@
         </div>
     </div>
 
-    <!-- MODAL 2: CALENDARIO HISTORICO INTERACTIVO -->
+    <!-- MODAL 2: CALENDARIO -->
     <div id="modal-calendar" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-calendar')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -573,7 +527,7 @@
         </div>
     </div>
 
-    <!-- MODAL 3: HISTORIAL Y BRECHA CAMBIARIA -->
+    <!-- MODAL 3: HISTORIAL Y BRECHA -->
     <div id="modal-chart" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-md p-5 space-y-4 relative">
             <button onclick="closeModal('modal-chart')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -626,7 +580,7 @@
         </div>
     </div>
 
-    <!-- MODAL 4: REGIONALES (MANTENIDAS) -->
+    <!-- MODAL 4: REGIONALES -->
     <div id="modal-regional" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-regional')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -660,7 +614,7 @@
         </div>
     </div>
 
-    <!-- MODAL 5: INTERVENCION CAMBIARIA -->
+    <!-- MODAL 5: INTERVENCIÓN -->
     <div id="modal-intervencion" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-intervencion')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -679,7 +633,7 @@
         </div>
     </div>
 
-    <!-- MODAL 6: CONFIGURAR MI TASA INTERACTIVA -->
+    <!-- MODAL 6: MI TASA -->
     <div id="modal-custom-rate" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-custom-rate')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -691,11 +645,11 @@
                 <p class="dc-muted text-xs">Ajusta manualmente la tasa que utilizas para tus compras o negocios. Se guardará de forma permanente en tu dispositivo.</p>
                 
                 <div class="grid grid-cols-2 gap-2 text-xs">
-                    <button type="button" onclick="quickCopyRate('usd')" class="dc-glass-soft p-2 text-left hover:border-purple-500/50 transition-all">
+                    <button type="button" onclick="quickCopyRate('usd')" class="dc-glass-soft p-2 text-left">
                         <span class="dc-muted block text-[10px]">Copiar BCV</span>
                         <strong class="text-emerald-400" id="quick-bcv-val">0,00 Bs.</strong>
                     </button>
-                    <button type="button" onclick="quickCopyRate('usdt')" class="dc-glass-soft p-2 text-left hover:border-amber-500/50 transition-all">
+                    <button type="button" onclick="quickCopyRate('usdt')" class="dc-glass-soft p-2 text-left">
                         <span class="dc-muted block text-[10px]">Copiar USDT</span>
                         <strong class="text-amber-400" id="quick-usdt-val">0,00 Bs.</strong>
                     </button>
@@ -716,7 +670,7 @@
         </div>
     </div>
 
-    <!-- MODAL 7: RECIBO COMPROBANTE CON LOGO MINIATURA -->
+    <!-- MODAL 7: RECIBO CON LOGO MINIATURA -->
     <div id="modal-receipt" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-receipt')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -754,11 +708,11 @@
         </div>
     </div>
 
-    <!-- Toast Container -->
+    <!-- Contenedor de Toasts -->
     <div id="toast-container"></div>
 
 
-    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
     <script>
         function formatNumber(val, decimals = 2) {
             if (val === undefined || val === null || isNaN(val)) return '0,00';
@@ -814,8 +768,23 @@
             accentColor: '#a855f7'
         };
 
+        let dom = {};
+
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+            
+            dom.mainAmount = document.getElementById('main-amount');
+            dom.feeBank = document.getElementById('fee-bank');
+            dom.feeMobile = document.getElementById('fee-mobile');
+            dom.feeIgtfVal = document.getElementById('fee-igtf-val');
+            dom.totalWithFees = document.getElementById('total-with-fees');
+            dom.mainResult = document.getElementById('main-result');
+            dom.inputLabelText = document.getElementById('input-label-text');
+            dom.inputSymbol = document.getElementById('input-symbol');
+            dom.resultSymbol = document.getElementById('result-symbol');
+            dom.rateRefLabel = document.getElementById('rate-reference-label');
+            dom.updateDateLabel = document.getElementById('update-date-label');
+
             loadLocalStorage();
             fetchLatestRates();
             setupThemeToggle();
@@ -841,7 +810,6 @@
         function setAccentTheme(color) {
             state.accentColor = color;
             document.documentElement.style.setProperty('--dc-accent', color);
-            document.documentElement.style.setProperty('--dc-accent-glow', color + '40');
 
             localStorage.setItem('dc_accent_color', color);
 
@@ -887,7 +855,7 @@
             } catch (err) {
                 console.log('API Fallback active:', err);
             } finally {
-                if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 400);
+                if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 300);
                 
                 const now = new Date();
                 const dayOfWeek = now.getDay();
@@ -911,7 +879,7 @@
         }
 
         function calculateConversion() {
-            const inputVal = parseFloat(document.getElementById('main-amount').value.replace(',', '.')) || 0;
+            const inputVal = parseFloat(dom.mainAmount.value.replace(',', '.')) || 0;
             const rate = getCurrentRate();
 
             let converted = 0;
@@ -933,12 +901,11 @@
 
             const totalWithFees = !state.isFlipped ? (converted + bankFee + igtfFee) : converted;
 
-            document.getElementById('fee-bank').innerText = `Bs. ${formatNumber(bankFee)}`;
-            document.getElementById('fee-mobile').innerText = `Bs. ${formatNumber(mobileFee)}`;
-            document.getElementById('fee-igtf-val').innerText = `Bs. ${formatNumber(igtfFee)}`;
-            document.getElementById('total-with-fees').innerText = `Bs. ${formatNumber(totalWithFees)}`;
-            
-            document.getElementById('main-result').innerText = formatNumber(converted);
+            dom.feeBank.innerText = `Bs. ${formatNumber(bankFee)}`;
+            dom.feeMobile.innerText = `Bs. ${formatNumber(mobileFee)}`;
+            dom.feeIgtfVal.innerText = `Bs. ${formatNumber(igtfFee)}`;
+            dom.totalWithFees.innerText = `Bs. ${formatNumber(totalWithFees)}`;
+            dom.mainResult.innerText = formatNumber(converted);
         }
 
         function getCurrentRate() {
@@ -977,12 +944,12 @@
             const curr = state.selectedCurrency;
             const rate = getCurrentRate();
             
-            document.getElementById('input-label-text').innerText = state.isFlipped ? 'Monto en Bolívares (Bs.)' : `Monto en ${curr}`;
-            document.getElementById('input-symbol').innerText = state.isFlipped ? 'Bs.' : (curr === 'EUR' ? '€' : '$');
-            document.getElementById('result-symbol').innerText = state.isFlipped ? curr : 'Bs.';
+            if (dom.inputLabelText) dom.inputLabelText.innerText = state.isFlipped ? 'Monto en Bolívares (Bs.)' : `Monto en ${curr}`;
+            if (dom.inputSymbol) dom.inputSymbol.innerText = state.isFlipped ? 'Bs.' : (curr === 'EUR' ? '€' : '$');
+            if (dom.resultSymbol) dom.resultSymbol.innerText = state.isFlipped ? curr : 'Bs.';
 
-            document.getElementById('rate-reference-label').innerText = `1 ${curr} = ${formatNumber(rate)} Bs.`;
-            document.getElementById('update-date-label').innerText = `Actualizado · 18 Oct 2026 (${state.isTomorrowRate ? 'Tasa Lunes / Mañana' : 'Tasa Hoy'})`;
+            if (dom.rateRefLabel) dom.rateRefLabel.innerText = `1 ${curr} = ${formatNumber(rate)} Bs.`;
+            if (dom.updateDateLabel) dom.updateDateLabel.innerText = `Actualizado · 18 Oct 2026 (${state.isTomorrowRate ? 'Tasa Lunes / Mañana' : 'Tasa Hoy'})`;
         }
 
         function quickCopyRate(type) {
@@ -1025,14 +992,14 @@
         }
 
         function clearCalculator() {
-            document.getElementById('main-amount').value = '';
+            dom.mainAmount.value = '';
             calculateConversion();
             showToast('Calculadora limpiada');
         }
 
         function copyResult() {
-            const resultText = document.getElementById('main-result').innerText;
-            const symbol = document.getElementById('result-symbol').innerText;
+            const resultText = dom.mainResult.innerText;
+            const symbol = dom.resultSymbol.innerText;
             const textToCopy = `${symbol} ${resultText}`;
 
             navigator.clipboard.writeText(textToCopy).then(() => {
@@ -1175,10 +1142,10 @@
         }
 
         function generateReceipt() {
-            const amount = document.getElementById('main-amount').value || '0.00';
+            const amount = dom.mainAmount.value || '0.00';
             const curr = state.selectedCurrency;
             const rate = getCurrentRate();
-            const totalBs = document.getElementById('main-result').innerText;
+            const totalBs = dom.mainResult.innerText;
 
             document.getElementById('rec-op').innerText = `${curr} a Bolívares`;
             document.getElementById('rec-monto').innerText = `${amount} ${curr}`;
