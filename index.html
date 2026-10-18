@@ -6,10 +6,10 @@
     <title>DayCambio · Conversor de divisas a bolívares</title>
     <meta name="description" content="Convierte USD, EUR, USDT y divisas regionales a bolívares con tasas BCV, comisiones, IGTF, calculadora de vuelto, historial y temas de color personalizables."/>
     
-    <!-- Fonts & Tailwind CSS -->
+    <!-- Open Sans Fonts & Tailwind CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Lucide Icons & HTML2Canvas for downloading receipt images -->
@@ -22,7 +22,8 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['"Open Sans"', 'sans-serif'],
+                        mono: ['"Open Sans"', 'sans-serif'],
                     },
                 }
             }
@@ -36,9 +37,12 @@
             --dc-bg-glow: rgba(168, 85, 247, 0.15);
         }
 
-        /* Ambient Animated Background Glows */
+        /* Open Sans for all elements (letters and numbers) */
+        body, input, button, select, textarea, .dc-num, .font-mono {
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #0b0f19;
             color: #f3f4f6;
             min-height: 100vh;
@@ -232,7 +236,6 @@
             background: rgba(0, 0, 0, 0.08);
         }
 
-        /* Number / Input Formats */
         .dc-amount {
             background: transparent;
             border: none;
@@ -265,7 +268,6 @@
             border-radius: 10px;
         }
 
-        /* Custom Modal Backdrop Animation */
         .dc-modal-backdrop {
             background: rgba(0, 0, 0, 0.65);
             backdrop-filter: blur(8px);
@@ -289,7 +291,6 @@
             transform: scale(1) translateY(0);
         }
 
-        /* Toast Notifications */
         #toast-container {
             position: fixed;
             bottom: 24px;
@@ -328,12 +329,10 @@
 </head>
 <body>
 
-    <!-- Ambient Glowing Orbs -->
     <div class="ambient-orb orb-1" id="orb1"></div>
     <div class="ambient-orb orb-2"></div>
     <div class="ambient-orb orb-3"></div>
 
-    <!-- Main Application Container -->
     <div class="relative z-10 flex min-h-screen flex-col items-center justify-between p-3 sm:p-5">
         
         <div class="mx-auto flex w-full max-w-md flex-col gap-3.5">
@@ -384,7 +383,7 @@
                         USD <span class="text-[9px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-400">BCV</span>
                     </div>
                     <div class="dc-num mt-1 text-sm leading-tight text-emerald-400" id="rate-usd">0,00</div>
-                    <div class="mt-1 text-[10px] dc-muted font-mono">= 1 USD</div>
+                    <div class="mt-1 text-[10px] dc-muted">= 1 USD</div>
                 </div>
 
                 <div class="dc-glass px-3 py-2.5 cursor-pointer hover:border-purple-500/40 transition-all" onclick="selectTab('EUR')">
@@ -392,7 +391,7 @@
                         EUR <span class="text-[9px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-400">BCV</span>
                     </div>
                     <div class="dc-num mt-1 text-sm leading-tight text-blue-400" id="rate-eur">0,00</div>
-                    <div class="mt-1 text-[10px] dc-muted font-mono">= 1 EUR</div>
+                    <div class="mt-1 text-[10px] dc-muted">= 1 EUR</div>
                 </div>
 
                 <div class="dc-glass px-3 py-2.5 cursor-pointer hover:border-purple-500/40 transition-all" onclick="selectTab('USDT')">
@@ -400,11 +399,11 @@
                         USDT <span class="text-[9px] px-1 py-0.5 rounded bg-amber-500/20 text-amber-400">P2P</span>
                     </div>
                     <div class="dc-num mt-1 text-sm leading-tight text-amber-400" id="rate-usdt">0,00</div>
-                    <div class="mt-1 text-[10px] dc-muted font-mono">= 1 USDT</div>
+                    <div class="mt-1 text-[10px] dc-muted">= 1 USDT</div>
                 </div>
             </div>
 
-            <!-- FEATURE NAVIGATION BUTTONS (8 TOOL MODALS) -->
+            <!-- FEATURE NAVIGATION BUTTONS -->
             <div class="grid grid-cols-4 gap-2">
                 <button type="button" onclick="openModal('modal-vuelto')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
                     <i data-lucide="calculator" class="h-4 w-4" style="color:var(--dc-accent)"></i>
@@ -443,7 +442,6 @@
             <!-- MAIN CURRENCY CONVERTER CARD -->
             <div class="dc-glass space-y-3.5 p-4 relative overflow-hidden">
                 
-                <!-- Currency Selector Tabs -->
                 <div class="dc-scroll flex gap-2 overflow-x-auto pb-1">
                     <button type="button" onclick="selectTab('USD')" class="dc-tab is-active" id="tab-USD">USD</button>
                     <button type="button" onclick="selectTab('EUR')" class="dc-tab" id="tab-EUR">EUR</button>
@@ -454,11 +452,10 @@
                     <button type="button" onclick="selectTab('CUSTOM')" class="dc-tab" id="tab-CUSTOM">Mi Tasa</button>
                 </div>
 
-                <!-- Input Field Container -->
                 <div class="dc-glass-soft px-4 py-3 relative focus-within:ring-2 focus-within:ring-purple-500/50 transition-all">
                     <div class="dc-label flex justify-between text-xs font-medium dc-muted">
                         <span id="input-label-text">Monto en USD</span>
-                        <span id="direction-indicator" class="text-[10px] bg-white/10 px-1.5 py-0.5 rounded font-mono">Divisa ➔ Bs.</span>
+                        <span id="direction-indicator" class="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Divisa ➔ Bs.</span>
                     </div>
                     <div class="mt-1 flex items-baseline gap-2">
                         <span class="dc-num dc-muted text-xl font-bold" id="input-symbol">$</span>
@@ -503,7 +500,7 @@
 
                 <!-- Quick Actions Floating Toolbar -->
                 <div class="flex items-center justify-center gap-2.5 pt-1">
-                    <button type="button" onclick="invertDirection()" class="dc-icon-btn" title="Invertir sentido (Bs. ↔️ Divisa)" aria-label="Invertir sentido">
+                    <button type="button" onclick="invertDirection()" class="dc-icon-btn" title="Invertir sentido" aria-label="Invertir sentido">
                         <i data-lucide="arrow-up-down" class="h-4 w-4"></i>
                     </button>
                     <button type="button" onclick="clearCalculator()" class="dc-icon-btn" title="Limpiar" aria-label="Limpiar">
@@ -532,7 +529,7 @@
                     
                     <div class="flex items-center justify-between mt-2">
                         <div class="dc-muted text-[11px] font-medium" id="update-date-label">Actualizado · Cargando...</div>
-                        <div class="dc-muted text-[11px] font-mono bg-white/5 px-2 py-0.5 rounded" id="rate-reference-label">1 USD = 0,00 Bs.</div>
+                        <div class="dc-muted text-[11px] bg-white/5 px-2 py-0.5 rounded" id="rate-reference-label">1 USD = 0,00 Bs.</div>
                     </div>
                 </div>
 
@@ -573,7 +570,7 @@
                 <div class="dc-glass-soft p-3 rounded-xl space-y-1">
                     <div class="text-xs dc-muted">Vuelto a entregar:</div>
                     <div class="text-lg font-bold text-emerald-400" id="vuelto-result-usd">$ 0.00 USD</div>
-                    <div class="text-xs text-purple-300 font-mono" id="vuelto-result-bs">ó Bs. 0,00</div>
+                    <div class="text-xs text-purple-300" id="vuelto-result-bs">ó Bs. 0,00</div>
                 </div>
             </div>
         </div>
@@ -590,7 +587,7 @@
             <div class="space-y-3">
                 <div>
                     <label class="dc-muted text-xs block mb-1">Selecciona una fecha del registro:</label>
-                    <input id="calendar-date-picker" type="date" class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white font-mono" onchange="lookupHistoricalRate()">
+                    <input id="calendar-date-picker" type="date" class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white" onchange="lookupHistoricalRate()">
                 </div>
                 <div class="dc-glass-soft p-4 rounded-xl space-y-2 text-sm" id="calendar-result-box">
                     <p class="dc-muted text-xs">Selecciona un día en el calendario para verificar la tasa oficial BCV registrada.</p>
@@ -599,7 +596,7 @@
         </div>
     </div>
 
-    <!-- MODAL 3: HISTORIAL Y BRECHA CAMBIARIA (CON SPARKLINE INTEGRADO DEL COMPONENTE REACT) -->
+    <!-- MODAL 3: HISTORIAL Y BRECHA CAMBIARIA -->
     <div id="modal-chart" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-md p-5 space-y-4 relative">
             <button onclick="closeModal('modal-chart')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -612,7 +609,6 @@
                 <p id="history-subtitle" class="text-xs dc-muted mt-0.5">Cargando rango histórico...</p>
             </div>
 
-            <!-- FILAS DE TASA Y BRECHA (LOGICA EXACTA REACT) -->
             <div class="dc-glass-soft space-y-2.5 p-3.5">
                 <div class="flex items-center justify-between gap-3 text-sm">
                     <span class="dc-muted">USD BCV</span>
@@ -639,15 +635,10 @@
                 </div>
             </div>
 
-            <!-- GRAFICA SPARKLINE SVG EN LINEA (LOGICA COMPONENTE SPARKLINE REACT) -->
             <div class="dc-glass-soft p-3.5 space-y-2">
                 <div class="text-xs font-semibold text-gray-300">USD BCV · últimos 30 registros</div>
-                
-                <div id="sparkline-container" class="w-full h-16 py-1">
-                    <!-- El SVG Polyline se genera dinámicamente -->
-                </div>
-
-                <div class="dc-muted text-[11px] text-right font-mono" id="sparkline-bounds">
+                <div id="sparkline-container" class="w-full h-16 py-1"></div>
+                <div class="dc-muted text-[11px] text-right" id="sparkline-bounds">
                     Mínimo 0,00 · Máximo 0,00
                 </div>
             </div>
@@ -672,21 +663,21 @@
                         <div class="font-bold">Real Brasileño (BRL)</div>
                         <div class="text-xs dc-muted">1 BRL a Bolívares</div>
                     </div>
-                    <div class="font-mono font-bold text-emerald-400" id="reg-brl">0.00 Bs.</div>
+                    <div class="font-bold text-emerald-400" id="reg-brl">0.00 Bs.</div>
                 </div>
                 <div class="dc-glass-soft p-3 flex justify-between items-center">
                     <div>
                         <div class="font-bold">Peso Colombiano (COP)</div>
                         <div class="text-xs dc-muted">1 COP a Bolívares</div>
                     </div>
-                    <div class="font-mono font-bold text-blue-400" id="reg-cop">0.00 Bs.</div>
+                    <div class="font-bold text-blue-400" id="reg-cop">0.00 Bs.</div>
                 </div>
                 <div class="dc-glass-soft p-3 flex justify-between items-center">
                     <div>
                         <div class="font-bold">Peso Argentino (ARS)</div>
                         <div class="text-xs dc-muted">1 ARS a Bolívares</div>
                     </div>
-                    <div class="font-mono font-bold text-purple-400" id="reg-ars">0.00 Bs.</div>
+                    <div class="font-bold text-purple-400" id="reg-ars">0.00 Bs.</div>
                 </div>
             </div>
         </div>
@@ -722,22 +713,21 @@
             <div class="space-y-3 text-sm">
                 <p class="dc-muted text-xs">Ajusta manualmente la tasa que utilizas para tus compras o negocios. Se guardará de forma permanente en tu dispositivo.</p>
                 
-                <!-- Accesos rápidos para copiar tasas del mercado -->
                 <div class="grid grid-cols-2 gap-2 text-xs">
                     <button type="button" onclick="quickCopyRate('usd')" class="dc-glass-soft p-2 text-left hover:border-purple-500/50 transition-all">
                         <span class="dc-muted block text-[10px]">Copiar BCV</span>
-                        <strong class="font-mono text-emerald-400" id="quick-bcv-val">0,00 Bs.</strong>
+                        <strong class="text-emerald-400" id="quick-bcv-val">0,00 Bs.</strong>
                     </button>
                     <button type="button" onclick="quickCopyRate('usdt')" class="dc-glass-soft p-2 text-left hover:border-amber-500/50 transition-all">
                         <span class="dc-muted block text-[10px]">Copiar USDT</span>
-                        <strong class="font-mono text-amber-400" id="quick-usdt-val">0,00 Bs.</strong>
+                        <strong class="text-amber-400" id="quick-usdt-val">0,00 Bs.</strong>
                     </button>
                 </div>
 
                 <div>
                     <label class="dc-muted text-xs block mb-1">Valor en Bolívares por Divisa (Bs.):</label>
                     <div class="relative flex items-center">
-                        <input id="custom-rate-input" type="number" step="any" placeholder="890.00" class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white font-mono font-bold focus:outline-none focus:border-purple-500">
+                        <input id="custom-rate-input" type="number" step="any" placeholder="890.00" class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white font-bold focus:outline-none focus:border-purple-500">
                         <span class="absolute right-3 text-xs font-bold dc-muted">Bs.</span>
                     </div>
                 </div>
@@ -749,7 +739,7 @@
         </div>
     </div>
 
-    <!-- MODAL 7: RECIBO COMPROBANTE -->
+    <!-- MODAL 7: RECIBO COMPROBANTE CON LOGO MINIATURA -->
     <div id="modal-receipt" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-receipt')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -757,20 +747,23 @@
             <div id="receipt-card" class="bg-slate-900 text-white p-5 rounded-2xl border border-purple-500/30 space-y-4 shadow-2xl relative">
                 <div class="flex items-center justify-between border-b border-white/10 pb-3">
                     <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 rounded-lg bg-purple-600 flex items-center justify-center font-bold text-xs">DC</div>
+                        <!-- Logo miniatura incorporado en el recibo -->
+                        <div class="w-7 h-7 rounded-lg bg-white/10 p-1 flex items-center justify-center overflow-hidden">
+                            <img src="icon-192.png" alt="Logo" class="h-full w-full object-contain" onerror="this.src='https://placehold.co/80x80/a855f7/ffffff?text=DC'">
+                        </div>
                         <span class="font-bold text-sm tracking-wide">DayCambio</span>
                     </div>
-                    <span class="text-[10px] text-gray-400 font-mono" id="rec-date">18 Oct 2026</span>
+                    <span class="text-[10px] text-gray-400" id="rec-date">18 Oct 2026</span>
                 </div>
 
                 <div class="space-y-2 text-xs">
                     <div class="flex justify-between"><span class="text-gray-400">Operación:</span><span id="rec-op" class="font-bold">USD a Bs.</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Monto Insumo:</span><span id="rec-monto" class="font-mono">10.00 USD</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Tasa Aplicada:</span><span id="rec-tasa" class="font-mono">880.12 Bs.</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Comisiones:</span><span id="rec-fees" class="font-mono">14.00 Bs.</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Monto Insumo:</span><span id="rec-monto">10.00 USD</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Tasa Aplicada:</span><span id="rec-tasa">880.12 Bs.</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Comisiones:</span><span id="rec-fees">14.00 Bs.</span></div>
                     <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-bold text-emerald-400">
                         <span>Total A pagar:</span>
-                        <span id="rec-total" class="font-mono">Bs. 8,815.20</span>
+                        <span id="rec-total">Bs. 8,815.20</span>
                     </div>
                 </div>
 
@@ -791,7 +784,6 @@
 
     <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
-        // --- HELPER FUNCTIONS ---
         function formatNumber(val, decimals = 2) {
             if (val === undefined || val === null || isNaN(val)) return '0,00';
             return val.toLocaleString('es-VE', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
@@ -811,7 +803,6 @@
             return ((value - base) / base) * 100;
         }
 
-        // --- APP STATE & RATES DATA ---
         const state = {
             rates: {
                 usd: 880.12,
@@ -847,7 +838,6 @@
             accentColor: '#a855f7'
         };
 
-        // --- INITIALIZATION ---
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             loadLocalStorage();
@@ -862,7 +852,6 @@
             }
         });
 
-        // --- LOCAL STORAGE RECOVERY ---
         function loadLocalStorage() {
             const savedCustom = localStorage.getItem('dc_custom_rate');
             if (savedCustom && !isNaN(parseFloat(savedCustom))) {
@@ -873,7 +862,6 @@
             if (savedAccent) setAccentTheme(savedAccent);
         }
 
-        // --- THEME COLOR SELECTION ---
         function setAccentTheme(color) {
             state.accentColor = color;
             document.documentElement.style.setProperty('--dc-accent', color);
@@ -899,7 +887,6 @@
             return res ? "#" + ((1 << 24) + (+res[0] << 16) + (+res[1] << 8) + +res[2]).toString(16).slice(1) : rgb;
         }
 
-        // --- LIGHT/DARK MODE TOGGLE ---
         function setupThemeToggle() {
             const btn = document.getElementById('theme-toggle');
             btn.addEventListener('click', () => {
@@ -909,7 +896,6 @@
             });
         }
 
-        // --- API RATE FETCHING ---
         async function fetchLatestRates(isManual = false) {
             const refreshIcon = document.getElementById('refresh-icon');
             if (refreshIcon) refreshIcon.classList.add('animate-spin');
@@ -928,7 +914,6 @@
             } finally {
                 if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 600);
                 
-                // Inteligencia de Fin de Semana (Viernes a Lunes)
                 const now = new Date();
                 const dayOfWeek = now.getDay();
                 if (state.isTomorrowRate && (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0)) {
@@ -940,7 +925,6 @@
             }
         }
 
-        // --- TAB SELECTION ---
         function selectTab(curr) {
             state.selectedCurrency = curr;
             document.querySelectorAll('.dc-tab').forEach(t => t.classList.remove('is-active'));
@@ -951,7 +935,6 @@
             updateReferenceLabels();
         }
 
-        // --- CALCULATION CORE ENGINE ---
         function calculateConversion() {
             const inputVal = parseFloat(document.getElementById('main-amount').value.replace(',', '.')) || 0;
             const rate = getCurrentRate();
@@ -996,7 +979,6 @@
             }
         }
 
-        // --- UI UPDATES & LABELS ---
         function updateUI() {
             document.getElementById('rate-usd').innerText = formatNumber(state.rates.usd);
             document.getElementById('rate-eur').innerText = formatNumber(state.rates.eur);
@@ -1097,7 +1079,7 @@
             if (state.isTomorrowRate) {
                 btn.style.borderColor = 'var(--dc-accent)';
                 lbl.innerText = isWeekend ? 'Tasa Lunes' : 'Próx. Día';
-                showToast(isWeekend ? 'Modo Tasa Lunes (Fin de semana) Activado' : 'Modo Tasa Mañana Activado');
+                showToast(isWeekend ? 'Modo Tasa Lunes Activado' : 'Modo Tasa Mañana Activado');
             } else {
                 btn.style.borderColor = '';
                 lbl.innerText = 'Tasa Mañana';
@@ -1144,13 +1126,13 @@
             if (match) {
                 box.innerHTML = `
                     <div class="font-bold text-emerald-400">Tasa Oficial BCV del ${formatFecha(match.fecha)}:</div>
-                    <div class="text-xl font-bold font-mono text-white">${formatNumber(match.usd)} Bs./USD</div>
-                    <div class="text-xs font-mono text-blue-300">${formatNumber(match.eur)} Bs./EUR</div>
+                    <div class="text-xl font-bold text-white">${formatNumber(match.usd)} Bs./USD</div>
+                    <div class="text-xs text-blue-300">${formatNumber(match.eur)} Bs./EUR</div>
                 `;
             } else {
                 box.innerHTML = `
                     <div class="text-amber-400 font-semibold">Tasa Estimada de Registro (${formatFecha(pickerVal)}):</div>
-                    <div class="text-lg font-bold font-mono text-white">${formatNumber(state.rates.usd * 0.98)} Bs./USD</div>
+                    <div class="text-lg font-bold text-white">${formatNumber(state.rates.usd * 0.98)} Bs./USD</div>
                     <div class="text-[10px] dc-muted">Fecha fuera del rango directo. Mostrando estimación histórica.</div>
                 `;
             }
