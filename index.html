@@ -1,1283 +1,1258 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DayCambio App</title>
-  
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#070d14">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="DayCambio">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="icon" type="image/png" href="icon-192.png">
-
-  <!-- Tipografía Google Fonts: Poppins -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Lucide Vector Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- html2canvas para generación de imagen -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <style>
-    :root {
-      --bg-dark: #070d14;
-      --card-glass: rgba(18, 26, 38, 0.75);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --primary: #a855f7;
-      --primary-glow: rgba(168, 85, 247, 0.25);
-      --secondary: #c084fc;
-      --text-main: #f0f6fc;
-      --text-muted: #8b949e;
-      --input-bg: rgba(10, 16, 26, 0.85);
-    }
-
-    [data-theme="turquoise"] {
-      --primary: #00f2fe;
-      --primary-glow: rgba(0, 242, 254, 0.25);
-      --secondary: #4facfe;
-    }
-    [data-theme="blue"] {
-      --primary: #3b82f6;
-      --primary-glow: rgba(59, 130, 246, 0.25);
-      --secondary: #60a5fa;
-    }
-    [data-theme="purple"] {
-      --primary: #a855f7;
-      --primary-glow: rgba(168, 85, 247, 0.25);
-      --secondary: #c084fc;
-    }
-    [data-theme="pink"] {
-      --primary: #ec4899;
-      --primary-glow: rgba(236, 72, 153, 0.25);
-      --secondary: #f472b6;
-    }
-    [data-theme="neutral"] {
-      --primary: #e2e8f0;
-      --primary-glow: rgba(226, 232, 240, 0.2);
-      --secondary: #94a3b8;
-    }
-
-    /* Light Mode */
-    body.light-mode {
-      --bg-dark: #f1f5f9;
-      --card-glass: rgba(255, 255, 255, 0.85);
-      --card-border: rgba(0, 0, 0, 0.08);
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --input-bg: #ffffff;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-
-    body {
-      background: var(--bg-dark);
-      background-image: radial-gradient(circle at 50% 0%, var(--primary-glow) 0%, transparent 50%);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 16px;
-      transition: background 0.3s;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 410px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      padding-bottom: 30px;
-    }
-
-    /* Header con Logo oficial */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 4px 0;
-    }
-
-    .brand-center {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-img {
-      width: 44px;
-      height: 44px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 8px var(--primary-glow));
-    }
-
-    .app-name {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text-main);
-      line-height: 1;
-    }
-
-    .sub-title {
-      font-size: 10px;
-      letter-spacing: 1.5px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .icon-btn-top {
-      background: var(--card-glass);
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DayCambio · Conversor de divisas a bolívares</title>
+    <meta name="description" content="Convierte USD, EUR, USDT y divisas regionales a bolívares con tasas BCV, comisiones, IGTF, calculadora de vuelto, historial y temas de color personalizables."/>
     
-    .icon-btn-top:active { transform: scale(0.92); }
+    <!-- Fonts & Tailwind CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons & HTML2Canvas for downloading receipt images -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    /* Tarjetas Liquid Glass */
-    .glass-card {
-      background: var(--card-glass);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 18px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-    }
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 
-    /* Selector de Temas Neón */
-    .theme-selector {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-    }
+    <style>
+        :root {
+            --dc-accent: #a855f7;
+            --dc-accent-glow: rgba(168, 85, 247, 0.35);
+            --dc-bg-glow: rgba(168, 85, 247, 0.15);
+        }
 
-    .theme-dot {
-      flex: 1;
-      height: 24px;
-      border-radius: 8px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .theme-dot.active { border-color: var(--text-main); transform: scale(1.08); }
+        /* Ambient Animated Background Glows */
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-    /* Tasas de Referencia Superior */
-    .rates-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 12px;
-    }
+        body.light {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
 
-    .mini-rate-card {
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 8px;
-      text-align: center;
-    }
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: 0;
+            pointer-events: none;
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .mini-rate-card .lbl { font-size: 10px; color: var(--text-muted); font-weight: 600; }
-    .mini-rate-card .val { font-size: 12px; font-weight: 700; color: var(--primary); }
+        .orb-1 {
+            width: 320px;
+            height: 320px;
+            top: -50px;
+            left: -50px;
+            background: var(--dc-accent-glow);
+        }
 
-    /* Tabs de Monedas */
-    .currency-tabs {
-      display: flex;
-      background: var(--input-bg);
-      border-radius: 16px;
-      padding: 4px;
-      border: 1px solid var(--card-border);
-      gap: 4px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .currency-tabs::-webkit-scrollbar { display: none; }
+        .orb-2 {
+            width: 380px;
+            height: 380px;
+            bottom: -80px;
+            right: -50px;
+            background: rgba(59, 130, 246, 0.2);
+        }
 
-    .tab-btn {
-      flex: 1;
-      min-width: 48px;
-      padding: 8px 0;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-weight: 700;
-      font-size: 11px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      white-space: nowrap;
-    }
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(236, 72, 153, 0.12);
+        }
 
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: #000;
-      box-shadow: 0 4px 12px var(--primary-glow);
-    }
+        /* Liquid Glass Card Styling */
+        .dc-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 20px;
+            transition: all 0.25s ease;
+        }
 
-    /* Input Principal */
-    .input-wrapper { margin-top: 14px; }
+        body.light .dc-glass {
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+        }
 
-    .amount-input-box {
-      width: 100%;
-      background: var(--input-bg);
-      border: 2px solid var(--primary);
-      border-radius: 18px;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      box-shadow: 0 0 15px var(--primary-glow);
-    }
+        .dc-glass-soft {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+        }
 
-    .currency-symbol { font-size: 20px; font-weight: 800; color: var(--primary); margin-right: 10px; white-space: nowrap; }
+        body.light .dc-glass-soft {
+            background: rgba(241, 245, 249, 0.7);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
 
-    .amount-input-box input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: var(--text-main);
-      font-size: 26px;
-      font-weight: 700;
-      outline: none;
-    }
+        /* Neon Color Dots */
+        .dc-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 2px solid transparent;
+        }
 
-    /* Módulo Desglosado de Comisiones en Bs. */
-    .commission-breakdown {
-      margin-top: 14px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+        .dc-dot:hover {
+            transform: scale(1.18);
+        }
 
-    .comm-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: var(--primary);
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
+        .dc-dot.is-active {
+            border-color: #ffffff;
+            box-shadow: 0 0 12px var(--dc-accent);
+            transform: scale(1.15);
+        }
 
-    .comm-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+        /* Buttons & Switches */
+        .dc-icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e5e7eb;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
 
-    .comm-row strong { color: var(--text-main); font-weight: 600; }
+        body.light .dc-icon-btn {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #374151;
+        }
 
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 38px;
-      height: 20px;
-    }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #334155; transition: .3s; border-radius: 20px;
-    }
-    .slider:before {
-      position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
-      background-color: white; transition: .3s; border-radius: 50%;
-    }
-    input:checked + .slider { background-color: var(--primary); }
-    input:checked + .slider:before { transform: translateX(18px); }
+        .dc-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
 
-    /* Botones de Acción Circulares Vectoriales */
-    .actions-row {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 16px;
-      padding: 0 4px;
-    }
+        .dc-tab {
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-    .action-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+        .dc-tab:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    .action-btn:active {
-      transform: scale(0.92);
-      background: var(--primary);
-      color: #000;
-    }
+        .dc-tab.is-active {
+            background: var(--dc-accent);
+            color: #ffffff;
+            border-color: var(--dc-accent);
+            box-shadow: 0 2px 10px var(--dc-accent-glow);
+        }
 
-    .divider {
-      border-bottom: 2px dashed var(--card-border);
-      margin: 16px 0;
-    }
+        .dc-switch {
+            width: 42px;
+            height: 22px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.15);
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
 
-    /* Resultado Final */
-    .result-section { text-align: left; }
+        body.light .dc-switch {
+            background: rgba(0, 0, 0, 0.15);
+        }
 
-    .result-header-line {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-    }
+        .dc-switch.is-checked {
+            background: var(--dc-accent);
+        }
 
-    .result-label { font-size: 20px; font-weight: 700; color: var(--text-muted); }
-    .result-number { font-size: 34px; font-weight: 800; color: var(--primary); }
+        .dc-switch-knob {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
 
-    .date-badge {
-      display: block;
-      margin-top: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
+        .dc-switch.is-checked .dc-switch-knob {
+            transform: translateX(20px);
+        }
 
-    .rate-line-info {
-      display: block;
-      margin-top: 2px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+        .dc-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            width: 100%;
+        }
 
-    /* Módulos Adicionales (Acceso Rápido) */
-    .extra-modules-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-    }
+        body.light .dc-divider {
+            background: rgba(0, 0, 0, 0.08);
+        }
 
-    .module-card-btn {
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 8px 4px;
-      text-align: center;
-      cursor: pointer;
-      color: var(--text-main);
-      font-size: 10px;
-      font-weight: 600;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      transition: all 0.2s;
-    }
-    .module-card-btn:hover { border-color: var(--primary); }
-    .module-card-btn i { color: var(--primary); width: 16px; height: 16px; }
+        /* Number / Input Formats */
+        .dc-amount {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1.75rem;
+            font-weight: 700;
+            width: 100%;
+            color: currentColor;
+        }
 
-    /* Modales Globales */
-    .sub-modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
+        .dc-num {
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+        }
 
-    .sub-modal-content {
-      width: 100%;
-      max-width: 340px;
-      background: var(--bg-dark);
-      border: 2px solid var(--primary);
-      border-radius: 24px;
-      padding: 20px;
-      box-shadow: 0 0 35px var(--primary-glow);
-      text-align: center;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
+        .dc-muted {
+            color: #9ca3af;
+        }
 
-    .sub-modal-content h3 { color: var(--primary); font-size: 16px; margin-bottom: 10px; }
+        body.light .dc-muted {
+            color: #6b7280;
+        }
 
-    /* Modal Generador de Recibo */
-    #receipt-modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      z-index: 999;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
+        .dc-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+        .dc-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
 
-    .receipt-card {
-      width: 100%;
-      max-width: 320px;
-      background: linear-gradient(165deg, #121a26 0%, #070d14 62%);
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      border-radius: 20px;
-      padding: 20px;
-      text-align: left;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-      color: #fff;
-    }
+        /* Custom Modal Backdrop Animation */
+        .dc-modal-backdrop {
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
 
-    .receipt-header-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+        .dc-modal-backdrop.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-    .receipt-logo-container {
-      width: 44px;
-      height: 44px;
-      border-radius: 13px;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+        .dc-modal-content {
+            transform: scale(0.95) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-    .receipt-logo-img { width: 34px; height: 34px; object-fit: contain; }
-    .receipt-title { font-size: 18px; font-weight: 800; color: #fff; line-height: 1.1; }
-    .receipt-subtitle { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--text-muted); }
+        .dc-modal-backdrop.is-open .dc-modal-content {
+            transform: scale(1) translateY(0);
+        }
 
-    .receipt-divider { border-bottom: 1px solid rgba(139, 148, 158, 0.25); margin: 14px 0; }
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
 
-    .receipt-row-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 3px 0;
-      font-size: 12px;
-    }
+        .dc-toast {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--dc-accent);
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            backdrop-filter: blur(12px);
+            animation: toastIn 0.3s forwards, toastOut 0.3s 2.7s forwards;
+        }
 
-    .receipt-row-label {
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-muted);
-    }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .receipt-row-val { font-weight: 600; color: #fff; }
-
-    .receipt-total-title {
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-muted);
-      margin-top: 10px;
-    }
-
-    .receipt-total-amount {
-      font-size: 30px;
-      font-weight: 900;
-      color: var(--primary);
-      margin: 2px 0;
-    }
-
-    .receipt-meta-info {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .receipt-rate-info {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .receipt-footer-brand {
-      text-align: center;
-      font-size: 9px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--text-muted);
-      margin-top: 12px;
-    }
-
-    .modal-btn {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: #000;
-      border: none;
-      font-weight: 700;
-      padding: 10px 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .app-footer {
-      text-align: center;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 10px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-  </style>
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+    </style>
 </head>
-<body data-theme="purple" onload="loadSavedTheme(); fetchRates(); renderIcons();">
+<body>
 
-  <div class="app-container">
-    <header>
-      <div class="brand-center">
-        <!-- Logo oficial -->
-        <img src="icon-192.png" alt="DayCambio Logo" class="logo-img" onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' rx=\'20\' fill=\'%23070d14\'/><path d=\'M30 20 H55 C70 20 80 32 80 50 C80 68 70 80 55 80 H30 Z\' fill=\'%23a855f7\'/></svg>'">
-        <div>
-          <div class="app-name">DayCambio</div>
-          <div class="sub-title">Conversor & Comisiones</div>
-        </div>
-      </div>
-      <div class="header-actions">
-        <button class="icon-btn-top" onclick="requestNotificationPermission()" title="Activar Alertas BCV">
-          <i data-lucide="bell"></i>
-        </button>
-        <button class="icon-btn-top" onclick="toggleLightMode()" title="Modo Claro/Oscuro">
-          <i data-lucide="sun-moon"></i>
-        </button>
-      </div>
-    </header>
+    <!-- Ambient Glowing Orbs -->
+    <div class="ambient-orb orb-1" id="orb1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
 
-    <!-- Barra de Temas Seleccionables -->
-    <div class="glass-card" style="padding: 10px 14px;">
-      <div class="theme-selector">
-        <div class="theme-dot" id="dot-turquoise" style="background:#00f2fe" onclick="setTheme('turquoise')"></div>
-        <div class="theme-dot" id="dot-blue" style="background:#3b82f6" onclick="setTheme('blue')"></div>
-        <div class="theme-dot active" id="dot-purple" style="background:#a855f7" onclick="setTheme('purple')"></div>
-        <div class="theme-dot" id="dot-pink" style="background:#ec4899" onclick="setTheme('pink')"></div>
-        <div class="theme-dot" id="dot-neutral" style="background:#e2e8f0" onclick="setTheme('neutral')"></div>
-      </div>
-    </div>
-
-    <!-- Tasas de Referencia Superior -->
-    <div class="rates-bar">
-      <div class="mini-rate-card">
-        <div class="lbl">USD (BCV)</div>
-        <div class="val" id="rate-bcv-top">-- Bs</div>
-      </div>
-      <div class="mini-rate-card">
-        <div class="lbl">EUR (BCV)</div>
-        <div class="val" id="rate-eur-top">-- Bs</div>
-      </div>
-      <div class="mini-rate-card">
-        <div class="lbl">USDT</div>
-        <div class="val" id="rate-usdt-top">-- Bs</div>
-      </div>
-    </div>
-
-    <!-- Módulos de Acceso Rápido -->
-    <div class="extra-modules-grid">
-      <button class="module-card-btn" onclick="openChangeModal()"><i data-lucide="calculator"></i><span>Vuelto</span></button>
-      <button class="module-card-btn" onclick="openCalendarModal()"><i data-lucide="calendar"></i><span>Calendario</span></button>
-      <button class="module-card-btn" onclick="openHistoryModal()"><i data-lucide="trending-up"></i><span>Gráfica</span></button>
-      <button class="module-card-btn" onclick="openRegionalModal()"><i data-lucide="globe"></i><span>Regionales</span></button>
-      <button class="module-card-btn" onclick="openInterventionModal()"><i data-lucide="shield-alert"></i><span>Intervención</span></button>
-      <button class="module-card-btn" onclick="openTomorrowModal()"><i data-lucide="clock"></i><span>Tasa Mañana</span></button>
-      <button class="module-card-btn" onclick="openMyRateModal()"><i data-lucide="sliders"></i><span>Mi Tasa</span></button>
-    </div>
-
-    <div class="glass-card">
-      <!-- Selector de Moneda -->
-      <div class="currency-tabs">
-        <button class="tab-btn active" id="tab-USD" onclick="selectCurrency('USD')">USD</button>
-        <button class="tab-btn" id="tab-EUR" onclick="selectCurrency('EUR')">EUR</button>
-        <button class="tab-btn" id="tab-USDT" onclick="selectCurrency('USDT')">USDT</button>
-        <button class="tab-btn" id="tab-BRL" onclick="selectCurrency('BRL')">BRL</button>
-        <button class="tab-btn" id="tab-COP" onclick="selectCurrency('COP')">COP</button>
-        <button class="tab-btn" id="tab-ARS" onclick="selectCurrency('ARS')">ARS</button>
-        <button class="tab-btn" id="tab-MYRATE" onclick="selectCurrency('MYRATE')">Mi Tasa</button>
-      </div>
-
-      <!-- Input de Monto -->
-      <div class="input-wrapper">
-        <div class="amount-input-box">
-          <span class="currency-symbol" id="input-symbol">$</span>
-          <input type="text" id="amount" placeholder="0,00" oninput="calculate()">
-        </div>
-      </div>
-
-      <!-- Módulo Desglosado de Comisiones en Bs. -->
-      <div class="commission-breakdown">
-        <div class="comm-title">CONVERSIÓN Y COMISIONES (BS.)</div>
+    <!-- Main Application Container -->
+    <div class="relative z-10 flex min-h-screen flex-col items-center justify-between p-3 sm:p-5">
         
-        <div class="comm-row">
-          <span>Transferencia Bancaria (1%):</span>
-          <strong id="comm-transf-val">Bs. 0,00</strong>
+        <div class="mx-auto flex w-full max-w-md flex-col gap-3.5">
+            
+            <!-- HEADER BAR -->
+            <div class="relative flex items-center justify-between px-1 py-1">
+                <div class="flex items-center gap-3">
+                    <span class="dc-glass flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white/10 p-1">
+                        <img id="app-logo" src="icon-192.png" alt="DayCambio Logo" class="h-full w-full object-contain" onerror="this.src='https://placehold.co/80x80/a855f7/ffffff?text=DC'">
+                    </span>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight">DayCambio</h1>
+                        <p class="text-[10px] dc-muted font-medium">Tasas BCV & Cripto Venezuela</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button id="theme-toggle" type="button" class="dc-icon-btn" title="Modo Claro/Oscuro" aria-label="Cambiar tema claro u oscuro">
+                        <i data-lucide="sun" class="h-4 w-4 hidden dark:block"></i>
+                        <i data-lucide="moon" class="h-4 w-4 block dark:hidden"></i>
+                    </button>
+                    <button id="menu-btn" type="button" onclick="openModal('modal-custom-rate')" class="dc-icon-btn" aria-label="Ajustes de Tasa">
+                        <i data-lucide="sliders-horizontal" class="h-4 w-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- THEME COLOR PALETTE SELECTION BAR -->
+            <div class="dc-glass flex items-center justify-between px-4 py-2.5">
+                <div class="text-xs font-semibold dc-muted">Tema Neon:</div>
+                <div class="flex flex-1 items-center justify-center gap-2.5 px-2">
+                    <button type="button" title="Turquesa" onclick="setAccentTheme('#00f2fe')" class="dc-dot" style="background:#00f2fe"></button>
+                    <button type="button" title="Azul" onclick="setAccentTheme('#3b82f6')" class="dc-dot" style="background:#3b82f6"></button>
+                    <button type="button" title="Púrpura" onclick="setAccentTheme('#a855f7')" class="dc-dot is-active" style="background:#a855f7"></button>
+                    <button type="button" title="Rosa" onclick="setAccentTheme('#ec4899')" class="dc-dot" style="background:#ec4899"></button>
+                    <button type="button" title="Verde" onclick="setAccentTheme('#2ecc71')" class="dc-dot" style="background:#2ecc71"></button>
+                    <button type="button" title="Neutro" onclick="setAccentTheme('#94a3b8')" class="dc-dot" style="background:#94a3b8"></button>
+                </div>
+                <button type="button" onclick="openModal('modal-custom-rate')" class="dc-icon-btn !h-7 !w-7" title="Ajustar Mi Tasa">
+                    <i data-lucide="palette" class="h-3.5 w-3.5"></i>
+                </button>
+            </div>
+
+            <!-- TOP CARDS: BCV USD, EUR & USDT TASAS -->
+            <div class="grid grid-cols-3 gap-2">
+                <div class="dc-glass px-3 py-2.5 cursor-pointer hover:border-purple-500/40 transition-all" onclick="selectTab('USD')">
+                    <div class="dc-muted truncate text-[11px] font-semibold flex items-center justify-between">
+                        USD <span class="text-[9px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-400">BCV</span>
+                    </div>
+                    <div class="dc-num mt-1 text-sm leading-tight text-emerald-400" id="rate-usd">0,00</div>
+                    <div class="mt-1 text-[10px] dc-muted font-mono">= 1 USD</div>
+                </div>
+
+                <div class="dc-glass px-3 py-2.5 cursor-pointer hover:border-purple-500/40 transition-all" onclick="selectTab('EUR')">
+                    <div class="dc-muted truncate text-[11px] font-semibold flex items-center justify-between">
+                        EUR <span class="text-[9px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-400">BCV</span>
+                    </div>
+                    <div class="dc-num mt-1 text-sm leading-tight text-blue-400" id="rate-eur">0,00</div>
+                    <div class="mt-1 text-[10px] dc-muted font-mono">= 1 EUR</div>
+                </div>
+
+                <div class="dc-glass px-3 py-2.5 cursor-pointer hover:border-purple-500/40 transition-all" onclick="selectTab('USDT')">
+                    <div class="dc-muted truncate text-[11px] font-semibold flex items-center justify-between">
+                        USDT <span class="text-[9px] px-1 py-0.5 rounded bg-amber-500/20 text-amber-400">P2P</span>
+                    </div>
+                    <div class="dc-num mt-1 text-sm leading-tight text-amber-400" id="rate-usdt">0,00</div>
+                    <div class="mt-1 text-[10px] dc-muted font-mono">= 1 USDT</div>
+                </div>
+            </div>
+
+            <!-- FEATURE NAVIGATION BUTTONS (8 TOOL MODALS) -->
+            <div class="grid grid-cols-4 gap-2">
+                <button type="button" onclick="openModal('modal-vuelto')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                    <i data-lucide="calculator" class="h-4 w-4" style="color:var(--dc-accent)"></i>
+                    <span class="text-[10px] font-semibold">Vuelto</span>
+                </button>
+                <button type="button" onclick="openModal('modal-calendar')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                    <i data-lucide="calendar" class="h-4 w-4" style="color:var(--dc-accent)"></i>
+                    <span class="text-[10px] font-semibold">Calendario</span>
+                </button>
+                <button type="button" onclick="openModal('modal-chart')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                    <i data-lucide="trending-up" class="h-4 w-4" style="color:var(--dc-accent)"></i>
+                    <span class="text-[10px] font-semibold">Historial/Brecha</span>
+                </button>
+                <button type="button" onclick="openModal('modal-regional')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                    <i data-lucide="globe" class="h-4 w-4" style="color:var(--dc-accent)"></i>
+                    <span class="text-[10px] font-semibold">Regionales</span>
+                </button>
+                <button type="button" onclick="openModal('modal-intervencion')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                    <i data-lucide="shield-alert" class="h-4 w-4" style="color:var(--dc-accent)"></i>
+                    <span class="text-[10px] font-semibold">Intervención</span>
+                </button>
+                <button type="button" onclick="toggleTomorrowRate()" id="btn-tasa-manana" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                    <i data-lucide="clock" class="h-4 w-4" style="color:var(--dc-accent)"></i>
+                    <span class="text-[10px] font-semibold" id="lbl-tasa-manana">Tasa Mañana</span>
+                </button>
+                <button type="button" onclick="openModal('modal-custom-rate')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                    <i data-lucide="sliders-vertical" class="h-4 w-4" style="color:var(--dc-accent)"></i>
+                    <span class="text-[10px] font-semibold">Mi Tasa</span>
+                </button>
+                <button type="button" onclick="generateReceipt()" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3 transition-transform hover:-translate-y-0.5">
+                    <i data-lucide="receipt" class="h-4 w-4" style="color:var(--dc-accent)"></i>
+                    <span class="text-[10px] font-semibold">Recibo</span>
+                </button>
+            </div>
+
+            <!-- MAIN CURRENCY CONVERTER CARD -->
+            <div class="dc-glass space-y-3.5 p-4 relative overflow-hidden">
+                
+                <!-- Currency Selector Tabs -->
+                <div class="dc-scroll flex gap-2 overflow-x-auto pb-1">
+                    <button type="button" onclick="selectTab('USD')" class="dc-tab is-active" id="tab-USD">USD</button>
+                    <button type="button" onclick="selectTab('EUR')" class="dc-tab" id="tab-EUR">EUR</button>
+                    <button type="button" onclick="selectTab('USDT')" class="dc-tab" id="tab-USDT">USDT</button>
+                    <button type="button" onclick="selectTab('BRL')" class="dc-tab" id="tab-BRL">BRL</button>
+                    <button type="button" onclick="selectTab('COP')" class="dc-tab" id="tab-COP">COP</button>
+                    <button type="button" onclick="selectTab('ARS')" class="dc-tab" id="tab-ARS">ARS</button>
+                    <button type="button" onclick="selectTab('CUSTOM')" class="dc-tab" id="tab-CUSTOM">Mi Tasa</button>
+                </div>
+
+                <!-- Input Field Container -->
+                <div class="dc-glass-soft px-4 py-3 relative focus-within:ring-2 focus-within:ring-purple-500/50 transition-all">
+                    <div class="dc-label flex justify-between text-xs font-medium dc-muted">
+                        <span id="input-label-text">Monto en USD</span>
+                        <span id="direction-indicator" class="text-[10px] bg-white/10 px-1.5 py-0.5 rounded font-mono">Divisa ➔ Bs.</span>
+                    </div>
+                    <div class="mt-1 flex items-baseline gap-2">
+                        <span class="dc-num dc-muted text-xl font-bold" id="input-symbol">$</span>
+                        <input id="main-amount" class="dc-amount" placeholder="0,00" inputmode="decimal" aria-label="Monto a convertir" value="" oninput="calculateConversion()"/>
+                    </div>
+                </div>
+
+                <!-- Fee Desglose Panel -->
+                <div class="dc-glass-soft p-3.5 space-y-2.5">
+                    <div class="dc-label text-xs font-semibold text-gray-300 dark:text-gray-300">Conversión y comisiones (Bs.)</div>
+                    
+                    <div class="space-y-2 text-xs">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="dc-muted">Transferencia bancaria (1%)</span>
+                            <strong class="dc-num text-sm" id="fee-bank">Bs. 0,00</strong>
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="dc-muted">Pago móvil (mín. Bs. 14,00)</span>
+                            <strong class="dc-num text-sm" id="fee-mobile">Bs. 14,00</strong>
+                        </div>
+                        <div class="flex items-center justify-between gap-3 pt-1">
+                            <span class="dc-muted flex items-center gap-1">
+                                Incluir IGTF (3%)
+                                <i data-lucide="info" class="h-3 w-3 opacity-60" title="Impuesto a Grandes Transacciones Financieras"></i>
+                            </span>
+                            <div class="flex items-center gap-2">
+                                <strong class="dc-num text-sm" id="fee-igtf-val">Bs. 0,00</strong>
+                                <button type="button" id="switch-igtf" onclick="toggleIGTF()" class="dc-switch" aria-pressed="false" aria-label="Incluir IGTF 3%">
+                                    <span class="dc-switch-knob"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dc-divider my-2.5"></div>
+
+                    <div class="flex items-end justify-between gap-3">
+                        <span class="dc-muted text-xs font-medium">Total con comisiones bancarias</span>
+                        <span class="dc-num text-base font-bold text-emerald-400" id="total-with-fees">Bs. 0,00</span>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Floating Toolbar -->
+                <div class="flex items-center justify-center gap-2.5 pt-1">
+                    <button type="button" onclick="invertDirection()" class="dc-icon-btn" title="Invertir sentido (Bs. ↔️ Divisa)" aria-label="Invertir sentido">
+                        <i data-lucide="arrow-up-down" class="h-4 w-4"></i>
+                    </button>
+                    <button type="button" onclick="clearCalculator()" class="dc-icon-btn" title="Limpiar" aria-label="Limpiar">
+                        <i data-lucide="eraser" class="h-4 w-4"></i>
+                    </button>
+                    <button type="button" onclick="copyResult()" class="dc-icon-btn" title="Copiar Resultado" aria-label="Copiar">
+                        <i data-lucide="copy" class="h-4 w-4"></i>
+                    </button>
+                    <button type="button" onclick="fetchLatestRates(true)" class="dc-icon-btn" title="Actualizar tasas" aria-label="Actualizar tasas">
+                        <i data-lucide="refresh-cw" class="h-4 w-4" id="refresh-icon"></i>
+                    </button>
+                    <button type="button" onclick="generateReceipt()" class="dc-icon-btn" title="Compartir o Exportar Recibo" aria-label="Compartir imagen">
+                        <i data-lucide="share-2" class="h-4 w-4"></i>
+                    </button>
+                </div>
+
+                <div class="dc-divider"></div>
+
+                <!-- MAIN RESULT DISPLAY AREA -->
+                <div class="min-w-0">
+                    <div class="dc-label text-xs font-semibold dc-muted">Resultado Convertido</div>
+                    <div class="dc-num flex items-baseline gap-2 text-3xl font-extrabold text-white mt-1">
+                        <span class="dc-muted text-xl font-bold" id="result-symbol">Bs.</span>
+                        <span class="truncate" id="main-result">0,00</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mt-2">
+                        <div class="dc-muted text-[11px] font-medium" id="update-date-label">Actualizado · Cargando...</div>
+                        <div class="dc-muted text-[11px] font-mono bg-white/5 px-2 py-0.5 rounded" id="rate-reference-label">1 USD = 0,00 Bs.</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FOOTER CREDIT -->
+            <div class="dc-muted text-center text-[10px] tracking-wide pt-1">
+                App Creada por <strong class="text-gray-300">DR 2026</strong> · DayCambio LiquidGlass v2.5
+            </div>
+
         </div>
-
-        <div class="comm-row">
-          <span>Pago Móvil (Mín. Bs. 14,00):</span>
-          <strong id="comm-pmov-val">Bs. 0,00</strong>
-        </div>
-
-        <div class="comm-row">
-          <span>Incluir IGTF (3%):</span>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <strong id="comm-igtf-val">Bs. 0,00</strong>
-            <label class="switch">
-              <input type="checkbox" id="igtf-checkbox" onchange="calculate()">
-              <span class="slider"></span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <!-- Botones Circulares -->
-      <div class="actions-row">
-        <button class="action-btn" onclick="toggleDirection()" title="Invertir Sentido (VES ↔ Divisa)"><i data-lucide="arrow-up-down"></i></button>
-        <button class="action-btn" onclick="clearInput()" title="Limpiar"><i data-lucide="eraser"></i></button>
-        <button class="action-btn" onclick="copyResult()" title="Copiar"><i data-lucide="copy"></i></button>
-        <button class="action-btn" onclick="fetchRates()" title="Actualizar"><i data-lucide="refresh-cw"></i></button>
-        <button class="action-btn" onclick="openModal()" title="Compartir Imagen"><i data-lucide="share-2"></i></button>
-      </div>
-
-      <div class="divider"></div>
-
-      <!-- Resultado Final -->
-      <div class="result-section">
-        <div class="result-header-line">
-          <span class="result-label" id="result-symbol">Bs.</span>
-          <span class="result-number" id="result-val">0,00</span>
-        </div>
-        <span class="date-badge" id="date-text">Actualizado · Cargando...</span>
-        <span class="rate-line-info" id="rate-line-info">Tasa de referencia: --</span>
-      </div>
     </div>
 
-    <!-- Firma discreta -->
-    <div class="app-footer">App Creada por DR 2026</div>
-  </div>
 
-  <!-- Modales Adicionales Integrados -->
-  <!-- 0. Calculadora de Vuelto -->
-  <div id="change-modal" class="sub-modal">
-    <div class="sub-modal-content">
-      <h3>💵 Calculadora de Vuelto</h3>
-      <div style="display:flex; flex-direction:column; gap:8px; margin:10px 0; text-align:left;">
-        <label style="font-size:10px; color:var(--text-muted);">Monto a Cobrar ($):</label>
-        <input type="number" id="change-cost" placeholder="Ej: 15.00" oninput="calculateChange()" style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); color:var(--text-main); padding:8px 12px; border-radius:10px; font-size:14px; outline:none;">
-        
-        <label style="font-size:10px; color:var(--text-muted);">Paga del Cliente ($):</label>
-        <input type="number" id="change-pay" placeholder="Ej: 20.00" oninput="calculateChange()" style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); color:var(--text-main); padding:8px 12px; border-radius:10px; font-size:14px; outline:none;">
-      </div>
+    <!-- ==================== MODAL WINDOWS ==================== -->
 
-      <div id="change-result" style="font-size:12px; font-weight:700; color:var(--primary); background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:10px; border-radius:12px; margin-bottom:12px;">
-        Ingresa los montos para calcular
-      </div>
-
-      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeChangeModal()">Cerrar</button>
-    </div>
-  </div>
-
-  <!-- 1. Calendario BCV Histórico por Fechas -->
-  <div id="calendar-modal" class="sub-modal">
-    <div class="sub-modal-content">
-      <h3>📅 Calendario de Fechas BCV</h3>
-      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Consulta la tasa oficial histórica de cualquier fecha:</p>
-      <input type="date" id="selected-date" onchange="consultarTasaFecha()" style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); color:var(--text-main); padding:10px; border-radius:12px; margin-bottom:10px; outline:none;">
-      <div id="calendar-result" style="font-size:12px; font-weight:600; color:var(--primary); margin:10px 0; background:rgba(255,255,255,0.03); padding:10px; border-radius:12px; border:1px solid var(--card-border);">
-        Selecciona una fecha
-      </div>
-      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeCalendarModal()">Cerrar</button>
-    </div>
-  </div>
-
-  <!-- 2. Historial / Gráfica con Brecha Cambiaria -->
-  <div id="history-modal" class="sub-modal">
-    <div class="sub-modal-content">
-      <h3>📈 Historial y Brecha Cambiaria</h3>
-      <div style="font-size:11px; color:var(--text-muted); line-height:1.6; text-align:left; margin:10px 0; border-top:1px dashed rgba(255,255,255,0.1); border-bottom:1px dashed rgba(255,255,255,0.1); padding:10px 0;">
-        <div><strong>USD BCV:</strong> <span style="color:var(--primary);" id="hist-bcv">--</span></div>
-        <div><strong>EUR BCV:</strong> <span style="color:var(--primary);" id="hist-eur">--</span></div>
-        <div><strong>USDT Mercado:</strong> <span style="color:var(--primary);" id="hist-usdt">--</span></div>
-        <div style="margin-top: 8px; border-top: 1px dotted rgba(255,255,255,0.15); padding-top: 8px;">
-          <strong>Brecha (Euro vs BCV):</strong> <span style="color:#00f2fe;" id="brecha-eur">--</span>
+    <!-- MODAL 1: CALCULADORA DE VUELTO -->
+    <div id="modal-vuelto" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
+            <button onclick="closeModal('modal-vuelto')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
+            <div class="flex items-center gap-2 text-purple-400 font-bold">
+                <i data-lucide="calculator" class="h-5 w-5"></i>
+                <h2>Calculadora de Vuelto</h2>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="dc-muted text-xs block mb-1">Monto de la cuenta ($ USD)</label>
+                    <input id="vuelto-bill" type="number" step="any" placeholder="Ej: 15.50" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-bold" oninput="calcVuelto()">
+                </div>
+                <div>
+                    <label class="dc-muted text-xs block mb-1">Cliente paga con ($ USD en efectivo)</label>
+                    <input id="vuelto-paid" type="number" step="any" placeholder="Ej: 20.00" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-bold" oninput="calcVuelto()">
+                </div>
+                <div>
+                    <label class="dc-muted text-xs block mb-1">Pagó parte en Bolívares (Opcional Bs.)</label>
+                    <input id="vuelto-paid-bs" type="number" step="any" placeholder="Ej: 200.00" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-bold" oninput="calcVuelto()">
+                </div>
+                <div class="dc-glass-soft p-3 rounded-xl space-y-1">
+                    <div class="text-xs dc-muted">Vuelto a entregar:</div>
+                    <div class="text-lg font-bold text-emerald-400" id="vuelto-result-usd">$ 0.00 USD</div>
+                    <div class="text-xs text-purple-300 font-mono" id="vuelto-result-bs">ó Bs. 0,00</div>
+                </div>
+            </div>
         </div>
-        <div>
-          <strong>Brecha (USDT vs BCV):</strong> <span style="color:#00f2fe;" id="brecha-usdt">--</span>
-        </div>
-      </div>
-      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeHistoryModal()">Cerrar</button>
     </div>
-  </div>
 
-  <!-- 3. Divisas Regionales Info -->
-  <div id="regional-modal" class="sub-modal">
-    <div class="sub-modal-content">
-      <h3>🌎 Tasas de Divisas Regionales</h3>
-      <div style="font-size:11px; color:var(--text-muted); text-align:left; margin:10px 0; display:flex; flex-direction:column; gap:6px;">
-        <div><strong>Real Brasileño (BRL):</strong> <span id="reg-brl" style="color:var(--primary);">--</span></div>
-        <div><strong>Peso Colombiano (COP):</strong> <span id="reg-cop" style="color:var(--primary);">--</span></div>
-        <div><strong>Peso Argentino (ARS):</strong> <span id="reg-ars" style="color:var(--primary);">--</span></div>
-      </div>
-      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeRegionalModal()">Cerrar</button>
-    </div>
-  </div>
-
-  <!-- 4. Intervenciones BCV -->
-  <div id="intervention-modal" class="sub-modal">
-    <div class="sub-modal-content">
-      <h3>🏦 Intervención Cambiaria BCV</h3>
-      <div style="font-size:11px; color:var(--text-muted); text-align:left; margin:10px 0; line-height:1.6;" id="intervention-text">
-        Última intervención oficial registrada en la banca. Asignación de divisas orientada a estabilizar el mercado cambiario oficial.
-      </div>
-      <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeInterventionModal()">Cerrar</button>
-    </div>
-  </div>
-
-  <!-- 5. Tasa Mañana / Fin de Semana (Viernes a Lunes) -->
-  <div id="tomorrow-modal" class="sub-modal">
-    <div class="sub-modal-content">
-      <h3>🔄 Tasa BCV (Hoy vs Próximo Día Hábil)</h3>
-      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;" id="tomorrow-desc">
-        Selecciona la tasa con la que deseas operarle a tus clientes:
-      </p>
-      <div style="display:flex; gap:8px; margin-bottom:12px;">
-        <button class="modal-btn" style="flex:1; justify-content:center;" onclick="setRateMode('today')">Usar Hoy</button>
-        <button class="modal-btn" style="flex:1; justify-content:center; background:rgba(255,255,255,0.1); color:#fff;" onclick="setRateMode('tomorrow')" id="btn-mode-tomorrow">Tasa Lunes / Mañana</button>
-      </div>
-      <div id="tomorrow-status" style="font-size:12px; color:var(--primary); font-weight:600;">Modo activo: Tasa de Hoy</div>
-      <button class="modal-btn" style="width:100%; justify-content:center; margin-top:10px;" onclick="closeTomorrowModal()">Cerrar</button>
-    </div>
-  </div>
-
-  <!-- 6. Configurar "Mi Tasa" -->
-  <div id="myrate-modal" class="sub-modal">
-    <div class="sub-modal-content">
-      <h3>✏️ Configurar "Mi Tasa"</h3>
-      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Establece tu tasa de cobro libre:</p>
-      <input type="number" id="custom-rate-input" placeholder="Ej: 950.00" style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); color:var(--text-main); padding:10px; border-radius:12px; font-size:16px; margin-bottom:10px; outline:none; text-align:center;">
-      <div style="display:flex; gap:8px;">
-        <button class="modal-btn" style="flex:1; justify-content:center;" onclick="saveCustomRate()">Guardar</button>
-        <button class="modal-btn" style="flex:1; justify-content:center; background:rgba(255,255,255,0.1); color:#fff;" onclick="closeMyRateModal()">Cerrar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Recibo para Compartir -->
-  <div id="receipt-modal">
-    <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
-      <div class="receipt-card" id="receipt-to-render">
-        <div class="receipt-header-row">
-          <div class="receipt-logo-container">
-            <img src="icon-192.png" alt="Logo" class="receipt-logo-img" crossorigin="anonymous" onerror="this.style.display='none'">
-          </div>
-          <div>
-            <div class="receipt-title">DayCambio</div>
-            <div class="receipt-subtitle">Recibo de conversión</div>
-          </div>
+    <!-- MODAL 2: CALENDARIO HISTORICO INTERACTIVO -->
+    <div id="modal-calendar" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
+            <button onclick="closeModal('modal-calendar')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
+            <div class="flex items-center gap-2 text-purple-400 font-bold">
+                <i data-lucide="calendar" class="h-5 w-5"></i>
+                <h2>Consulta Histórica BCV</h2>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="dc-muted text-xs block mb-1">Selecciona una fecha del registro:</label>
+                    <input id="calendar-date-picker" type="date" class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white font-mono" onchange="lookupHistoricalRate()">
+                </div>
+                <div class="dc-glass-soft p-4 rounded-xl space-y-2 text-sm" id="calendar-result-box">
+                    <p class="dc-muted text-xs">Selecciona un día en el calendario para verificar la tasa oficial BCV registrada.</p>
+                </div>
+            </div>
         </div>
-
-        <div class="receipt-divider"></div>
-
-        <div class="receipt-row-item">
-          <span class="receipt-row-label">Fecha</span>
-          <span class="receipt-row-val" id="m-stamp">--</span>
-        </div>
-        <div class="receipt-row-item">
-          <span class="receipt-row-label">Moneda</span>
-          <span class="receipt-row-val" id="m-currency">--</span>
-        </div>
-        <div class="receipt-row-item">
-          <span class="receipt-row-label">Monto</span>
-          <span class="receipt-row-val" id="m-amount">--</span>
-        </div>
-
-        <div class="receipt-divider"></div>
-
-        <div class="receipt-total-title">Total en bolívares</div>
-        <div class="receipt-total-amount" id="m-total-bs">Bs. 0,00</div>
-        <div class="receipt-meta-info" id="m-meta">--</div>
-        <div class="receipt-rate-info" id="m-rate">--</div>
-
-        <div class="receipt-divider"></div>
-
-        <div class="receipt-row-item"><span style="color:var(--text-muted)">Transferencia 1%</span><span class="receipt-row-val" id="m-transf">Bs. 0,00</span></div>
-        <div class="receipt-row-item"><span style="color:var(--text-muted)">Pago móvil 1%</span><span class="receipt-row-val" id="m-pmovil">Bs. 0,00</span></div>
-        <div id="m-igtf-row" class="receipt-row-item" style="display:none;"><span style="color:var(--text-muted)">IGTF 3%</span><span class="receipt-row-val" id="m-igtf">Bs. 0,00</span></div>
-        <div class="receipt-row-item" style="font-weight:700; color:var(--primary); margin-top:4px;">
-          <span class="receipt-row-label" style="color:var(--primary)">Total con comisiones</span>
-          <span class="receipt-row-val" style="color:var(--primary);" id="m-final">Bs. 0,00</span>
-        </div>
-
-        <div class="receipt-divider"></div>
-        <div class="receipt-footer-brand">App Creada por DR 2026</div>
-      </div>
-      
-      <div style="display:flex; gap:8px; width:100%; max-width:320px;">
-        <button class="modal-btn" style="flex:1;" onclick="shareNativeImage()"><i data-lucide="send"></i> Compartir</button>
-        <button class="modal-btn" style="flex:1;" onclick="downloadImage()"><i data-lucide="download"></i> Guardar</button>
-        <button class="modal-btn" style="background:rgba(255,255,255,0.1); color:#fff;" onclick="closeModal()">Cerrar</button>
-      </div>
     </div>
-  </div>
 
-  <script>
-    let selectedCurrency = 'USD';
-    let isVesToForeign = false;
-    let rateMode = 'today';
-    let customRate = parseFloat(localStorage.getItem('daycambio_custom_rate')) || 900.00;
+    <!-- MODAL 3: HISTORIAL Y BRECHA CAMBIARIA (CON SPARKLINE INTEGRADO DEL COMPONENTE REACT) -->
+    <div id="modal-chart" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="dc-modal-content dc-glass w-full max-w-md p-5 space-y-4 relative">
+            <button onclick="closeModal('modal-chart')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
+            
+            <div>
+                <div class="flex items-center gap-2 text-purple-400 font-bold text-lg">
+                    <i data-lucide="trending-up" class="h-5 w-5"></i>
+                    <h2>Historial y brecha cambiaria</h2>
+                </div>
+                <p id="history-subtitle" class="text-xs dc-muted mt-0.5">Cargando rango histórico...</p>
+            </div>
 
-    let rates = { 
-      USD: 880.12, 
-      EUR: 985.73, 
-      USDT: 1002.65, 
-      BRL: 158.42,   
-      COP: 0.21,     
-      ARS: 0.73,     
-      MYRATE: customRate, 
-      VES: 1.0 
-    };
+            <!-- FILAS DE TASA Y BRECHA (LOGICA EXACTA REACT) -->
+            <div class="dc-glass-soft space-y-2.5 p-3.5">
+                <div class="flex items-center justify-between gap-3 text-sm">
+                    <span class="dc-muted">USD BCV</span>
+                    <strong class="dc-num text-sm text-emerald-400" id="hist-usd-val">0,00 Bs</strong>
+                </div>
+                <div class="flex items-center justify-between gap-3 text-sm">
+                    <span class="dc-muted">EUR BCV</span>
+                    <strong class="dc-num text-sm text-blue-400" id="hist-eur-val">0,00 Bs</strong>
+                </div>
+                <div class="flex items-center justify-between gap-3 text-sm">
+                    <span class="dc-muted">USDT mercado</span>
+                    <strong class="dc-num text-sm text-amber-400" id="hist-usdt-val">0,00 Bs</strong>
+                </div>
+                
+                <div class="dc-divider my-1"></div>
+                
+                <div class="flex items-center justify-between gap-3 text-sm">
+                    <span class="dc-muted">Brecha Euro vs BCV</span>
+                    <strong class="dc-num text-sm" id="hist-gap-eur">+0.00%</strong>
+                </div>
+                <div class="flex items-center justify-between gap-3 text-sm">
+                    <span class="dc-muted">Brecha USDT vs BCV</span>
+                    <strong class="dc-num text-sm" id="hist-gap-usdt">+0.00%</strong>
+                </div>
+            </div>
 
-    let ratesTomorrow = { USD: 885.00, EUR: 990.00 };
+            <!-- GRAFICA SPARKLINE SVG EN LINEA (LOGICA COMPONENTE SPARKLINE REACT) -->
+            <div class="dc-glass-soft p-3.5 space-y-2">
+                <div class="text-xs font-semibold text-gray-300">USD BCV · últimos 30 registros</div>
+                
+                <div id="sparkline-container" class="w-full h-16 py-1">
+                    <!-- El SVG Polyline se genera dinámicamente -->
+                </div>
 
-    function renderIcons() {
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    }
+                <div class="dc-muted text-[11px] text-right font-mono" id="sparkline-bounds">
+                    Mínimo 0,00 · Máximo 0,00
+                </div>
+            </div>
 
-    function setTheme(theme) {
-      document.body.setAttribute('data-theme', theme);
-      document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.remove('active'));
-      const activeDot = document.getElementById(`dot-${theme}`);
-      if(activeDot) activeDot.classList.add('active');
-      localStorage.setItem('daycambio_theme', theme);
-    }
+            <button type="button" class="w-full py-2.5 rounded-xl font-bold text-white transition-all shadow-lg bg-white/10 hover:bg-white/15" onclick="closeModal('modal-chart')">
+                Cerrar
+            </button>
+        </div>
+    </div>
 
-    function toggleLightMode() {
-      document.body.classList.toggle('light-mode');
-      const isLight = document.body.classList.contains('light-mode');
-      localStorage.setItem('daycambio_lightmode', isLight ? 'true' : 'false');
-    }
+    <!-- MODAL 4: REGIONALES -->
+    <div id="modal-regional" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
+            <button onclick="closeModal('modal-regional')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
+            <div class="flex items-center gap-2 text-purple-400 font-bold">
+                <i data-lucide="globe" class="h-5 w-5"></i>
+                <h2>Divisas Regionales</h2>
+            </div>
+            <div class="space-y-2 text-sm">
+                <div class="dc-glass-soft p-3 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold">Real Brasileño (BRL)</div>
+                        <div class="text-xs dc-muted">1 BRL a Bolívares</div>
+                    </div>
+                    <div class="font-mono font-bold text-emerald-400" id="reg-brl">0.00 Bs.</div>
+                </div>
+                <div class="dc-glass-soft p-3 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold">Peso Colombiano (COP)</div>
+                        <div class="text-xs dc-muted">1 COP a Bolívares</div>
+                    </div>
+                    <div class="font-mono font-bold text-blue-400" id="reg-cop">0.00 Bs.</div>
+                </div>
+                <div class="dc-glass-soft p-3 flex justify-between items-center">
+                    <div>
+                        <div class="font-bold">Peso Argentino (ARS)</div>
+                        <div class="text-xs dc-muted">1 ARS a Bolívares</div>
+                    </div>
+                    <div class="font-mono font-bold text-purple-400" id="reg-ars">0.00 Bs.</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    function loadSavedTheme() {
-      const savedTheme = localStorage.getItem('daycambio_theme') || 'purple';
-      setTheme(savedTheme);
+    <!-- MODAL 5: INTERVENCION CAMBIARIA -->
+    <div id="modal-intervencion" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
+            <button onclick="closeModal('modal-intervencion')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
+            <div class="flex items-center gap-2 text-purple-400 font-bold">
+                <i data-lucide="shield-alert" class="h-5 w-5"></i>
+                <h2>Intervención Bancaria BCV</h2>
+            </div>
+            <div class="dc-glass-soft p-4 rounded-xl space-y-2 text-xs leading-relaxed">
+                <div class="font-bold text-sm text-purple-300">Inyección de Divisas al Mercado</div>
+                <p class="dc-muted">El Banco Central de Venezuela coloca semanalmente divisas en la banca pública y privada para estabilizar la demanda cambiaria.</p>
+                <div class="pt-2 border-t border-white/10 flex justify-between items-center text-gray-300">
+                    <span>Estado del Mercado:</span>
+                    <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">Fluidez Normal</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      const isLight = localStorage.getItem('daycambio_lightmode') === 'true';
-      if (isLight) {
-        document.body.classList.add('light-mode');
-      } else {
-        document.body.classList.remove('light-mode');
-      }
-    }
+    <!-- MODAL 6: CONFIGURAR MI TASA INTERACTIVA -->
+    <div id="modal-custom-rate" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
+            <button onclick="closeModal('modal-custom-rate')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
+            <div class="flex items-center gap-2 text-purple-400 font-bold">
+                <i data-lucide="sliders-vertical" class="h-5 w-5"></i>
+                <h2>Personalizar "Mi Tasa"</h2>
+            </div>
+            <div class="space-y-3 text-sm">
+                <p class="dc-muted text-xs">Ajusta manualmente la tasa que utilizas para tus compras o negocios. Se guardará de forma permanente en tu dispositivo.</p>
+                
+                <!-- Accesos rápidos para copiar tasas del mercado -->
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <button type="button" onclick="quickCopyRate('usd')" class="dc-glass-soft p-2 text-left hover:border-purple-500/50 transition-all">
+                        <span class="dc-muted block text-[10px]">Copiar BCV</span>
+                        <strong class="font-mono text-emerald-400" id="quick-bcv-val">0,00 Bs.</strong>
+                    </button>
+                    <button type="button" onclick="quickCopyRate('usdt')" class="dc-glass-soft p-2 text-left hover:border-amber-500/50 transition-all">
+                        <span class="dc-muted block text-[10px]">Copiar USDT</span>
+                        <strong class="font-mono text-amber-400" id="quick-usdt-val">0,00 Bs.</strong>
+                    </button>
+                </div>
 
-    async function fetchRates() {
-      try {
-        const res = await fetch('https://ve.dolarapi.com/v1/dolares');
-        if (res.ok) {
-          const data = await res.json();
-          const bcv = data.find(d => d.fuente === 'oficial' || d.key === 'oficial');
-          const paralelo = data.find(d => d.fuente === 'paralelo' || d.key === 'enparalelovzla' || d.titulo?.toLowerCase().includes('paralelo'));
-          
-          if (bcv && bcv.promedio) {
-            const oldRate = rates.USD;
-            rates.USD = parseFloat(bcv.promedio);
-            rates.EUR = parseFloat((rates.USD * 1.12).toFixed(2));
-            rates.BRL = parseFloat((rates.USD * 0.18).toFixed(2));
-            rates.COP = parseFloat((rates.USD / 4150).toFixed(4));
-            rates.ARS = parseFloat((rates.USD / 1200).toFixed(4));
+                <div>
+                    <label class="dc-muted text-xs block mb-1">Valor en Bolívares por Divisa (Bs.):</label>
+                    <div class="relative flex items-center">
+                        <input id="custom-rate-input" type="number" step="any" placeholder="890.00" class="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white font-mono font-bold focus:outline-none focus:border-purple-500">
+                        <span class="absolute right-3 text-xs font-bold dc-muted">Bs.</span>
+                    </div>
+                </div>
 
-            // Lógica de Fin de semana (Viernes, Sábado y Domingo proyectan la tasa del Lunes)
-            const now = new Date();
-            const dayOfWeek = now.getDay(); // 5 = Viernes, 6 = Sábado, 0 = Domingo
-            if (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0) {
-              ratesTomorrow.USD = parseFloat((rates.USD * 1.0025).toFixed(2));
-              ratesTomorrow.EUR = parseFloat((rates.EUR * 1.0025).toFixed(2));
-            } else {
-              ratesTomorrow.USD = parseFloat((rates.USD * 1.005).toFixed(2));
-              ratesTomorrow.EUR = parseFloat((rates.EUR * 1.005).toFixed(2));
+                <button type="button" onclick="saveCustomRate()" class="w-full py-2.5 rounded-xl font-bold text-white transition-all shadow-lg hover:opacity-90" style="background:var(--dc-accent)">
+                    Guardar y Aplicar "Mi Tasa"
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 7: RECIBO COMPROBANTE -->
+    <div id="modal-receipt" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
+            <button onclick="closeModal('modal-receipt')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
+            
+            <div id="receipt-card" class="bg-slate-900 text-white p-5 rounded-2xl border border-purple-500/30 space-y-4 shadow-2xl relative">
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-purple-600 flex items-center justify-center font-bold text-xs">DC</div>
+                        <span class="font-bold text-sm tracking-wide">DayCambio</span>
+                    </div>
+                    <span class="text-[10px] text-gray-400 font-mono" id="rec-date">18 Oct 2026</span>
+                </div>
+
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between"><span class="text-gray-400">Operación:</span><span id="rec-op" class="font-bold">USD a Bs.</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Monto Insumo:</span><span id="rec-monto" class="font-mono">10.00 USD</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Tasa Aplicada:</span><span id="rec-tasa" class="font-mono">880.12 Bs.</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Comisiones:</span><span id="rec-fees" class="font-mono">14.00 Bs.</span></div>
+                    <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-bold text-emerald-400">
+                        <span>Total A pagar:</span>
+                        <span id="rec-total" class="font-mono">Bs. 8,815.20</span>
+                    </div>
+                </div>
+
+                <div class="text-[9px] text-center text-gray-500 pt-2 border-t border-white/5">
+                    Comprobante generado por DayCambio App
+                </div>
+            </div>
+
+            <button type="button" onclick="downloadReceiptImage()" class="w-full py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg" style="background:var(--dc-accent)">
+                <i data-lucide="download" class="h-4 w-4"></i> Descargar Imagen
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        // --- HELPER FUNCTIONS ---
+        function formatNumber(val, decimals = 2) {
+            if (val === undefined || val === null || isNaN(val)) return '0,00';
+            return val.toLocaleString('es-VE', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+        }
+
+        function formatFecha(fechaStr) {
+            if (!fechaStr) return '';
+            if (fechaStr.includes('-')) {
+                const parts = fechaStr.split('-');
+                if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return fechaStr;
+        }
+
+        function gap(value, base) {
+            if (!base || !value) return 0;
+            return ((value - base) / base) * 100;
+        }
+
+        // --- APP STATE & RATES DATA ---
+        const state = {
+            rates: {
+                usd: 880.12,
+                eur: 985.73,
+                usdt: 997.95,
+                brl: 172.96,
+                cop: 0.276,
+                ars: 0.581,
+                custom: 890.00,
+                history: [
+                    { fecha: "2026-09-19", usd: 855.10, eur: 950.20, usdt: 968.00 },
+                    { fecha: "2026-09-21", usd: 857.40, eur: 953.10, usdt: 970.50 },
+                    { fecha: "2026-09-23", usd: 859.80, eur: 956.00, usdt: 973.20 },
+                    { fecha: "2026-09-25", usd: 861.20, eur: 958.40, usdt: 975.00 },
+                    { fecha: "2026-09-28", usd: 863.50, eur: 961.00, usdt: 978.10 },
+                    { fecha: "2026-09-30", usd: 865.90, eur: 963.80, usdt: 980.40 },
+                    { fecha: "2026-10-02", usd: 868.00, eur: 966.50, usdt: 983.00 },
+                    { fecha: "2026-10-05", usd: 870.30, eur: 969.00, usdt: 986.20 },
+                    { fecha: "2026-10-07", usd: 872.10, eur: 971.80, usdt: 988.50 },
+                    { fecha: "2026-10-09", usd: 874.20, eur: 974.50, usdt: 990.10 },
+                    { fecha: "2026-10-12", usd: 875.50, eur: 976.20, usdt: 991.80 },
+                    { fecha: "2026-10-14", usd: 876.80, eur: 978.00, usdt: 992.50 },
+                    { fecha: "2026-10-15", usd: 877.90, eur: 981.10, usdt: 995.00 },
+                    { fecha: "2026-10-16", usd: 879.12, eur: 983.40, usdt: 996.20 },
+                    { fecha: "2026-10-17", usd: 879.80, eur: 984.90, usdt: 997.10 },
+                    { fecha: "2026-10-18", usd: 880.12, eur: 985.73, usdt: 997.95 }
+                ]
+            },
+            selectedCurrency: 'USD',
+            isFlipped: false,
+            includeIGTF: false,
+            isTomorrowRate: false,
+            accentColor: '#a855f7'
+        };
+
+        // --- INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadLocalStorage();
+            fetchLatestRates();
+            setupThemeToggle();
+            updateUI();
+            
+            const dateInput = document.getElementById('calendar-date-picker');
+            if (dateInput) {
+                dateInput.value = "2026-10-18";
+                lookupHistoricalRate();
+            }
+        });
+
+        // --- LOCAL STORAGE RECOVERY ---
+        function loadLocalStorage() {
+            const savedCustom = localStorage.getItem('dc_custom_rate');
+            if (savedCustom && !isNaN(parseFloat(savedCustom))) {
+                state.rates.custom = parseFloat(savedCustom);
             }
 
-            checkAndNotifyRateChange(oldRate, rates.USD);
-          }
-          if (paralelo && paralelo.promedio) {
-            rates.USDT = parseFloat(paralelo.promedio);
-          }
+            const savedAccent = localStorage.getItem('dc_accent_color');
+            if (savedAccent) setAccentTheme(savedAccent);
         }
-      } catch (e) {
-        console.log('Usando tasas locales');
-      }
 
-      actualizarVistaTasas();
-    }
+        // --- THEME COLOR SELECTION ---
+        function setAccentTheme(color) {
+            state.accentColor = color;
+            document.documentElement.style.setProperty('--dc-accent', color);
+            document.documentElement.style.setProperty('--dc-accent-glow', color + '55');
+            document.documentElement.style.setProperty('--dc-bg-glow', color + '25');
 
-    function actualizarVistaTasas() {
-      const activeBcv = rateMode === 'tomorrow' ? ratesTomorrow.USD : rates.USD;
-      const activeEur = rateMode === 'tomorrow' ? ratesTomorrow.EUR : rates.EUR;
+            localStorage.setItem('dc_accent_color', color);
 
-      const topBcv = document.getElementById('rate-bcv-top');
-      const topEur = document.getElementById('rate-eur-top');
-      const topUsdt = document.getElementById('rate-usdt-top');
+            document.querySelectorAll('.dc-dot').forEach(dot => {
+                if (dot.style.background.includes(color) || rgbToHex(dot.style.background) === color) {
+                    dot.classList.add('is-active');
+                } else {
+                    dot.classList.remove('is-active');
+                }
+            });
 
-      if (topBcv) topBcv.innerText = activeBcv.toFixed(2) + ' Bs';
-      if (topEur) topEur.innerText = activeEur.toFixed(2) + ' Bs';
-      if (topUsdt) topUsdt.innerText = rates.USDT.toFixed(2) + ' Bs';
-
-      const today = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
-      const dateText = document.getElementById('date-text');
-      if (dateText) {
-        dateText.innerText = `Actualizado · ${today} (${rateMode === 'tomorrow' ? 'Tasa Próxima / Lunes' : 'Tasa Hoy'})`;
-      }
-      calculate();
-    }
-
-    function requestNotificationPermission() {
-      if (!("Notification" in window)) {
-        alert("Tu dispositivo no soporta notificaciones.");
-        return;
-      }
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          alert("Notificaciones activadas. Recibirás alertas al actualizarse la tasa BCV.");
-        } else {
-          alert("Permiso denegado.");
+            renderHistoryModalLogic();
         }
-      });
-    }
 
-    function checkAndNotifyRateChange(oldRate, newRate) {
-      if (oldRate && oldRate !== newRate && Notification.permission === "granted") {
-        new Notification("DayCambio: Cambio de Tasa BCV", {
-          body: `La tasa oficial del BCV se actualizó a: Bs. ${newRate.toFixed(2)}`,
-          icon: "icon-192.png"
-        });
-      }
-    }
-
-    function selectCurrency(curr) {
-      selectedCurrency = curr;
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      const activeBtn = document.getElementById(`tab-${curr}`);
-      if(activeBtn) activeBtn.classList.add('active');
-
-      const symbolEl = document.getElementById('input-symbol');
-      
-      if (curr === 'USD') symbolEl.innerText = '$';
-      else if (curr === 'EUR') symbolEl.innerText = '€';
-      else if (curr === 'USDT') symbolEl.innerText = '₮';
-      else if (curr === 'BRL') symbolEl.innerText = 'R$';
-      else if (curr === 'COP') symbolEl.innerText = 'COL$';
-      else if (curr === 'ARS') symbolEl.innerText = 'ARS$';
-      else if (curr === 'MYRATE') symbolEl.innerText = '⭐';
-
-      calculate();
-    }
-
-    function toggleDirection() {
-      isVesToForeign = !isVesToForeign;
-      const symbolEl = document.getElementById('input-symbol');
-      const resSymbol = document.getElementById('result-symbol');
-      
-      if (isVesToForeign) {
-        symbolEl.innerText = 'Bs.';
-        resSymbol.innerText = selectedCurrency === 'EUR' ? '€' : (selectedCurrency === 'USD' ? '$' : selectedCurrency);
-      } else {
-        symbolEl.innerText = selectedCurrency === 'EUR' ? '€' : (selectedCurrency === 'USD' ? '$' : selectedCurrency);
-        resSymbol.innerText = 'Bs.';
-      }
-      calculate();
-    }
-
-    function clearInput() {
-      document.getElementById('amount').value = '';
-      calculate();
-    }
-
-    function copyResult() {
-      const val = document.getElementById('result-val').innerText;
-      const symbol = document.getElementById('result-symbol').innerText;
-      navigator.clipboard.writeText(`${symbol} ${val}`).then(() => {
-        alert("Resultado copiado");
-      });
-    }
-
-    function calculate() {
-      const rawVal = document.getElementById('amount').value.replace(',', '.');
-      const amount = parseFloat(rawVal) || 0;
-      
-      let currentRate = rates[selectedCurrency] || 1;
-      if (rateMode === 'tomorrow' && (selectedCurrency === 'USD' || selectedCurrency === 'EUR')) {
-        currentRate = ratesTomorrow[selectedCurrency];
-      }
-
-      let baseBs = 0;
-      let foreignVal = 0;
-
-      if (!isVesToForeign) {
-        baseBs = amount * currentRate;
-        foreignVal = amount;
-      } else {
-        baseBs = amount;
-        foreignVal = currentRate > 0 ? (amount / currentRate) : 0;
-      }
-
-      const transfer = baseBs * 0.01;
-      const pmovil = Math.max(baseBs * 0.005, 14.00);
-      const includeIgtf = document.getElementById('igtf-checkbox').checked;
-      const igtfVal = includeIgtf ? baseBs * 0.03 : 0;
-      const totalFinal = baseBs + igtfVal;
-
-      document.getElementById('comm-transf-val').innerText = 'Bs. ' + transfer.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById('comm-pmov-val').innerText = 'Bs. ' + pmovil.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById('comm-igtf-val').innerText = 'Bs. ' + igtfVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-      const formattedResult = !isVesToForeign ? 
-        baseBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 
-        foreignVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-      document.getElementById('result-val').innerText = formattedResult;
-
-      const todayStr = new Date().toLocaleDateString('es-VE', { day: '2-digit', month: 'short', year: 'numeric' });
-      document.getElementById('date-text').innerText = `Actualizado · ${todayStr}`;
-      document.getElementById('rate-line-info').innerText = `Tasa de referencia: ${currentRate.toFixed(2)} Bs/${selectedCurrency}`;
-
-      window.lastCalculation = {
-        amount,
-        baseBs,
-        transfer,
-        pmovil,
-        igtfVal,
-        includeIgtf,
-        totalFinal,
-        currentRate,
-        todayStr
-      };
-    }
-
-    function openModal() {
-      const data = window.lastCalculation || { amount: 0, baseBs: 0, transfer: 0, pmovil: 0, igtfVal: 0, includeIgtf: false, totalFinal: 0, currentRate: 0, todayStr: '' };
-      const stamp = new Date().toLocaleString('es-VE', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'America/Caracas' });
-
-      document.getElementById('m-stamp').innerText = stamp;
-      document.getElementById('m-currency').innerText = `${selectedCurrency} · Oficial`;
-      document.getElementById('m-amount').innerText = `${selectedCurrency === 'EUR' ? '€' : '$'} ${data.amount.toFixed(2)}`;
-      document.getElementById('m-total-bs').innerText = 'Bs. ' + data.baseBs.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById('m-meta').innerText = `Actualizado · ${data.todayStr}`;
-      document.getElementById('m-rate').innerText = `Tasa aplicada: ${data.currentRate.toFixed(2)} Bs/${selectedCurrency}`;
-
-      document.getElementById('m-transf').innerText = 'Bs. ' + data.transfer.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById('m-pmovil').innerText = 'Bs. ' + data.pmovil.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-      const igtfRow = document.getElementById('m-igtf-row');
-      if (data.includeIgtf) {
-        igtfRow.style.display = 'flex';
-        document.getElementById('m-igtf').innerText = 'Bs. ' + data.igtfVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      } else {
-        igtfRow.style.display = 'none';
-      }
-
-      document.getElementById('m-final').innerText = 'Bs. ' + data.totalFinal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      document.getElementById('receipt-modal').style.display = 'flex';
-      renderIcons();
-    }
-
-    function closeModal() {
-      document.getElementById('receipt-modal').style.display = 'none';
-    }
-
-    async function downloadImage() {
-      const card = document.getElementById('receipt-to-render');
-      try {
-        const canvas = await html2canvas(card, { backgroundColor: null, scale: 2, useCORS: true });
-        const link = document.createElement('a');
-        link.download = 'daycambio-recibo.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      } catch (err) {
-        alert("No se pudo generar la imagen.");
-      }
-    }
-
-    async function shareNativeImage() {
-      const card = document.getElementById('receipt-to-render');
-      try {
-        const canvas = await html2canvas(card, { backgroundColor: null, scale: 2, useCORS: true });
-        canvas.toBlob(async (blob) => {
-          const file = new File([blob], 'daycambio-recibo.png', { type: 'image/png' });
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({ files: [file], title: 'DayCambio Recibo', text: 'Recibo de conversión DayCambio' });
-          } else {
-            downloadImage();
-          }
-        });
-      } catch (err) {
-        downloadImage();
-      }
-    }
-
-    function openChangeModal() { document.getElementById('change-modal').style.display = 'flex'; renderIcons(); }
-    function closeChangeModal() { document.getElementById('change-modal').style.display = 'none'; }
-    function calculateChange() {
-      const cost = parseFloat(document.getElementById('change-cost').value) || 0;
-      const pay = parseFloat(document.getElementById('change-pay').value) || 0;
-      const change = pay - cost;
-      const resEl = document.getElementById('change-result');
-      if (change >= 0) {
-        resEl.innerText = `Vuelto a entregar: $${change.toFixed(2)} (Bs. ${(change * rates.USD).toFixed(2)})`;
-      } else {
-        resEl.innerText = `Faltan: $${Math.abs(change).toFixed(2)}`;
-      }
-    }
-
-    function openCalendarModal() { document.getElementById('calendar-modal').style.display = 'flex'; renderIcons(); }
-    function closeCalendarModal() { document.getElementById('calendar-modal').style.display = 'none'; }
-
-    // Consulta en tiempo real de la tasa histórica seleccionada en el calendario
-    async function consultarTasaFecha() {
-      const fechaVal = document.getElementById('selected-date').value;
-      const res = document.getElementById('calendar-result');
-      if (!fechaVal) return;
-
-      res.innerText = "Consultando tasa histórica BCV...";
-      
-      try {
-        const resFetch = await fetch(`https://ve.dolarapi.com/v1/dolares`);
-        if (resFetch.ok) {
-          const data = await resFetch.json();
-          const bcv = data.find(d => d.fuente === 'oficial' || d.key === 'oficial');
-          const tasaActual = bcv ? parseFloat(bcv.promedio) : rates.USD;
-          
-          // Formatear la fecha
-          const partes = fechaVal.split('-');
-          const fechaFormateada = `${partes[2]}/${partes[1]}/${partes[0]}`;
-          
-          res.innerHTML = `<div><strong>Tasa Oficial BCV (${fechaFormateada}):</strong></div><div style="font-size:18px; color:var(--primary); font-weight:800; margin-top:4px;">Bs. ${tasaActual.toFixed(2)}</div>`;
-        } else {
-          res.innerText = "No se pudo obtener el histórico de esa fecha.";
+        function rgbToHex(rgb) {
+            if (!rgb || rgb.startsWith('#')) return rgb;
+            const res = rgb.match(/\d+/g);
+            return res ? "#" + ((1 << 24) + (+res[0] << 16) + (+res[1] << 8) + +res[2]).toString(16).slice(1) : rgb;
         }
-      } catch (e) {
-        res.innerText = `Tasa oficial para ${fechaVal}: Bs. ${rates.USD.toFixed(2)}`;
-      }
-    }
 
-    function openHistoryModal() {
-      document.getElementById('hist-bcv').innerText = rates.USD.toFixed(2) + ' Bs';
-      document.getElementById('hist-eur').innerText = rates.EUR.toFixed(2) + ' Bs';
-      document.getElementById('hist-usdt').innerText = rates.USDT.toFixed(2) + ' Bs';
-      const brechaEurVal = (((rates.EUR - (rates.USD * 1.08)) / (rates.USD * 1.08)) * 100).toFixed(1);
-      const brechaUsdtVal = (((rates.USDT - rates.USD) / rates.USD) * 100).toFixed(1);
-      document.getElementById('brecha-eur').innerText = `${brechaEurVal}%`;
-      document.getElementById('brecha-usdt').innerText = `${brechaUsdtVal}%`;
-      document.getElementById('history-modal').style.display = 'flex';
-      renderIcons();
-    }
-    function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
+        // --- LIGHT/DARK MODE TOGGLE ---
+        function setupThemeToggle() {
+            const btn = document.getElementById('theme-toggle');
+            btn.addEventListener('click', () => {
+                document.body.classList.toggle('light');
+                document.documentElement.classList.toggle('dark');
+                renderHistoryModalLogic();
+            });
+        }
 
-    function openRegionalModal() {
-      document.getElementById('reg-brl').innerText = rates.BRL.toFixed(2) + ' Bs';
-      document.getElementById('reg-cop').innerText = rates.COP.toFixed(4) + ' Bs';
-      document.getElementById('reg-ars').innerText = rates.ARS.toFixed(4) + ' Bs';
-      document.getElementById('regional-modal').style.display = 'flex';
-      renderIcons();
-    }
-    function closeRegionalModal() { document.getElementById('regional-modal').style.display = 'none'; }
+        // --- API RATE FETCHING ---
+        async function fetchLatestRates(isManual = false) {
+            const refreshIcon = document.getElementById('refresh-icon');
+            if (refreshIcon) refreshIcon.classList.add('animate-spin');
 
-    function openInterventionModal() { document.getElementById('intervention-modal').style.display = 'flex'; renderIcons(); }
-    function closeInterventionModal() { document.getElementById('intervention-modal').style.display = 'none'; }
+            try {
+                const res = await fetch('https://ve.dolarapi.com/v1/dolares');
+                if (res.ok) {
+                    const data = await res.json();
+                    const oficial = data.find(d => d.codigo === 'oficial');
+                    const paralelo = data.find(d => d.codigo === 'paralelo');
+                    if (oficial) state.rates.usd = oficial.promedio;
+                    if (paralelo) state.rates.usdt = paralelo.promedio;
+                }
+            } catch (err) {
+                console.log('API Primary Fallback active:', err);
+            } finally {
+                if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 600);
+                
+                // Inteligencia de Fin de Semana (Viernes a Lunes)
+                const now = new Date();
+                const dayOfWeek = now.getDay();
+                if (state.isTomorrowRate && (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0)) {
+                    state.rates.usd = parseFloat((state.rates.usd * 1.0025).toFixed(2));
+                }
 
-    function openTomorrowModal() { 
-      const now = new Date();
-      const dayOfWeek = now.getDay();
-      const isWeekend = (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0);
-      
-      const descEl = document.getElementById('tomorrow-desc');
-      const btnTomorrow = document.getElementById('btn-mode-tomorrow');
-      
-      if (isWeekend) {
-        descEl.innerText = "Es fin de semana (Viernes a Domingo). Puedes proyectar la tasa oficial que aplicará para el Lunes:";
-        btnTomorrow.innerText = "Usar Tasa Lunes";
-      } else {
-        descEl.innerText = "Selecciona con qué tasa operarle a tus clientes hoy o mañana:";
-        btnTomorrow.innerText = "Usar Tasa Mañana";
-      }
+                updateUI();
+                if (isManual) showToast('Tasas actualizadas');
+            }
+        }
 
-      document.getElementById('tomorrow-modal').style.display = 'flex'; 
-      renderIcons(); 
-    }
+        // --- TAB SELECTION ---
+        function selectTab(curr) {
+            state.selectedCurrency = curr;
+            document.querySelectorAll('.dc-tab').forEach(t => t.classList.remove('is-active'));
+            const activeTab = document.getElementById(`tab-${curr}`);
+            if (activeTab) activeTab.classList.add('is-active');
+            
+            calculateConversion();
+            updateReferenceLabels();
+        }
 
-    function closeTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'none'; }
-    
-    function setRateMode(mode) {
-      rateMode = mode;
-      const now = new Date();
-      const dayOfWeek = now.getDay();
-      const isWeekend = (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0);
+        // --- CALCULATION CORE ENGINE ---
+        function calculateConversion() {
+            const inputVal = parseFloat(document.getElementById('main-amount').value.replace(',', '.')) || 0;
+            const rate = getCurrentRate();
 
-      const labelTxt = isWeekend ? 'Tasa Lunes' : 'Tasa Mañana';
-      document.getElementById('tomorrow-status').innerText = `Modo activo: ${mode === 'tomorrow' ? labelTxt : 'Tasa de Hoy'}`;
-      actualizarVistaTasas();
-    }
+            let converted = 0;
+            let bankFee = 0;
+            let mobileFee = 14.00;
+            let igtfFee = 0;
 
-    function openMyRateModal() {
-      document.getElementById('custom-rate-input').value = customRate;
-      document.getElementById('myrate-modal').style.display = 'flex';
-      renderIcons();
-    }
-    function closeMyRateModal() { document.getElementById('myrate-modal').style.display = 'none'; }
-    function saveCustomRate() {
-      const val = parseFloat(document.getElementById('custom-rate-input').value);
-      if (!isNaN(val) && val > 0) {
-        customRate = val;
-        rates.MYRATE = val;
-        localStorage.setItem('daycambio_custom_rate', val);
-        closeMyRateModal();
-        alert('¡"Mi Tasa" guardada exitosamente!');
-      } else {
-        alert('Ingresa un valor válido.');
-      }
-    }
-  </script>
+            if (!state.isFlipped) {
+                converted = inputVal * rate;
+                bankFee = converted * 0.01;
+                if (converted * 0.01 > 14) mobileFee = converted * 0.01;
+                if (state.includeIGTF) igtfFee = converted * 0.03;
+            } else {
+                converted = rate > 0 ? inputVal / rate : 0;
+                bankFee = inputVal * 0.01;
+                if (inputVal * 0.01 > 14) mobileFee = inputVal * 0.01;
+                if (state.includeIGTF) igtfFee = inputVal * 0.03;
+            }
 
-  <!-- Script explícito de renderizado de íconos de Lucide -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    });
-    window.addEventListener("load", function() {
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    });
-  </script>
+            const totalWithFees = !state.isFlipped ? (converted + bankFee + igtfFee) : converted;
+
+            document.getElementById('fee-bank').innerText = `Bs. ${formatNumber(bankFee)}`;
+            document.getElementById('fee-mobile').innerText = `Bs. ${formatNumber(mobileFee)}`;
+            document.getElementById('fee-igtf-val').innerText = `Bs. ${formatNumber(igtfFee)}`;
+            document.getElementById('total-with-fees').innerText = `Bs. ${formatNumber(totalWithFees)}`;
+            
+            document.getElementById('main-result').innerText = formatNumber(converted);
+        }
+
+        function getCurrentRate() {
+            switch(state.selectedCurrency) {
+                case 'USD': return state.rates.usd;
+                case 'EUR': return state.rates.eur;
+                case 'USDT': return state.rates.usdt;
+                case 'BRL': return state.rates.brl;
+                case 'COP': return state.rates.cop;
+                case 'ARS': return state.rates.ars;
+                case 'CUSTOM': return state.rates.custom;
+                default: return state.rates.usd;
+            }
+        }
+
+        // --- UI UPDATES & LABELS ---
+        function updateUI() {
+            document.getElementById('rate-usd').innerText = formatNumber(state.rates.usd);
+            document.getElementById('rate-eur').innerText = formatNumber(state.rates.eur);
+            document.getElementById('rate-usdt').innerText = formatNumber(state.rates.usdt);
+
+            document.getElementById('quick-bcv-val').innerText = `${formatNumber(state.rates.usd)} Bs.`;
+            document.getElementById('quick-usdt-val').innerText = `${formatNumber(state.rates.usdt)} Bs.`;
+
+            document.getElementById('reg-brl').innerText = `${formatNumber(state.rates.brl)} Bs.`;
+            document.getElementById('reg-cop').innerText = `${formatNumber(state.rates.cop)} Bs.`;
+            document.getElementById('reg-ars').innerText = `${formatNumber(state.rates.ars)} Bs.`;
+
+            document.getElementById('custom-rate-input').value = state.rates.custom;
+
+            updateReferenceLabels();
+            calculateConversion();
+            renderHistoryModalLogic();
+        }
+
+        function updateReferenceLabels() {
+            const curr = state.selectedCurrency;
+            const rate = getCurrentRate();
+            
+            document.getElementById('input-label-text').innerText = state.isFlipped ? 'Monto en Bolívares (Bs.)' : `Monto en ${curr}`;
+            document.getElementById('input-symbol').innerText = state.isFlipped ? 'Bs.' : (curr === 'EUR' ? '€' : '$');
+            document.getElementById('result-symbol').innerText = state.isFlipped ? curr : 'Bs.';
+
+            document.getElementById('rate-reference-label').innerText = `1 ${curr} = ${formatNumber(rate)} Bs.`;
+            document.getElementById('update-date-label').innerText = `Actualizado · 18 Oct 2026 (${state.isTomorrowRate ? 'Tasa Lunes / Mañana' : 'Tasa Hoy'})`;
+        }
+
+        function quickCopyRate(type) {
+            const val = type === 'usd' ? state.rates.usd : state.rates.usdt;
+            document.getElementById('custom-rate-input').value = val;
+            showToast(`Copiado: ${formatNumber(val)} Bs.`);
+        }
+
+        function saveCustomRate() {
+            const val = parseFloat(document.getElementById('custom-rate-input').value);
+            if (val && val > 0) {
+                state.rates.custom = val;
+                localStorage.setItem('dc_custom_rate', val);
+                closeModal('modal-custom-rate');
+                selectTab('CUSTOM');
+                showToast('"Mi Tasa" guardada y aplicada');
+            } else {
+                showToast('Ingresa un valor numérico válido');
+            }
+        }
+
+        function toggleIGTF() {
+            state.includeIGTF = !state.includeIGTF;
+            const sw = document.getElementById('switch-igtf');
+            if (state.includeIGTF) {
+                sw.classList.add('is-checked');
+            } else {
+                sw.classList.remove('is-checked');
+            }
+            calculateConversion();
+        }
+
+        function invertDirection() {
+            state.isFlipped = !state.isFlipped;
+            const ind = document.getElementById('direction-indicator');
+            ind.innerText = state.isFlipped ? 'Bs. ➔ Divisa' : 'Divisa ➔ Bs.';
+            updateReferenceLabels();
+            calculateConversion();
+            showToast(state.isFlipped ? 'Sentido: Bolívares a Divisa' : 'Sentido: Divisa a Bolívares');
+        }
+
+        function clearCalculator() {
+            document.getElementById('main-amount').value = '';
+            calculateConversion();
+            showToast('Calculadora limpiada');
+        }
+
+        function copyResult() {
+            const resultText = document.getElementById('main-result').innerText;
+            const symbol = document.getElementById('result-symbol').innerText;
+            const textToCopy = `${symbol} ${resultText}`;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast(`Copiado: ${textToCopy}`);
+            }).catch(() => {
+                showToast('Error al copiar');
+            });
+        }
+
+        function toggleTomorrowRate() {
+            state.isTomorrowRate = !state.isTomorrowRate;
+            const btn = document.getElementById('btn-tasa-manana');
+            const lbl = document.getElementById('lbl-tasa-manana');
+
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+            const isWeekend = (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0);
+
+            if (state.isTomorrowRate) {
+                btn.style.borderColor = 'var(--dc-accent)';
+                lbl.innerText = isWeekend ? 'Tasa Lunes' : 'Próx. Día';
+                showToast(isWeekend ? 'Modo Tasa Lunes (Fin de semana) Activado' : 'Modo Tasa Mañana Activado');
+            } else {
+                btn.style.borderColor = '';
+                lbl.innerText = 'Tasa Mañana';
+                showToast('Modo Tasa Hoy Activado');
+            }
+            updateReferenceLabels();
+            fetchLatestRates();
+        }
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('is-open');
+                if (id === 'modal-chart') renderHistoryModalLogic();
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove('is-open');
+        }
+
+        function calcVuelto() {
+            const bill = parseFloat(document.getElementById('vuelto-bill').value) || 0;
+            const paidUsd = parseFloat(document.getElementById('vuelto-paid').value) || 0;
+            const paidBs = parseFloat(document.getElementById('vuelto-paid-bs').value) || 0;
+            const rate = getCurrentRate();
+
+            const paidTotalInUsd = paidUsd + (paidBs / rate);
+            const changeInUsd = paidTotalInUsd - bill;
+            const changeInBs = changeInUsd * rate;
+
+            document.getElementById('vuelto-result-usd').innerText = `$ ${changeInUsd > 0 ? changeInUsd.toFixed(2) : '0.00'} USD`;
+            document.getElementById('vuelto-result-bs').innerText = `ó Bs. ${changeInBs > 0 ? formatNumber(changeInBs) : '0,00'}`;
+        }
+
+        function lookupHistoricalRate() {
+            const pickerVal = document.getElementById('calendar-date-picker').value;
+            const box = document.getElementById('calendar-result-box');
+            
+            if (!pickerVal) return;
+
+            const match = state.rates.history.find(h => h.fecha === pickerVal);
+            if (match) {
+                box.innerHTML = `
+                    <div class="font-bold text-emerald-400">Tasa Oficial BCV del ${formatFecha(match.fecha)}:</div>
+                    <div class="text-xl font-bold font-mono text-white">${formatNumber(match.usd)} Bs./USD</div>
+                    <div class="text-xs font-mono text-blue-300">${formatNumber(match.eur)} Bs./EUR</div>
+                `;
+            } else {
+                box.innerHTML = `
+                    <div class="text-amber-400 font-semibold">Tasa Estimada de Registro (${formatFecha(pickerVal)}):</div>
+                    <div class="text-lg font-bold font-mono text-white">${formatNumber(state.rates.usd * 0.98)} Bs./USD</div>
+                    <div class="text-[10px] dc-muted">Fecha fuera del rango directo. Mostrando estimación histórica.</div>
+                `;
+            }
+        }
+
+        function renderHistoryModalLogic() {
+            const usd = state.rates.usd || 0;
+            const eur = state.rates.eur || 0;
+            const usdt = state.rates.usdt || 0;
+            const history = Array.isArray(state.rates.history) ? state.rates.history.slice(-30) : [];
+            const values = history.map((row) => row.usd);
+            const first = history[0]?.fecha;
+            const last = history[history.length - 1]?.fecha;
+            
+            const gapEur = gap(eur, usd);
+            const gapUsdt = gap(usdt, usd);
+
+            const subElem = document.getElementById('history-subtitle');
+            if (subElem) {
+                subElem.innerText = first ? `${formatFecha(first)} — ${formatFecha(last)}` : "Sin historial disponible";
+            }
+
+            document.getElementById('hist-usd-val').innerText = `${formatNumber(usd, 2)} Bs`;
+            document.getElementById('hist-eur-val').innerText = `${formatNumber(eur, 2)} Bs`;
+            document.getElementById('hist-usdt-val').innerText = `${formatNumber(usdt, 2)} Bs`;
+
+            const eurGapElem = document.getElementById('hist-gap-eur');
+            eurGapElem.innerText = `${gapEur >= 0 ? "+" : ""}${formatNumber(gapEur, 2)}%`;
+            eurGapElem.className = `dc-num text-sm ${gapEur >= 0 ? "text-rose-400" : "text-emerald-400"}`;
+
+            const usdtGapElem = document.getElementById('hist-gap-usdt');
+            usdtGapElem.innerText = `${gapUsdt >= 0 ? "+" : ""}${formatNumber(gapUsdt, 2)}%`;
+            usdtGapElem.className = `dc-num text-sm ${gapUsdt >= 0 ? "text-rose-400" : "text-emerald-400"}`;
+
+            const sparkContainer = document.getElementById('sparkline-container');
+            const points = values.filter((v) => Number.isFinite(v) && v > 0);
+            
+            if (points.length >= 2 && sparkContainer) {
+                const min = Math.min(...points);
+                const max = Math.max(...points);
+                const span = max - min || 1;
+                const coords = points.map((value, index) => {
+                    const x = (index / (points.length - 1)) * 100;
+                    const y = 28 - ((value - min) / span) * 26;
+                    return `${x.toFixed(2)},${y.toFixed(2)}`;
+                });
+
+                sparkContainer.innerHTML = `
+                    <svg viewBox="0 0 100 30" preserveAspectRatio="none" class="h-16 w-full">
+                        <polyline
+                            points="${coords.join(" ")}"
+                            fill="none"
+                            stroke="var(--dc-accent)"
+                            stroke-width="1.6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            vector-effect="non-scaling-stroke"
+                        />
+                    </svg>
+                `;
+
+                document.getElementById('sparkline-bounds').innerText = 
+                    `Mínimo ${formatNumber(min, 2)} · Máximo ${formatNumber(max, 2)}`;
+            }
+        }
+
+        function generateReceipt() {
+            const amount = document.getElementById('main-amount').value || '0.00';
+            const curr = state.selectedCurrency;
+            const rate = getCurrentRate();
+            const totalBs = document.getElementById('main-result').innerText;
+
+            document.getElementById('rec-op').innerText = `${curr} a Bolívares`;
+            document.getElementById('rec-monto').innerText = `${amount} ${curr}`;
+            document.getElementById('rec-tasa').innerText = `${formatNumber(rate)} Bs.`;
+            document.getElementById('rec-total').innerText = `Bs. ${totalBs}`;
+
+            openModal('modal-receipt');
+        }
+
+        function downloadReceiptImage() {
+            const card = document.getElementById('receipt-card');
+            html2canvas(card).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'DayCambio-Comprobante.png';
+                link.href = canvas.toDataURL();
+                link.click();
+                showToast('Comprobante descargado');
+            });
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'dc-toast';
+            toast.innerText = msg;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
