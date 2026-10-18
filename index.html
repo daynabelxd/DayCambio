@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Lucide Icons & HTML2Canvas for downloading receipt images -->
+    <!-- Lucide Icons & HTML2Canvas -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -33,11 +33,10 @@
     <style>
         :root {
             --dc-accent: #a855f7;
-            --dc-accent-glow: rgba(168, 85, 247, 0.35);
-            --dc-bg-glow: rgba(168, 85, 247, 0.15);
+            --dc-accent-glow: rgba(168, 85, 247, 0.25);
         }
 
-        /* Open Sans for all elements (letters and numbers) */
+        /* Open Sans for all elements & Performance Boost */
         body, input, button, select, textarea, .dc-num, .font-mono {
             font-family: 'Open Sans', sans-serif !important;
         }
@@ -48,7 +47,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
         }
 
         body.light {
@@ -56,62 +55,52 @@
             color: #0f172a;
         }
 
+        /* Simplified & Lightweight Ambient Background */
         .ambient-orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(90px);
+            filter: blur(60px);
             z-index: 0;
+            opacity: 0.5;
             pointer-events: none;
-            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .orb-1 {
-            width: 320px;
-            height: 320px;
-            top: -50px;
-            left: -50px;
+            width: 280px;
+            height: 280px;
+            top: -40px;
+            left: -40px;
             background: var(--dc-accent-glow);
         }
 
         .orb-2 {
-            width: 380px;
-            height: 380px;
-            bottom: -80px;
-            right: -50px;
-            background: rgba(59, 130, 246, 0.2);
+            width: 300px;
+            height: 300px;
+            bottom: -60px;
+            right: -40px;
+            background: rgba(59, 130, 246, 0.15);
         }
 
-        .orb-3 {
-            width: 250px;
-            height: 250px;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(236, 72, 153, 0.12);
-        }
-
-        /* Liquid Glass Card Styling */
+        /* Optimized Liquid Glass Card Styling (Hardware Accelerated) */
         .dc-glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25);
             border-radius: 20px;
-            transition: all 0.25s ease;
+            transform: translateZ(0);
         }
 
         body.light .dc-glass {
-            background: rgba(255, 255, 255, 0.65);
+            background: rgba(255, 255, 255, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+            box-shadow: 0 4px 20px 0 rgba(31, 38, 135, 0.05);
         }
 
         .dc-glass-soft {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 14px;
         }
 
@@ -126,18 +115,18 @@
             height: 22px;
             border-radius: 50%;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.15s ease;
             border: 2px solid transparent;
         }
 
         .dc-dot:hover {
-            transform: scale(1.18);
+            transform: scale(1.1);
         }
 
         .dc-dot.is-active {
             border-color: #ffffff;
-            box-shadow: 0 0 12px var(--dc-accent);
-            transform: scale(1.15);
+            box-shadow: 0 0 10px var(--dc-accent);
+            transform: scale(1.1);
         }
 
         /* Buttons & Switches */
@@ -148,23 +137,21 @@
             width: 38px;
             height: 38px;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: #e5e7eb;
-            transition: all 0.2s ease;
             cursor: pointer;
+            transition: background 0.15s ease;
         }
 
         body.light .dc-icon-btn {
-            background: rgba(0, 0, 0, 0.04);
-            border-color: rgba(0, 0, 0, 0.08);
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.06);
             color: #374151;
         }
 
         .dc-icon-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .dc-tab {
@@ -173,23 +160,17 @@
             font-size: 12px;
             font-weight: 600;
             white-space: nowrap;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             color: #9ca3af;
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .dc-tab:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
         }
 
         .dc-tab.is-active {
             background: var(--dc-accent);
             color: #ffffff;
             border-color: var(--dc-accent);
-            box-shadow: 0 2px 10px var(--dc-accent-glow);
+            box-shadow: 0 2px 8px var(--dc-accent-glow);
         }
 
         .dc-switch {
@@ -199,7 +180,7 @@
             background: rgba(255, 255, 255, 0.15);
             position: relative;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.2s ease;
         }
 
         body.light .dc-switch {
@@ -218,7 +199,7 @@
             position: absolute;
             top: 3px;
             left: 3px;
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.2s ease;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
@@ -268,13 +249,14 @@
             border-radius: 10px;
         }
 
+        /* Fast Modal Backdrop */
         .dc-modal-backdrop {
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.2s ease;
         }
 
         .dc-modal-backdrop.is-open {
@@ -283,14 +265,15 @@
         }
 
         .dc-modal-content {
-            transform: scale(0.95) translateY(10px);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(0.97);
+            transition: transform 0.2s ease;
         }
 
         .dc-modal-backdrop.is-open .dc-modal-content {
-            transform: scale(1) translateY(0);
+            transform: scale(1);
         }
 
+        /* Toast Notifications */
         #toast-container {
             position: fixed;
             bottom: 24px;
@@ -304,34 +287,29 @@
         }
 
         .dc-toast {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             border: 1px solid var(--dc-accent);
             color: #ffffff;
             padding: 10px 20px;
             border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            backdrop-filter: blur(12px);
-            animation: toastIn 0.3s forwards, toastOut 0.3s 2.7s forwards;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            animation: fadeInOut 2.5s forwards;
         }
 
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes toastOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(15px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(15px); }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-orb orb-1" id="orb1"></div>
+    <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
-    <div class="ambient-orb orb-3"></div>
 
     <div class="relative z-10 flex min-h-screen flex-col items-center justify-between p-3 sm:p-5">
         
@@ -350,11 +328,11 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <button id="theme-toggle" type="button" class="dc-icon-btn" title="Modo Claro/Oscuro" aria-label="Cambiar tema claro u oscuro">
+                    <button id="theme-toggle" type="button" class="dc-icon-btn" title="Modo Claro/Oscuro" aria-label="Cambiar tema">
                         <i data-lucide="sun" class="h-4 w-4 hidden dark:block"></i>
                         <i data-lucide="moon" class="h-4 w-4 block dark:hidden"></i>
                     </button>
-                    <button id="menu-btn" type="button" onclick="openModal('modal-custom-rate')" class="dc-icon-btn" aria-label="Ajustes de Tasa">
+                    <button id="menu-btn" type="button" onclick="openModal('modal-custom-rate')" class="dc-icon-btn" aria-label="Ajustes">
                         <i data-lucide="sliders-horizontal" class="h-4 w-4"></i>
                     </button>
                 </div>
@@ -371,7 +349,7 @@
                     <button type="button" title="Verde" onclick="setAccentTheme('#2ecc71')" class="dc-dot" style="background:#2ecc71"></button>
                     <button type="button" title="Neutro" onclick="setAccentTheme('#94a3b8')" class="dc-dot" style="background:#94a3b8"></button>
                 </div>
-                <button type="button" onclick="openModal('modal-custom-rate')" class="dc-icon-btn !h-7 !w-7" title="Ajustar Mi Tasa">
+                <button type="button" onclick="openModal('modal-custom-rate')" class="dc-icon-btn !h-7 !w-7" title="Ajustar">
                     <i data-lucide="palette" class="h-3.5 w-3.5"></i>
                 </button>
             </div>
@@ -452,20 +430,20 @@
                     <button type="button" onclick="selectTab('CUSTOM')" class="dc-tab" id="tab-CUSTOM">Mi Tasa</button>
                 </div>
 
-                <div class="dc-glass-soft px-4 py-3 relative focus-within:ring-2 focus-within:ring-purple-500/50 transition-all">
+                <div class="dc-glass-soft px-4 py-3 relative">
                     <div class="dc-label flex justify-between text-xs font-medium dc-muted">
                         <span id="input-label-text">Monto en USD</span>
                         <span id="direction-indicator" class="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Divisa ➔ Bs.</span>
                     </div>
                     <div class="mt-1 flex items-baseline gap-2">
                         <span class="dc-num dc-muted text-xl font-bold" id="input-symbol">$</span>
-                        <input id="main-amount" class="dc-amount" placeholder="0,00" inputmode="decimal" aria-label="Monto a convertir" value="" oninput="calculateConversion()"/>
+                        <input id="main-amount" class="dc-amount" placeholder="0,00" inputmode="decimal" aria-label="Monto" value="" oninput="calculateConversion()"/>
                     </div>
                 </div>
 
                 <!-- Fee Desglose Panel -->
                 <div class="dc-glass-soft p-3.5 space-y-2.5">
-                    <div class="dc-label text-xs font-semibold text-gray-300 dark:text-gray-300">Conversión y comisiones (Bs.)</div>
+                    <div class="dc-label text-xs font-semibold text-gray-300">Conversión y comisiones (Bs.)</div>
                     
                     <div class="space-y-2 text-xs">
                         <div class="flex items-center justify-between gap-3">
@@ -479,11 +457,10 @@
                         <div class="flex items-center justify-between gap-3 pt-1">
                             <span class="dc-muted flex items-center gap-1">
                                 Incluir IGTF (3%)
-                                <i data-lucide="info" class="h-3 w-3 opacity-60" title="Impuesto a Grandes Transacciones Financieras"></i>
                             </span>
                             <div class="flex items-center gap-2">
                                 <strong class="dc-num text-sm" id="fee-igtf-val">Bs. 0,00</strong>
-                                <button type="button" id="switch-igtf" onclick="toggleIGTF()" class="dc-switch" aria-pressed="false" aria-label="Incluir IGTF 3%">
+                                <button type="button" id="switch-igtf" onclick="toggleIGTF()" class="dc-switch" aria-pressed="false" aria-label="IGTF">
                                     <span class="dc-switch-knob"></span>
                                 </button>
                             </div>
@@ -500,19 +477,19 @@
 
                 <!-- Quick Actions Floating Toolbar -->
                 <div class="flex items-center justify-center gap-2.5 pt-1">
-                    <button type="button" onclick="invertDirection()" class="dc-icon-btn" title="Invertir sentido" aria-label="Invertir sentido">
+                    <button type="button" onclick="invertDirection()" class="dc-icon-btn" title="Invertir" aria-label="Invertir">
                         <i data-lucide="arrow-up-down" class="h-4 w-4"></i>
                     </button>
                     <button type="button" onclick="clearCalculator()" class="dc-icon-btn" title="Limpiar" aria-label="Limpiar">
                         <i data-lucide="eraser" class="h-4 w-4"></i>
                     </button>
-                    <button type="button" onclick="copyResult()" class="dc-icon-btn" title="Copiar Resultado" aria-label="Copiar">
+                    <button type="button" onclick="copyResult()" class="dc-icon-btn" title="Copiar" aria-label="Copiar">
                         <i data-lucide="copy" class="h-4 w-4"></i>
                     </button>
-                    <button type="button" onclick="fetchLatestRates(true)" class="dc-icon-btn" title="Actualizar tasas" aria-label="Actualizar tasas">
+                    <button type="button" onclick="fetchLatestRates(true)" class="dc-icon-btn" title="Actualizar" aria-label="Actualizar">
                         <i data-lucide="refresh-cw" class="h-4 w-4" id="refresh-icon"></i>
                     </button>
-                    <button type="button" onclick="generateReceipt()" class="dc-icon-btn" title="Compartir o Exportar Recibo" aria-label="Compartir imagen">
+                    <button type="button" onclick="generateReceipt()" class="dc-icon-btn" title="Recibo" aria-label="Recibo">
                         <i data-lucide="share-2" class="h-4 w-4"></i>
                     </button>
                 </div>
@@ -649,7 +626,7 @@
         </div>
     </div>
 
-    <!-- MODAL 4: REGIONALES -->
+    <!-- MODAL 4: REGIONALES (MANTENIDAS) -->
     <div id="modal-regional" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-regional')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -747,7 +724,6 @@
             <div id="receipt-card" class="bg-slate-900 text-white p-5 rounded-2xl border border-purple-500/30 space-y-4 shadow-2xl relative">
                 <div class="flex items-center justify-between border-b border-white/10 pb-3">
                     <div class="flex items-center gap-2">
-                        <!-- Logo miniatura incorporado en el recibo -->
                         <div class="w-7 h-7 rounded-lg bg-white/10 p-1 flex items-center justify-center overflow-hidden">
                             <img src="icon-192.png" alt="Logo" class="h-full w-full object-contain" onerror="this.src='https://placehold.co/80x80/a855f7/ffffff?text=DC'">
                         </div>
@@ -865,8 +841,7 @@
         function setAccentTheme(color) {
             state.accentColor = color;
             document.documentElement.style.setProperty('--dc-accent', color);
-            document.documentElement.style.setProperty('--dc-accent-glow', color + '55');
-            document.documentElement.style.setProperty('--dc-bg-glow', color + '25');
+            document.documentElement.style.setProperty('--dc-accent-glow', color + '40');
 
             localStorage.setItem('dc_accent_color', color);
 
@@ -910,9 +885,9 @@
                     if (paralelo) state.rates.usdt = paralelo.promedio;
                 }
             } catch (err) {
-                console.log('API Primary Fallback active:', err);
+                console.log('API Fallback active:', err);
             } finally {
-                if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 600);
+                if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 400);
                 
                 const now = new Date();
                 const dayOfWeek = now.getDay();
@@ -1025,7 +1000,7 @@
                 selectTab('CUSTOM');
                 showToast('"Mi Tasa" guardada y aplicada');
             } else {
-                showToast('Ingresa un valor numérico válido');
+                showToast('Ingresa un valor válido');
             }
         }
 
@@ -1131,7 +1106,7 @@
                 `;
             } else {
                 box.innerHTML = `
-                    <div class="text-amber-400 font-semibold">Tasa Estimada de Registro (${formatFecha(pickerVal)}):</div>
+                    <div class="text-amber-400 font-semibold">Tasa Estimada (${formatFecha(pickerVal)}):</div>
                     <div class="text-lg font-bold text-white">${formatNumber(state.rates.usd * 0.98)} Bs./USD</div>
                     <div class="text-[10px] dc-muted">Fecha fuera del rango directo. Mostrando estimación histórica.</div>
                 `;
@@ -1233,7 +1208,7 @@
 
             setTimeout(() => {
                 toast.remove();
-            }, 3000);
+            }, 2500);
         }
     </script>
 </body>
