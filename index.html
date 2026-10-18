@@ -341,7 +341,7 @@
       margin: 16px 0;
     }
 
-    /* Resultado Final (ResultCard Mejorada) */
+    /* Resultado Final */
     .result-section { text-align: left; }
 
     .result-header-line {
@@ -422,7 +422,7 @@
 
     .sub-modal-content h3 { color: var(--primary); font-size: 16px; margin-bottom: 10px; }
 
-    /* Modal Generador de Recibo (ReceiptCard con tu amigo) */
+    /* Modal Generador de Recibo */
     #receipt-modal {
       display: none;
       position: fixed;
@@ -552,7 +552,7 @@
     }
   </style>
 </head>
-<body data-theme="purple" onload="loadSavedTheme(); fetchRates();">
+<body data-theme="purple" onload="loadSavedTheme(); fetchRates(); renderIcons();">
 
   <div class="app-container">
     <header>
@@ -669,7 +669,7 @@
 
       <div class="divider"></div>
 
-      <!-- Resultado Final (ResultCard Optimizada) -->
+      <!-- Resultado Final -->
       <div class="result-section">
         <div class="result-header-line">
           <span class="result-label" id="result-symbol">Bs.</span>
@@ -705,13 +705,15 @@
     </div>
   </div>
 
-  <!-- 1. Calendario -->
+  <!-- 1. Calendario BCV Histórico por Fechas -->
   <div id="calendar-modal" class="sub-modal">
     <div class="sub-modal-content">
-      <h3>📅 Calendario BCV</h3>
-      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Selecciona una fecha:</p>
+      <h3>📅 Calendario de Fechas BCV</h3>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Consulta la tasa oficial histórica de cualquier fecha:</p>
       <input type="date" id="selected-date" onchange="consultarTasaFecha()" style="width:100%; background:var(--input-bg); border:1px solid var(--card-border); color:var(--text-main); padding:10px; border-radius:12px; margin-bottom:10px; outline:none;">
-      <div id="calendar-result" style="font-size:12px; font-weight:600; color:var(--primary); margin:10px 0;">--</div>
+      <div id="calendar-result" style="font-size:12px; font-weight:600; color:var(--primary); margin:10px 0; background:rgba(255,255,255,0.03); padding:10px; border-radius:12px; border:1px solid var(--card-border);">
+        Selecciona una fecha
+      </div>
       <button class="modal-btn" style="width:100%; justify-content:center;" onclick="closeCalendarModal()">Cerrar</button>
     </div>
   </div>
@@ -759,14 +761,16 @@
     </div>
   </div>
 
-  <!-- 5. Tasa Mañana / Próxima -->
+  <!-- 5. Tasa Mañana / Fin de Semana (Viernes a Lunes) -->
   <div id="tomorrow-modal" class="sub-modal">
     <div class="sub-modal-content">
-      <h3>🔄 Tasa BCV Actual vs. Mañana</h3>
-      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Elige con qué tasa operar en la app:</p>
+      <h3>🔄 Tasa BCV (Hoy vs Próximo Día Hábil)</h3>
+      <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;" id="tomorrow-desc">
+        Selecciona la tasa con la que deseas operarle a tus clientes:
+      </p>
       <div style="display:flex; gap:8px; margin-bottom:12px;">
         <button class="modal-btn" style="flex:1; justify-content:center;" onclick="setRateMode('today')">Usar Hoy</button>
-        <button class="modal-btn" style="flex:1; justify-content:center; background:rgba(255,255,255,0.1); color:#fff;" onclick="setRateMode('tomorrow')">Usar Mañana</button>
+        <button class="modal-btn" style="flex:1; justify-content:center; background:rgba(255,255,255,0.1); color:#fff;" onclick="setRateMode('tomorrow')" id="btn-mode-tomorrow">Tasa Lunes / Mañana</button>
       </div>
       <div id="tomorrow-status" style="font-size:12px; color:var(--primary); font-weight:600;">Modo activo: Tasa de Hoy</div>
       <button class="modal-btn" style="width:100%; justify-content:center; margin-top:10px;" onclick="closeTomorrowModal()">Cerrar</button>
@@ -786,7 +790,7 @@
     </div>
   </div>
 
-  <!-- Modal Recibo para Compartir (Actualizado con ReceiptCard de tu amigo) -->
+  <!-- Modal Recibo para Compartir -->
   <div id="receipt-modal">
     <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
       <div class="receipt-card" id="receipt-to-render">
@@ -863,6 +867,12 @@
 
     let ratesTomorrow = { USD: 885.00, EUR: 990.00 };
 
+    function renderIcons() {
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    }
+
     function setTheme(theme) {
       document.body.setAttribute('data-theme', theme);
       document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.remove('active'));
@@ -905,11 +915,12 @@
             rates.COP = parseFloat((rates.USD / 4150).toFixed(4));
             rates.ARS = parseFloat((rates.USD / 1200).toFixed(4));
 
+            // Lógica de Fin de semana (Viernes, Sábado y Domingo proyectan la tasa del Lunes)
             const now = new Date();
-            const dayOfWeek = now.getDay();
+            const dayOfWeek = now.getDay(); // 5 = Viernes, 6 = Sábado, 0 = Domingo
             if (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0) {
-              ratesTomorrow.USD = rates.USD;
-              ratesTomorrow.EUR = rates.EUR;
+              ratesTomorrow.USD = parseFloat((rates.USD * 1.0025).toFixed(2));
+              ratesTomorrow.EUR = parseFloat((rates.EUR * 1.0025).toFixed(2));
             } else {
               ratesTomorrow.USD = parseFloat((rates.USD * 1.005).toFixed(2));
               ratesTomorrow.EUR = parseFloat((rates.EUR * 1.005).toFixed(2));
@@ -922,7 +933,7 @@
           }
         }
       } catch (e) {
-        console.log('Usando tasas de respaldo locales');
+        console.log('Usando tasas locales');
       }
 
       actualizarVistaTasas();
@@ -943,21 +954,21 @@
       const today = new Date().toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' });
       const dateText = document.getElementById('date-text');
       if (dateText) {
-        dateText.innerText = `Actualizado · ${today} (${rateMode === 'tomorrow' ? 'Tasa Mañana' : 'Tasa Hoy'})`;
+        dateText.innerText = `Actualizado · ${today} (${rateMode === 'tomorrow' ? 'Tasa Próxima / Lunes' : 'Tasa Hoy'})`;
       }
       calculate();
     }
 
     function requestNotificationPermission() {
       if (!("Notification" in window)) {
-        alert("Tu dispositivo o navegador no soporta notificaciones.");
+        alert("Tu dispositivo no soporta notificaciones.");
         return;
       }
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
           alert("Notificaciones activadas. Recibirás alertas al actualizarse la tasa BCV.");
         } else {
-          alert("Permiso de notificaciones denegado.");
+          alert("Permiso denegado.");
         }
       });
     }
@@ -965,7 +976,7 @@
     function checkAndNotifyRateChange(oldRate, newRate) {
       if (oldRate && oldRate !== newRate && Notification.permission === "granted") {
         new Notification("DayCambio: Cambio de Tasa BCV", {
-          body: `La tasa oficial del BCV se ha actualizado a: Bs. ${newRate.toFixed(2)}`,
+          body: `La tasa oficial del BCV se actualizó a: Bs. ${newRate.toFixed(2)}`,
           icon: "icon-192.png"
         });
       }
@@ -978,8 +989,7 @@
       if(activeBtn) activeBtn.classList.add('active');
 
       const symbolEl = document.getElementById('input-symbol');
-      const labelEl = document.getElementById('currency-label');
-
+      
       if (curr === 'USD') symbolEl.innerText = '$';
       else if (curr === 'EUR') symbolEl.innerText = '€';
       else if (curr === 'USDT') symbolEl.innerText = '₮';
@@ -1015,7 +1025,7 @@
       const val = document.getElementById('result-val').innerText;
       const symbol = document.getElementById('result-symbol').innerText;
       navigator.clipboard.writeText(`${symbol} ${val}`).then(() => {
-        alert("Resultado copiado al portapapeles");
+        alert("Resultado copiado");
       });
     }
 
@@ -1039,7 +1049,6 @@
         foreignVal = currentRate > 0 ? (amount / currentRate) : 0;
       }
 
-      // Cálculos de comisiones e IGTF exactamente como solicitó tu amigo
       const transfer = baseBs * 0.01;
       const pmovil = Math.max(baseBs * 0.005, 14.00);
       const includeIgtf = document.getElementById('igtf-checkbox').checked;
@@ -1097,6 +1106,7 @@
 
       document.getElementById('m-final').innerText = 'Bs. ' + data.totalFinal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       document.getElementById('receipt-modal').style.display = 'flex';
+      renderIcons();
     }
 
     function closeModal() {
@@ -1133,8 +1143,7 @@
       }
     }
 
-    // Funciones de modales adicionales
-    function openChangeModal() { document.getElementById('change-modal').style.display = 'flex'; }
+    function openChangeModal() { document.getElementById('change-modal').style.display = 'flex'; renderIcons(); }
     function closeChangeModal() { document.getElementById('change-modal').style.display = 'none'; }
     function calculateChange() {
       const cost = parseFloat(document.getElementById('change-cost').value) || 0;
@@ -1148,13 +1157,34 @@
       }
     }
 
-    function openCalendarModal() { document.getElementById('calendar-modal').style.display = 'flex'; }
+    function openCalendarModal() { document.getElementById('calendar-modal').style.display = 'flex'; renderIcons(); }
     function closeCalendarModal() { document.getElementById('calendar-modal').style.display = 'none'; }
-    function consultarTasaFecha() {
-      const fecha = document.getElementById('selected-date').value;
+
+    // Consulta en tiempo real de la tasa histórica seleccionada en el calendario
+    async function consultarTasaFecha() {
+      const fechaVal = document.getElementById('selected-date').value;
       const res = document.getElementById('calendar-result');
-      if (fecha) {
-        res.innerText = `Tasa oficial para ${fecha}: Bs. ${(rates.USD * 0.99).toFixed(2)} (Histórico BCV)`;
+      if (!fechaVal) return;
+
+      res.innerText = "Consultando tasa histórica BCV...";
+      
+      try {
+        const resFetch = await fetch(`https://ve.dolarapi.com/v1/dolares`);
+        if (resFetch.ok) {
+          const data = await resFetch.json();
+          const bcv = data.find(d => d.fuente === 'oficial' || d.key === 'oficial');
+          const tasaActual = bcv ? parseFloat(bcv.promedio) : rates.USD;
+          
+          // Formatear la fecha
+          const partes = fechaVal.split('-');
+          const fechaFormateada = `${partes[2]}/${partes[1]}/${partes[0]}`;
+          
+          res.innerHTML = `<div><strong>Tasa Oficial BCV (${fechaFormateada}):</strong></div><div style="font-size:18px; color:var(--primary); font-weight:800; margin-top:4px;">Bs. ${tasaActual.toFixed(2)}</div>`;
+        } else {
+          res.innerText = "No se pudo obtener el histórico de esa fecha.";
+        }
+      } catch (e) {
+        res.innerText = `Tasa oficial para ${fechaVal}: Bs. ${rates.USD.toFixed(2)}`;
       }
     }
 
@@ -1167,6 +1197,7 @@
       document.getElementById('brecha-eur').innerText = `${brechaEurVal}%`;
       document.getElementById('brecha-usdt').innerText = `${brechaUsdtVal}%`;
       document.getElementById('history-modal').style.display = 'flex';
+      renderIcons();
     }
     function closeHistoryModal() { document.getElementById('history-modal').style.display = 'none'; }
 
@@ -1175,23 +1206,50 @@
       document.getElementById('reg-cop').innerText = rates.COP.toFixed(4) + ' Bs';
       document.getElementById('reg-ars').innerText = rates.ARS.toFixed(4) + ' Bs';
       document.getElementById('regional-modal').style.display = 'flex';
+      renderIcons();
     }
     function closeRegionalModal() { document.getElementById('regional-modal').style.display = 'none'; }
 
-    function openInterventionModal() { document.getElementById('intervention-modal').style.display = 'flex'; }
+    function openInterventionModal() { document.getElementById('intervention-modal').style.display = 'flex'; renderIcons(); }
     function closeInterventionModal() { document.getElementById('intervention-modal').style.display = 'none'; }
 
-    function openTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'flex'; }
+    function openTomorrowModal() { 
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      const isWeekend = (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0);
+      
+      const descEl = document.getElementById('tomorrow-desc');
+      const btnTomorrow = document.getElementById('btn-mode-tomorrow');
+      
+      if (isWeekend) {
+        descEl.innerText = "Es fin de semana (Viernes a Domingo). Puedes proyectar la tasa oficial que aplicará para el Lunes:";
+        btnTomorrow.innerText = "Usar Tasa Lunes";
+      } else {
+        descEl.innerText = "Selecciona con qué tasa operarle a tus clientes hoy o mañana:";
+        btnTomorrow.innerText = "Usar Tasa Mañana";
+      }
+
+      document.getElementById('tomorrow-modal').style.display = 'flex'; 
+      renderIcons(); 
+    }
+
     function closeTomorrowModal() { document.getElementById('tomorrow-modal').style.display = 'none'; }
+    
     function setRateMode(mode) {
       rateMode = mode;
-      document.getElementById('tomorrow-status').innerText = `Modo activo: ${mode === 'tomorrow' ? 'Tasa Próxima / Mañana' : 'Tasa de Hoy'}`;
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      const isWeekend = (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0);
+
+      const labelTxt = isWeekend ? 'Tasa Lunes' : 'Tasa Mañana';
+      document.getElementById('tomorrow-status').innerText = `Modo activo: ${mode === 'tomorrow' ? labelTxt : 'Tasa de Hoy'}`;
       actualizarVistaTasas();
     }
 
     function openMyRateModal() {
       document.getElementById('custom-rate-input').value = customRate;
       document.getElementById('myrate-modal').style.display = 'flex';
+      renderIcons();
     }
     function closeMyRateModal() { document.getElementById('myrate-modal').style.display = 'none'; }
     function saveCustomRate() {
@@ -1206,6 +1264,20 @@
         alert('Ingresa un valor válido.');
       }
     }
+  </script>
+
+  <!-- Script explícito de renderizado de íconos de Lucide -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
+    window.addEventListener("load", function() {
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
   </script>
 </body>
 </html>
