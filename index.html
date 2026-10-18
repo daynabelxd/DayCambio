@@ -687,13 +687,12 @@
                 </div>
 
                 <div class="space-y-2 text-xs">
-                    <div class="flex justify-between"><span class="text-gray-400">Operación:</span><span id="rec-op" class="font-bold">USD a Bs.</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Monto Insumo:</span><span id="rec-monto">10.00 USD</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Tasa Aplicada:</span><span id="rec-tasa">880.12 Bs.</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Comisiones:</span><span id="rec-fees">14.00 Bs.</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Operación:</span><span id="rec-op" class="font-bold">USD a Bolívares</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Monto Insumo:</span><span id="rec-monto">20 USD</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Tasa Aplicada:</span><span id="rec-tasa">880,12 Bs.</span></div>
                     <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-bold text-emerald-400">
                         <span>Total A pagar:</span>
-                        <span id="rec-total">Bs. 8,815.20</span>
+                        <span id="rec-total">Bs. 17.602,40</span>
                     </div>
                 </div>
 
@@ -1153,10 +1152,10 @@
             const rate = getCurrentRate();
             const totalBs = dom.mainResult.innerText;
 
-            document.getElementById('rec-op').innerText = `${curr} a Bolívares`;
-            document.getElementById('rec-monto').innerText = `${amount} ${curr}`;
+            document.getElementById('rec-op').innerText = state.isFlipped ? `Bolívares a ${curr}` : `${curr} a Bolívares`;
+            document.getElementById('rec-monto').innerText = state.isFlipped ? `${amount} Bs.` : `${amount} ${curr}`;
             document.getElementById('rec-tasa').innerText = `${formatNumber(rate)} Bs.`;
-            document.getElementById('rec-total').innerText = `Bs. ${totalBs}`;
+            document.getElementById('rec-total').innerText = state.isFlipped ? `${totalBs} ${curr}` : `Bs. ${totalBs}`;
 
             openModal('modal-receipt');
         }
@@ -1185,7 +1184,6 @@
                             text: 'Comprobante de operación'
                         }).catch(() => {});
                     } else {
-                        // Fallback si el navegador móvil abre WhatsApp por texto
                         const totalBs = document.getElementById('rec-total').innerText;
                         const monto = document.getElementById('rec-monto').innerText;
                         const msg = encodeURIComponent(`*DayCambio · Comprobante*\nOperación: ${monto}\nTotal: ${totalBs}`);
