@@ -55,7 +55,7 @@
             color: #0f172a;
         }
 
-        /* Liquid Glass Optimizado (Ligero para procesadores móviles) */
+        /* Liquid Glass Optimizado */
         .dc-glass {
             background: rgba(22, 28, 45, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -670,7 +670,7 @@
         </div>
     </div>
 
-    <!-- MODAL 7: RECIBO CON LOGO MINIATURA -->
+    <!-- MODAL 7: RECIBO CON WHATSAPP Y LOGO MINIATURA -->
     <div id="modal-receipt" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-receipt')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -702,9 +702,15 @@
                 </div>
             </div>
 
-            <button type="button" onclick="downloadReceiptImage()" class="w-full py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg" style="background:var(--dc-accent)">
-                <i data-lucide="download" class="h-4 w-4"></i> Descargar Imagen
-            </button>
+            <!-- Botones de Recibo: WhatsApp + Descarga -->
+            <div class="grid grid-cols-2 gap-2">
+                <button type="button" onclick="shareReceiptWhatsApp()" class="py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg bg-emerald-600 hover:bg-emerald-500">
+                    <i data-lucide="send" class="h-4 w-4"></i> WhatsApp
+                </button>
+                <button type="button" onclick="downloadReceiptImage()" class="py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg" style="background:var(--dc-accent)">
+                    <i data-lucide="download" class="h-4 w-4"></i> Descargar
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1163,6 +1169,29 @@
                 link.href = canvas.toDataURL();
                 link.click();
                 showToast('Comprobante descargado');
+            });
+        }
+
+        function shareReceiptWhatsApp() {
+            const card = document.getElementById('receipt-card');
+            html2canvas(card).then(canvas => {
+                canvas.toBlob(blob => {
+                    const file = new File([blob], "DayCambio-Comprobante.png", { type: "image/png" });
+                    
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        navigator.share({
+                            files: [file],
+                            title: 'Comprobante DayCambio',
+                            text: 'Comprobante de operación'
+                        }).catch(() => {});
+                    } else {
+                        // Fallback si el navegador móvil abre WhatsApp por texto
+                        const totalBs = document.getElementById('rec-total').innerText;
+                        const monto = document.getElementById('rec-monto').innerText;
+                        const msg = encodeURIComponent(`*DayCambio · Comprobante*\nOperación: ${monto}\nTotal: ${totalBs}`);
+                        window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
+                    }
+                });
             });
         }
 
