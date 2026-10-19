@@ -36,7 +36,6 @@
             --dc-accent-glow: rgba(168, 85, 247, 0.25);
         }
 
-        /* Open Sans para todo el documento */
         body, input, button, select, textarea, .dc-num, .font-mono {
             font-family: 'Open Sans', sans-serif !important;
         }
@@ -55,7 +54,6 @@
             color: #0f172a;
         }
 
-        /* Liquid Glass Optimizado */
         .dc-glass {
             background: rgba(22, 28, 45, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -80,7 +78,6 @@
             border: 1px solid rgba(226, 232, 240, 0.9);
         }
 
-        /* Neon Color Dots */
         .dc-dot {
             width: 22px;
             height: 22px;
@@ -96,7 +93,6 @@
             transform: scale(1.1);
         }
 
-        /* Controls */
         .dc-icon-btn {
             display: inline-flex;
             align-items: center;
@@ -208,7 +204,6 @@
             border-radius: 10px;
         }
 
-        /* Modal Backdrop */
         .dc-modal-backdrop {
             background: rgba(0, 0, 0, 0.7);
             opacity: 0;
@@ -230,7 +225,6 @@
             transform: scale(1);
         }
 
-        /* Toast Notifications */
         #toast-container {
             position: fixed;
             bottom: 24px;
@@ -266,10 +260,9 @@
 <body>
 
     <div class="relative z-10 flex min-h-screen flex-col items-center justify-between p-3 sm:p-5">
-        
         <div class="mx-auto flex w-full max-w-md flex-col gap-3.5">
             
-            <!-- HEADER BAR -->
+            <!-- HEADER -->
             <div class="relative flex items-center justify-between px-1 py-1">
                 <div class="flex items-center gap-3">
                     <span class="dc-glass flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white/10 p-1">
@@ -373,7 +366,6 @@
 
             <!-- CONVERSOR PRINCIPAL -->
             <div class="dc-glass space-y-3.5 p-4 relative overflow-hidden">
-                
                 <div class="dc-scroll flex gap-2 overflow-x-auto pb-1">
                     <button type="button" onclick="selectTab('USD')" class="dc-tab is-active" id="tab-USD">USD</button>
                     <button type="button" onclick="selectTab('EUR')" class="dc-tab" id="tab-EUR">EUR</button>
@@ -409,9 +401,7 @@
                             <strong class="dc-num text-sm" id="fee-mobile">Bs. 14,00</strong>
                         </div>
                         <div class="flex items-center justify-between gap-3 pt-1">
-                            <span class="dc-muted flex items-center gap-1">
-                                Incluir IGTF (3%)
-                            </span>
+                            <span class="dc-muted flex items-center gap-1">Incluir IGTF (3%)</span>
                             <div class="flex items-center gap-2">
                                 <strong class="dc-num text-sm" id="fee-igtf-val">Bs. 0,00</strong>
                                 <button type="button" id="switch-igtf" onclick="toggleIGTF()" class="dc-switch" aria-pressed="false" aria-label="IGTF">
@@ -429,7 +419,7 @@
                     </div>
                 </div>
 
-                <!-- BARRA DE ACCIONES RÁPIDAS -->
+                <!-- ACCIONES RÁPIDAS -->
                 <div class="flex items-center justify-center gap-2.5 pt-1">
                     <button type="button" onclick="invertDirection()" class="dc-icon-btn" title="Invertir" aria-label="Invertir">
                         <i data-lucide="arrow-up-down" class="h-4 w-4"></i>
@@ -450,7 +440,7 @@
 
                 <div class="dc-divider"></div>
 
-                <!-- RESULTADO PRINCIPAL -->
+                <!-- RESULTADO CONVERTIDO -->
                 <div class="min-w-0">
                     <div class="dc-label text-xs font-semibold dc-muted">Resultado Convertido</div>
                     <div class="dc-num flex items-baseline gap-2 text-3xl font-extrabold text-white mt-1">
@@ -463,21 +453,16 @@
                         <div class="dc-muted text-[11px] bg-white/5 px-2 py-0.5 rounded" id="rate-reference-label">1 USD = 0,00 Bs.</div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- PIE DE PÁGINA -->
+            <!-- FOOTER -->
             <div class="dc-muted text-center text-[10px] tracking-wide pt-1">
                 App Creada por <strong class="text-gray-300">DR 2026</strong> · DayCambio LiquidGlass v2.5
             </div>
-
         </div>
     </div>
 
-
-    <!-- ==================== MODALES ==================== -->
-
-    <!-- MODAL 1: CALCULADORA DE VUELTO -->
+    <!-- MODALES -->
     <div id="modal-vuelto" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-vuelto')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -507,7 +492,6 @@
         </div>
     </div>
 
-    <!-- MODAL 2: CALENDARIO -->
     <div id="modal-calendar" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-calendar')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -527,11 +511,9 @@
         </div>
     </div>
 
-    <!-- MODAL 3: HISTORIAL Y BRECHA -->
     <div id="modal-chart" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-md p-5 space-y-4 relative">
             <button onclick="closeModal('modal-chart')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
-            
             <div>
                 <div class="flex items-center gap-2 text-purple-400 font-bold text-lg">
                     <i data-lucide="trending-up" class="h-5 w-5"></i>
@@ -539,7 +521,6 @@
                 </div>
                 <p id="history-subtitle" class="text-xs dc-muted mt-0.5">Cargando rango histórico...</p>
             </div>
-
             <div class="dc-glass-soft space-y-2.5 p-3.5">
                 <div class="flex items-center justify-between gap-3 text-sm">
                     <span class="dc-muted">USD BCV</span>
@@ -553,9 +534,7 @@
                     <span class="dc-muted">USDT mercado</span>
                     <strong class="dc-num text-sm text-amber-400" id="hist-usdt-val">0,00 Bs</strong>
                 </div>
-                
                 <div class="dc-divider my-1"></div>
-                
                 <div class="flex items-center justify-between gap-3 text-sm">
                     <span class="dc-muted">Brecha Euro vs BCV</span>
                     <strong class="dc-num text-sm" id="hist-gap-eur">+0.00%</strong>
@@ -565,22 +544,15 @@
                     <strong class="dc-num text-sm" id="hist-gap-usdt">+0.00%</strong>
                 </div>
             </div>
-
             <div class="dc-glass-soft p-3.5 space-y-2">
                 <div class="text-xs font-semibold text-gray-300">USD BCV · últimos 30 registros</div>
                 <div id="sparkline-container" class="w-full h-16 py-1"></div>
-                <div class="dc-muted text-[11px] text-right" id="sparkline-bounds">
-                    Mínimo 0,00 · Máximo 0,00
-                </div>
+                <div class="dc-muted text-[11px] text-right" id="sparkline-bounds">Mínimo 0,00 · Máximo 0,00</div>
             </div>
-
-            <button type="button" class="w-full py-2.5 rounded-xl font-bold text-white transition-all shadow-lg bg-white/10 hover:bg-white/15" onclick="closeModal('modal-chart')">
-                Cerrar
-            </button>
+            <button type="button" class="w-full py-2.5 rounded-xl font-bold text-white bg-white/10 hover:bg-white/15" onclick="closeModal('modal-chart')">Cerrar</button>
         </div>
     </div>
 
-    <!-- MODAL 4: REGIONALES -->
     <div id="modal-regional" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-regional')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -590,31 +562,21 @@
             </div>
             <div class="space-y-2 text-sm">
                 <div class="dc-glass-soft p-3 flex justify-between items-center">
-                    <div>
-                        <div class="font-bold">Real Brasileño (BRL)</div>
-                        <div class="text-xs dc-muted">1 BRL a Bolívares</div>
-                    </div>
+                    <div><div class="font-bold">Real Brasileño (BRL)</div><div class="text-xs dc-muted">1 BRL a Bolívares</div></div>
                     <div class="font-bold text-emerald-400" id="reg-brl">0.00 Bs.</div>
                 </div>
                 <div class="dc-glass-soft p-3 flex justify-between items-center">
-                    <div>
-                        <div class="font-bold">Peso Colombiano (COP)</div>
-                        <div class="text-xs dc-muted">1 COP a Bolívares</div>
-                    </div>
+                    <div><div class="font-bold">Peso Colombiano (COP)</div><div class="text-xs dc-muted">1 COP a Bolívares</div></div>
                     <div class="font-bold text-blue-400" id="reg-cop">0.00 Bs.</div>
                 </div>
                 <div class="dc-glass-soft p-3 flex justify-between items-center">
-                    <div>
-                        <div class="font-bold">Peso Argentino (ARS)</div>
-                        <div class="text-xs dc-muted">1 ARS a Bolívares</div>
-                    </div>
+                    <div><div class="font-bold">Peso Argentino (ARS)</div><div class="text-xs dc-muted">1 ARS a Bolívares</div></div>
                     <div class="font-bold text-purple-400" id="reg-ars">0.00 Bs.</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 5: INTERVENCIÓN -->
     <div id="modal-intervencion" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-intervencion')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -633,7 +595,6 @@
         </div>
     </div>
 
-    <!-- MODAL 6: MI TASA -->
     <div id="modal-custom-rate" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-custom-rate')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -642,8 +603,7 @@
                 <h2>Personalizar "Mi Tasa"</h2>
             </div>
             <div class="space-y-3 text-sm">
-                <p class="dc-muted text-xs">Ajusta manualmente la tasa que utilizas para tus compras o negocios. Se guardará de forma permanente en tu dispositivo.</p>
-                
+                <p class="dc-muted text-xs">Ajusta manualmente la tasa que utilizas para tus compras o negocios.</p>
                 <div class="grid grid-cols-2 gap-2 text-xs">
                     <button type="button" onclick="quickCopyRate('usd')" class="dc-glass-soft p-2 text-left">
                         <span class="dc-muted block text-[10px]">Copiar BCV</span>
@@ -654,7 +614,6 @@
                         <strong class="text-amber-400" id="quick-usdt-val">0,00 Bs.</strong>
                     </button>
                 </div>
-
                 <div>
                     <label class="dc-muted text-xs block mb-1">Valor en Bolívares por Divisa (Bs.):</label>
                     <div class="relative flex items-center">
@@ -662,15 +621,12 @@
                         <span class="absolute right-3 text-xs font-bold dc-muted">Bs.</span>
                     </div>
                 </div>
-
-                <button type="button" onclick="saveCustomRate()" class="w-full py-2.5 rounded-xl font-bold text-white transition-all shadow-lg hover:opacity-90" style="background:var(--dc-accent)">
-                    Guardar y Aplicar "Mi Tasa"
-                </button>
+                <button type="button" onclick="saveCustomRate()" class="w-full py-2.5 rounded-xl font-bold text-white shadow-lg" style="background:var(--dc-accent)">Guardar y Aplicar "Mi Tasa"</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 7: RECIBO CON WHATSAPP Y LOGO MINIATURA -->
+    <!-- RECIBO -->
     <div id="modal-receipt" class="dc-modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="dc-modal-content dc-glass w-full max-w-sm p-5 space-y-4 relative">
             <button onclick="closeModal('modal-receipt')" class="absolute top-4 right-4 dc-icon-btn !w-7 !h-7"><i data-lucide="x" class="h-4 w-4"></i></button>
@@ -683,16 +639,16 @@
                         </div>
                         <span class="font-bold text-sm tracking-wide">DayCambio</span>
                     </div>
-                    <span class="text-[10px] text-gray-400" id="rec-date">18 Oct 2026</span>
+                    <span class="text-[10px] text-gray-400" id="rec-date">19 Oct 2026</span>
                 </div>
 
                 <div class="space-y-2 text-xs">
                     <div class="flex justify-between"><span class="text-gray-400">Operación:</span><span id="rec-op" class="font-bold">USD a Bolívares</span></div>
                     <div class="flex justify-between"><span class="text-gray-400">Monto Insumo:</span><span id="rec-monto">20 USD</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Tasa Aplicada:</span><span id="rec-tasa">880,12 Bs.</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Tasa Aplicada:</span><span id="rec-tasa">881,07 Bs.</span></div>
                     <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-bold text-emerald-400">
                         <span>Total A pagar:</span>
-                        <span id="rec-total">Bs. 17.602,40</span>
+                        <span id="rec-total">Bs. 17.621,40</span>
                     </div>
                 </div>
 
@@ -701,23 +657,19 @@
                 </div>
             </div>
 
-            <!-- Botones de Recibo: WhatsApp + Descarga -->
             <div class="grid grid-cols-2 gap-2">
-                <button type="button" onclick="shareReceiptWhatsApp()" class="py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg bg-emerald-600 hover:bg-emerald-500">
+                <button type="button" onclick="shareReceiptWhatsApp()" class="py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg bg-emerald-600 hover:bg-emerald-500">
                     <i data-lucide="send" class="h-4 w-4"></i> WhatsApp
                 </button>
-                <button type="button" onclick="downloadReceiptImage()" class="py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg" style="background:var(--dc-accent)">
+                <button type="button" onclick="downloadReceiptImage()" class="py-2.5 rounded-xl font-bold text-white flex items-center justify-center gap-2 shadow-lg" style="background:var(--dc-accent)">
                     <i data-lucide="download" class="h-4 w-4"></i> Descargar
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Contenedor de Toasts -->
     <div id="toast-container"></div>
 
-
-    <!-- ==================== LÓGICA JAVASCRIPT ==================== -->
     <script>
         function formatNumber(val, decimals = 2) {
             if (val === undefined || val === null || isNaN(val)) return '0,00';
@@ -740,30 +692,23 @@
 
         const state = {
             rates: {
-                usd: 880.12,
-                eur: 985.73,
-                usdt: 997.95,
+                usd: 881.07,
+                eur: 991.16,
+                usdt: 1003.46,
                 brl: 172.96,
                 cop: 0.276,
                 ars: 0.581,
                 custom: 890.00,
                 history: [
-                    { fecha: "2026-09-19", usd: 855.10, eur: 950.20, usdt: 968.00 },
-                    { fecha: "2026-09-21", usd: 857.40, eur: 953.10, usdt: 970.50 },
-                    { fecha: "2026-09-23", usd: 859.80, eur: 956.00, usdt: 973.20 },
-                    { fecha: "2026-09-25", usd: 861.20, eur: 958.40, usdt: 975.00 },
-                    { fecha: "2026-09-28", usd: 863.50, eur: 961.00, usdt: 978.10 },
-                    { fecha: "2026-09-30", usd: 865.90, eur: 963.80, usdt: 980.40 },
                     { fecha: "2026-10-02", usd: 868.00, eur: 966.50, usdt: 983.00 },
                     { fecha: "2026-10-05", usd: 870.30, eur: 969.00, usdt: 986.20 },
                     { fecha: "2026-10-07", usd: 872.10, eur: 971.80, usdt: 988.50 },
                     { fecha: "2026-10-09", usd: 874.20, eur: 974.50, usdt: 990.10 },
                     { fecha: "2026-10-12", usd: 875.50, eur: 976.20, usdt: 991.80 },
                     { fecha: "2026-10-14", usd: 876.80, eur: 978.00, usdt: 992.50 },
-                    { fecha: "2026-10-15", usd: 877.90, eur: 981.10, usdt: 995.00 },
                     { fecha: "2026-10-16", usd: 879.12, eur: 983.40, usdt: 996.20 },
-                    { fecha: "2026-10-17", usd: 879.80, eur: 984.90, usdt: 997.10 },
-                    { fecha: "2026-10-18", usd: 880.12, eur: 985.73, usdt: 997.95 }
+                    { fecha: "2026-10-18", usd: 880.12, eur: 985.73, usdt: 997.95 },
+                    { fecha: "2026-10-19", usd: 881.07, eur: 991.16, usdt: 1003.46 }
                 ]
             },
             selectedCurrency: 'USD',
@@ -797,7 +742,7 @@
             
             const dateInput = document.getElementById('calendar-date-picker');
             if (dateInput) {
-                dateInput.value = "2026-10-18";
+                dateInput.value = "2026-10-19";
                 lookupHistoricalRate();
             }
         });
@@ -815,7 +760,6 @@
         function setAccentTheme(color) {
             state.accentColor = color;
             document.documentElement.style.setProperty('--dc-accent', color);
-
             localStorage.setItem('dc_accent_color', color);
 
             document.querySelectorAll('.dc-dot').forEach(dot => {
@@ -844,21 +788,29 @@
             });
         }
 
+        // LECTURA DIRECTA DE ARCHIVOS JSON DESDE GITHUB (SIN API BLOQUEADA)
         async function fetchLatestRates(isManual = false) {
             const refreshIcon = document.getElementById('refresh-icon');
             if (refreshIcon) refreshIcon.classList.add('animate-spin');
 
+            const githubJsdelivr = 'https://cdn.jsdelivr.net/gh/dolarapi/dolarapi.com@main/datos/ve/v1/dolares.json';
+            const githubRaw = 'https://raw.githubusercontent.com/dolarapi/dolarapi.com/main/datos/ve/v1/dolares.json';
+            const apiDirecta = 'https://ve.dolarapi.com/v1/dolares';
+
             try {
-                const res = await fetch('https://ve.dolarapi.com/v1/dolares');
+                let res = await fetch(githubJsdelivr);
+                if (!res.ok) res = await fetch(githubRaw);
+                if (!res.ok) res = await fetch(apiDirecta);
+                
                 if (res.ok) {
                     const data = await res.json();
                     const oficial = data.find(d => d.codigo === 'oficial');
-                    const paralelo = data.find(d => d.codigo === 'paralelo');
+                    const paralelo = data.find(d => d.codigo === 'paralelo' || d.codigo === 'usdt');
                     if (oficial) state.rates.usd = oficial.promedio;
                     if (paralelo) state.rates.usdt = paralelo.promedio;
                 }
             } catch (err) {
-                console.log('API Fallback active:', err);
+                console.log('Error al consultar GitHub/API:', err);
             } finally {
                 if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 300);
                 
@@ -869,7 +821,7 @@
                 }
 
                 updateUI();
-                if (isManual) showToast('Tasas actualizadas');
+                if (isManual) showToast('Tasas actualizadas desde GitHub');
             }
         }
 
@@ -954,7 +906,7 @@
             if (dom.resultSymbol) dom.resultSymbol.innerText = state.isFlipped ? curr : 'Bs.';
 
             if (dom.rateRefLabel) dom.rateRefLabel.innerText = `1 ${curr} = ${formatNumber(rate)} Bs.`;
-            if (dom.updateDateLabel) dom.updateDateLabel.innerText = `Actualizado · 18 Oct 2026 (${state.isTomorrowRate ? 'Tasa Lunes / Mañana' : 'Tasa Hoy'})`;
+            if (dom.updateDateLabel) dom.updateDateLabel.innerText = `Actualizado · 19 Oct 2026 (${state.isTomorrowRate ? 'Tasa Lunes / Mañana' : 'Tasa Hoy'})`;
         }
 
         function quickCopyRate(type) {
