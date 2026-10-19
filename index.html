@@ -755,6 +755,16 @@
 
             const savedAccent = localStorage.getItem('dc_accent_color');
             if (savedAccent) setAccentTheme(savedAccent);
+
+            // Carga y aplica el modo claro u oscuro guardado en el teléfono
+            const savedTheme = localStorage.getItem('dc_theme_mode');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light');
+                document.documentElement.classList.remove('dark');
+            } else if (savedTheme === 'dark') {
+                document.body.classList.remove('light');
+                document.documentElement.classList.add('dark');
+            }
         }
 
         function setAccentTheme(color) {
@@ -784,6 +794,11 @@
             btn.addEventListener('click', () => {
                 document.body.classList.toggle('light');
                 document.documentElement.classList.toggle('dark');
+                
+                // Guarda la preferencia fija en el almacenamiento local
+                const isLight = document.body.classList.contains('light');
+                localStorage.setItem('dc_theme_mode', isLight ? 'light' : 'dark');
+                
                 renderHistoryModalLogic();
             });
         }
