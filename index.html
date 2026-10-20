@@ -457,7 +457,7 @@
 
             <!-- FOOTER -->
             <div class="dc-muted text-center text-[10px] tracking-wide pt-1">
-                App Creada por <strong class="text-gray-300">DR 2026</strong> · DayCambio LiquidGlass v2.5
+                App Creada por <strong class="text-gray-300">DR 2026</strong> · DayCambio LiquidGlass v2.6
             </div>
         </div>
     </div>
@@ -639,16 +639,16 @@
                         </div>
                         <span class="font-bold text-sm tracking-wide">DayCambio</span>
                     </div>
-                    <span class="text-[10px] text-gray-400" id="rec-date">19 Oct 2026</span>
+                    <span class="text-[10px] text-gray-400" id="rec-date">20 Oct 2026</span>
                 </div>
 
                 <div class="space-y-2 text-xs">
                     <div class="flex justify-between"><span class="text-gray-400">Operación:</span><span id="rec-op" class="font-bold">USD a Bolívares</span></div>
                     <div class="flex justify-between"><span class="text-gray-400">Monto Insumo:</span><span id="rec-monto">20 USD</span></div>
-                    <div class="flex justify-between"><span class="text-gray-400">Tasa Aplicada:</span><span id="rec-tasa">881,07 Bs.</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Tasa Aplicada:</span><span id="rec-tasa">881,88 Bs.</span></div>
                     <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-bold text-emerald-400">
                         <span>Total A pagar:</span>
-                        <span id="rec-total">Bs. 17.621,40</span>
+                        <span id="rec-total">Bs. 17.637,60</span>
                     </div>
                 </div>
 
@@ -692,8 +692,8 @@
 
         const state = {
             rates: {
-                usd: 881.07,
-                eur: 991.16,
+                usd: 881.88,
+                eur: 988.97,
                 usdt: 1003.46,
                 brl: 172.96,
                 cop: 0.276,
@@ -706,9 +706,9 @@
                     { fecha: "2026-10-09", usd: 874.20, eur: 974.50, usdt: 990.10 },
                     { fecha: "2026-10-12", usd: 875.50, eur: 976.20, usdt: 991.80 },
                     { fecha: "2026-10-14", usd: 876.80, eur: 978.00, usdt: 992.50 },
-                    { fecha: "2026-10-16", usd: 879.12, eur: 983.40, usdt: 996.20 },
-                    { fecha: "2026-10-18", usd: 880.12, eur: 985.73, usdt: 997.95 },
-                    { fecha: "2026-10-19", usd: 881.07, eur: 991.16, usdt: 1003.46 }
+                    { fecha: "2026-10-16", usd: 880.12, eur: 983.40, usdt: 996.20 },
+                    { fecha: "2026-10-19", usd: 881.07, eur: 991.16, usdt: 1003.46 },
+                    { fecha: "2026-10-20", usd: 881.88, eur: 988.97, usdt: 1003.46 }
                 ]
             },
             selectedCurrency: 'USD',
@@ -742,7 +742,7 @@
             
             const dateInput = document.getElementById('calendar-date-picker');
             if (dateInput) {
-                dateInput.value = "2026-10-19";
+                dateInput.value = "2026-10-20";
                 lookupHistoricalRate();
             }
         });
@@ -756,7 +756,6 @@
             const savedAccent = localStorage.getItem('dc_accent_color');
             if (savedAccent) setAccentTheme(savedAccent);
 
-            // Carga y aplica el modo claro u oscuro guardado en el teléfono
             const savedTheme = localStorage.getItem('dc_theme_mode');
             if (savedTheme === 'light') {
                 document.body.classList.add('light');
@@ -795,7 +794,6 @@
                 document.body.classList.toggle('light');
                 document.documentElement.classList.toggle('dark');
                 
-                // Guarda la preferencia fija en el almacenamiento local
                 const isLight = document.body.classList.contains('light');
                 localStorage.setItem('dc_theme_mode', isLight ? 'light' : 'dark');
                 
@@ -803,40 +801,60 @@
             });
         }
 
-        // LECTURA DIRECTA DE ARCHIVOS JSON DESDE GITHUB (SIN API BLOQUEADA)
+        // SISTEMA DE CONSULTA INTELIGENTE ANTI-CACHÉ Y TRIPLE RESPALDO
         async function fetchLatestRates(isManual = false) {
             const refreshIcon = document.getElementById('refresh-icon');
             if (refreshIcon) refreshIcon.classList.add('animate-spin');
 
-            const githubJsdelivr = 'https://cdn.jsdelivr.net/gh/dolarapi/dolarapi.com@main/datos/ve/v1/dolares.json';
-            const githubRaw = 'https://raw.githubusercontent.com/dolarapi/dolarapi.com/main/datos/ve/v1/dolares.json';
-            const apiDirecta = 'https://ve.dolarapi.com/v1/dolares';
+            const timestamp = new Date().getTime();
+            const sources = [
+                `https://ve.dolarapi.com/v1/dolares?nocache=${timestamp}`,
+                `https://raw.githubusercontent.com/dolarapi/dolarapi.com/main/datos/ve/v1/dolares/oficial.json?nocache=${timestamp}`
+            ];
 
-            try {
-                let res = await fetch(githubJsdelivr);
-                if (!res.ok) res = await fetch(githubRaw);
-                if (!res.ok) res = await fetch(apiDirecta);
-                
-                if (res.ok) {
-                    const data = await res.json();
-                    const oficial = data.find(d => d.codigo === 'oficial');
-                    const paralelo = data.find(d => d.codigo === 'paralelo' || d.codigo === 'usdt');
-                    if (oficial) state.rates.usd = oficial.promedio;
-                    if (paralelo) state.rates.usdt = paralelo.promedio;
-                }
-            } catch (err) {
-                console.log('Error al consultar GitHub/API:', err);
-            } finally {
-                if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 300);
-                
-                const now = new Date();
-                const dayOfWeek = now.getDay();
-                if (state.isTomorrowRate && (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0)) {
-                    state.rates.usd = parseFloat((state.rates.usd * 1.0025).toFixed(2));
-                }
+            let success = false;
 
-                updateUI();
-                if (isManual) showToast('Tasas actualizadas desde GitHub');
+            for (const url of sources) {
+                try {
+                    const res = await fetch(url);
+                    if (res.ok) {
+                        const data = await res.json();
+                        
+                        // Si la respuesta es un arreglo (API completa)
+                        if (Array.isArray(data)) {
+                            const oficial = data.find(d => d.codigo === 'oficial');
+                            const eur = data.find(d => d.codigo === 'euro');
+                            const paralelo = data.find(d => d.codigo === 'paralelo' || d.codigo === 'usdt');
+                            
+                            if (oficial && oficial.promedio) state.rates.usd = oficial.promedio;
+                            if (eur && eur.promedio) state.rates.eur = eur.promedio;
+                            if (paralelo && paralelo.promedio) state.rates.usdt = paralelo.promedio;
+                            success = true;
+                            break;
+                        } 
+                        // Si la respuesta es un objeto único (Directo oficial.json)
+                        else if (data && data.promedio) {
+                            state.rates.usd = data.promedio;
+                            success = true;
+                            break;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Error al intentar con fuente:', url);
+                }
+            }
+
+            if (refreshIcon) setTimeout(() => refreshIcon.classList.remove('animate-spin'), 300);
+
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+            if (state.isTomorrowRate && (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 0)) {
+                state.rates.usd = parseFloat((state.rates.usd * 1.0025).toFixed(2));
+            }
+
+            updateUI();
+            if (isManual) {
+                showToast(success ? 'Tasas del día cargadas' : 'Usando tasas en memoria local');
             }
         }
 
@@ -921,7 +939,7 @@
             if (dom.resultSymbol) dom.resultSymbol.innerText = state.isFlipped ? curr : 'Bs.';
 
             if (dom.rateRefLabel) dom.rateRefLabel.innerText = `1 ${curr} = ${formatNumber(rate)} Bs.`;
-            if (dom.updateDateLabel) dom.updateDateLabel.innerText = `Actualizado · 19 Oct 2026 (${state.isTomorrowRate ? 'Tasa Lunes / Mañana' : 'Tasa Hoy'})`;
+            if (dom.updateDateLabel) dom.updateDateLabel.innerText = `Actualizado · 20 Oct 2026 (${state.isTomorrowRate ? 'Tasa Lunes / Mañana' : 'Tasa Hoy'})`;
         }
 
         function quickCopyRate(type) {
