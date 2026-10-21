@@ -62,9 +62,9 @@
         }
 
         body.light .dc-glass {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border: 1px solid rgba(226, 232, 240, 0.9);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
         }
 
         .dc-glass-soft {
@@ -74,7 +74,7 @@
         }
 
         body.light .dc-glass-soft {
-            background: rgba(241, 245, 249, 0.8);
+            background: rgba(241, 245, 249, 0.85);
             border: 1px solid rgba(226, 232, 240, 0.9);
         }
 
@@ -124,10 +124,16 @@
             cursor: pointer;
         }
 
+        body.light .dc-tab {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.08);
+            color: #6b7280;
+        }
+
         .dc-tab.is-active {
-            background: var(--dc-accent);
-            color: #ffffff;
-            border-color: var(--dc-accent);
+            background: var(--dc-accent) !important;
+            color: #ffffff !important;
+            border-color: var(--dc-accent) !important;
         }
 
         .dc-switch {
@@ -196,14 +202,6 @@
             color: #6b7280;
         }
 
-        .dc-scroll::-webkit-scrollbar {
-            height: 4px;
-        }
-        .dc-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-        }
-
         .dc-modal-backdrop {
             background: rgba(0, 0, 0, 0.7);
             opacity: 0;
@@ -269,7 +267,7 @@
                         <img id="app-logo" src="icon-192.png" alt="DayCambio Logo" class="h-full w-full object-contain rounded-lg">
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold tracking-tight">DayCambio</h1>
+                        <h1 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">DayCambio</h1>
                         <p class="text-[10px] dc-muted font-medium">Tasas BCV & Cripto Venezuela</p>
                     </div>
                 </div>
@@ -285,7 +283,7 @@
                 </div>
             </div>
 
-            <!-- 1. CONVERSOR Y CALCULADORA PRINCIPAL (ARRIBA) -->
+            <!-- 1. CONVERSOR Y CALCULADORA PRINCIPAL -->
             <div class="dc-glass space-y-3.5 p-4 relative overflow-hidden border-purple-500/20">
                 <div class="dc-scroll flex gap-2 overflow-x-auto pb-1">
                     <button type="button" onclick="selectTab('USD')" class="dc-tab is-active" id="tab-USD">USD</button>
@@ -300,45 +298,45 @@
                 <div class="dc-glass-soft px-4 py-3 relative">
                     <div class="dc-label flex justify-between text-xs font-medium dc-muted">
                         <span id="input-label-text">Monto en USD</span>
-                        <span id="direction-indicator" class="text-[10px] bg-white/10 px-1.5 py-0.5 rounded">Divisa ➔ Bs.</span>
+                        <span id="direction-indicator" class="text-[10px] bg-black/10 dark:bg-white/10 px-1.5 py-0.5 rounded text-gray-800 dark:text-gray-200">Divisa ➔ Bs.</span>
                     </div>
                     <div class="mt-1 flex items-baseline gap-2">
                         <span class="dc-num dc-muted text-xl font-bold" id="input-symbol">$</span>
-                        <input id="main-amount" class="dc-amount" placeholder="0,00" inputmode="decimal" aria-label="Monto" value="" oninput="calculateConversion()"/>
+                        <input id="main-amount" class="dc-amount text-gray-900 dark:text-white" placeholder="0,00" inputmode="decimal" aria-label="Monto" value="" oninput="calculateConversion()"/>
                     </div>
                 </div>
 
                 <!-- RESULTADO CONVERTIDO -->
                 <div class="min-w-0 pt-1">
                     <div class="dc-label text-xs font-semibold dc-muted">Resultado Convertido</div>
-                    <div class="dc-num flex items-baseline gap-2 text-3xl font-extrabold text-white mt-0.5">
+                    <div class="dc-num flex items-baseline gap-2 text-3xl font-extrabold text-gray-900 dark:text-white mt-0.5">
                         <span class="dc-muted text-xl font-bold" id="result-symbol">Bs.</span>
                         <span class="truncate" id="main-result">0,00</span>
                     </div>
                     
                     <div class="flex items-center justify-between mt-1.5">
                         <div class="dc-muted text-[11px] font-medium" id="update-date-label">Actualizado · Hoy</div>
-                        <div class="dc-muted text-[11px] bg-white/5 px-2 py-0.5 rounded" id="rate-reference-label">1 USD = 0,00 Bs.</div>
+                        <div class="dc-muted text-[11px] bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded" id="rate-reference-label">1 USD = 0,00 Bs.</div>
                     </div>
                 </div>
 
                 <!-- DESGLOSE DE COMISIONES -->
                 <div class="dc-glass-soft p-3.5 space-y-2">
-                    <div class="dc-label text-xs font-semibold text-gray-300">Conversión y comisiones (Bs.)</div>
+                    <div class="dc-label text-xs font-semibold text-gray-700 dark:text-gray-300">Conversión y comisiones (Bs.)</div>
                     
                     <div class="space-y-1.5 text-xs">
                         <div class="flex items-center justify-between gap-3">
                             <span class="dc-muted">Transferencia bancaria (1%)</span>
-                            <strong class="dc-num text-sm" id="fee-bank">Bs. 0,00</strong>
+                            <strong class="dc-num text-sm text-gray-900 dark:text-white" id="fee-bank">Bs. 0,00</strong>
                         </div>
                         <div class="flex items-center justify-between gap-3">
                             <span class="dc-muted">Pago móvil (mín. Bs. 14,00)</span>
-                            <strong class="dc-num text-sm" id="fee-mobile">Bs. 14,00</strong>
+                            <strong class="dc-num text-sm text-gray-900 dark:text-white" id="fee-mobile">Bs. 14,00</strong>
                         </div>
                         <div class="flex items-center justify-between gap-3 pt-0.5">
                             <span class="dc-muted flex items-center gap-1">Incluir IGTF (3%)</span>
                             <div class="flex items-center gap-2">
-                                <strong class="dc-num text-sm" id="fee-igtf-val">Bs. 0,00</strong>
+                                <strong class="dc-num text-sm text-gray-900 dark:text-white" id="fee-igtf-val">Bs. 0,00</strong>
                                 <button type="button" id="switch-igtf" onclick="toggleIGTF()" class="dc-switch" aria-pressed="false" aria-label="IGTF">
                                     <span class="dc-switch-knob"></span>
                                 </button>
@@ -350,7 +348,7 @@
 
                     <div class="flex items-end justify-between gap-3">
                         <span class="dc-muted text-xs font-medium">Total con comisiones bancarias</span>
-                        <span class="dc-num text-base font-bold text-emerald-400" id="total-with-fees">Bs. 0,00</span>
+                        <span class="dc-num text-base font-bold text-emerald-600 dark:text-emerald-400" id="total-with-fees">Bs. 0,00</span>
                     </div>
                 </div>
 
@@ -378,25 +376,25 @@
             <div class="grid grid-cols-3 gap-2">
                 <div class="dc-glass px-3 py-2.5 cursor-pointer hover:border-purple-500/40 transition-all" onclick="selectTab('USD')">
                     <div class="dc-muted truncate text-[11px] font-semibold flex items-center justify-between">
-                        USD <span class="text-[9px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-400">BCV</span>
+                        USD <span class="text-[9px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-500 dark:text-blue-400">BCV</span>
                     </div>
-                    <div class="dc-num mt-1 text-sm leading-tight text-emerald-400" id="rate-usd">0,00</div>
+                    <div class="dc-num mt-1 text-sm leading-tight text-emerald-600 dark:text-emerald-400" id="rate-usd">0,00</div>
                     <div class="mt-1 text-[10px] dc-muted">= 1 USD</div>
                 </div>
 
                 <div class="dc-glass px-3 py-2.5 cursor-pointer hover:border-purple-500/40 transition-all" onclick="selectTab('EUR')">
                     <div class="dc-muted truncate text-[11px] font-semibold flex items-center justify-between">
-                        EUR <span class="text-[9px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-400">BCV</span>
+                        EUR <span class="text-[9px] px-1 py-0.5 rounded bg-blue-500/20 text-blue-500 dark:text-blue-400">BCV</span>
                     </div>
-                    <div class="dc-num mt-1 text-sm leading-tight text-blue-400" id="rate-eur">0,00</div>
+                    <div class="dc-num mt-1 text-sm leading-tight text-blue-600 dark:text-blue-400" id="rate-eur">0,00</div>
                     <div class="mt-1 text-[10px] dc-muted">= 1 EUR</div>
                 </div>
 
                 <div class="dc-glass px-3 py-2.5 cursor-pointer hover:border-purple-500/40 transition-all" onclick="selectTab('USDT')">
                     <div class="dc-muted truncate text-[11px] font-semibold flex items-center justify-between">
-                        USDT <span class="text-[9px] px-1 py-0.5 rounded bg-amber-500/20 text-amber-400">P2P</span>
+                        USDT <span class="text-[9px] px-1 py-0.5 rounded bg-amber-500/20 text-amber-500 dark:text-amber-400">P2P</span>
                     </div>
-                    <div class="dc-num mt-1 text-sm leading-tight text-amber-400" id="rate-usdt">0,00</div>
+                    <div class="dc-num mt-1 text-sm leading-tight text-amber-600 dark:text-amber-400" id="rate-usdt">0,00</div>
                     <div class="mt-1 text-[10px] dc-muted">= 1 USDT</div>
                 </div>
             </div>
@@ -405,35 +403,35 @@
             <div class="grid grid-cols-4 gap-2">
                 <button type="button" onclick="openModal('modal-vuelto')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="calculator" class="h-4 w-4" style="color:var(--dc-accent)"></i>
-                    <span class="text-[10px] font-semibold">Vuelto</span>
+                    <span class="text-[10px] font-semibold text-gray-800 dark:text-gray-200">Vuelto</span>
                 </button>
                 <button type="button" onclick="openModal('modal-calendar')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="calendar" class="h-4 w-4" style="color:var(--dc-accent)"></i>
-                    <span class="text-[10px] font-semibold">Calendario</span>
+                    <span class="text-[10px] font-semibold text-gray-800 dark:text-gray-200">Calendario</span>
                 </button>
                 <button type="button" onclick="openModal('modal-chart')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="trending-up" class="h-4 w-4" style="color:var(--dc-accent)"></i>
-                    <span class="text-[10px] font-semibold">Historial</span>
+                    <span class="text-[10px] font-semibold text-gray-800 dark:text-gray-200">Historial</span>
                 </button>
                 <button type="button" onclick="openModal('modal-regional')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="globe" class="h-4 w-4" style="color:var(--dc-accent)"></i>
-                    <span class="text-[10px] font-semibold">Regionales</span>
+                    <span class="text-[10px] font-semibold text-gray-800 dark:text-gray-200">Regionales</span>
                 </button>
                 <button type="button" onclick="openModal('modal-intervencion')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="shield-alert" class="h-4 w-4" style="color:var(--dc-accent)"></i>
-                    <span class="text-[10px] font-semibold">Intervención</span>
+                    <span class="text-[10px] font-semibold text-gray-800 dark:text-gray-200">Intervención</span>
                 </button>
                 <button type="button" onclick="toggleTomorrowRate()" id="btn-tasa-manana" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="clock" class="h-4 w-4" style="color:var(--dc-accent)"></i>
-                    <span class="text-[10px] font-semibold" id="lbl-tasa-manana">Tasa Mañana</span>
+                    <span class="text-[10px] font-semibold text-gray-800 dark:text-gray-200" id="lbl-tasa-manana">Tasa Mañana</span>
                 </button>
                 <button type="button" onclick="openModal('modal-custom-rate')" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="sliders-vertical" class="h-4 w-4" style="color:var(--dc-accent)"></i>
-                    <span class="text-[10px] font-semibold">Mi Tasa</span>
+                    <span class="text-[10px] font-semibold text-gray-800 dark:text-gray-200">Mi Tasa</span>
                 </button>
                 <button type="button" onclick="generateReceipt()" class="dc-glass flex flex-col items-center gap-1.5 px-1 py-3">
                     <i data-lucide="receipt" class="h-4 w-4" style="color:var(--dc-accent)"></i>
-                    <span class="text-[10px] font-semibold">Recibo</span>
+                    <span class="text-[10px] font-semibold text-gray-800 dark:text-gray-200">Recibo</span>
                 </button>
             </div>
 
@@ -453,7 +451,7 @@
 
             <!-- FOOTER -->
             <div class="dc-muted text-center text-[10px] tracking-wide pt-1">
-                App Creada por <strong class="text-gray-300">DR 2026</strong> · DayCambio v2.7
+                App Creada por <strong class="text-gray-700 dark:text-gray-300">DR 2026</strong> · DayCambio v2.7
             </div>
         </div>
     </div>
@@ -469,16 +467,16 @@
             <div class="space-y-3 text-sm">
                 <div>
                     <label class="dc-muted text-xs block mb-1">Monto de la cuenta ($ USD)</label>
-                    <input id="vuelto-bill" type="number" step="any" placeholder="Ej: 15.50" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-bold" oninput="calcVuelto()">
+                    <input id="vuelto-bill" type="number" step="any" placeholder="Ej: 15.50" class="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl px-3 py-2 text-gray-900 dark:text-white font-bold" oninput="calcVuelto()">
                 </div>
                 <div>
                     <label class="dc-muted text-xs block mb-1">Cliente paga con ($ USD)</label>
-                    <input id="vuelto-paid" type="number" step="any" placeholder="Ej: 20.00" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-bold" oninput="calcVuelto()">
+                    <input id="vuelto-paid" type="number" step="any" placeholder="Ej: 20.00" class="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl px-3 py-2 text-gray-900 dark:text-white font-bold" oninput="calcVuelto()">
                 </div>
                 <div class="dc-glass-soft p-3 rounded-xl space-y-1">
                     <div class="text-xs dc-muted">Vuelto a entregar:</div>
-                    <div class="text-lg font-bold text-emerald-400" id="vuelto-result-usd">$ 0.00 USD</div>
-                    <div class="text-xs text-purple-300" id="vuelto-result-bs">ó Bs. 0,00</div>
+                    <div class="text-lg font-bold text-emerald-600 dark:text-emerald-400" id="vuelto-result-usd">$ 0.00 USD</div>
+                    <div class="text-xs text-purple-500 dark:text-purple-300" id="vuelto-result-bs">ó Bs. 0,00</div>
                 </div>
             </div>
         </div>
@@ -535,7 +533,7 @@
             <div class="space-y-3 text-sm">
                 <div>
                     <label class="dc-muted text-xs block mb-1">Valor de la Tasa Personalizada (Bs.)</label>
-                    <input id="custom-rate-input" type="number" step="any" placeholder="Ej: 900.50" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-bold">
+                    <input id="custom-rate-input" type="number" step="any" placeholder="Ej: 900.50" class="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl px-3 py-2 text-gray-900 dark:text-white font-bold">
                 </div>
                 <button onclick="saveCustomRate()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs">
                     Guardar Tasa
@@ -546,7 +544,7 @@
 
     <div id="toast-container"></div>
 
-    <!-- JAVASCRIPT COMPLETO CON VALORES DE RESPALDO CORREGIDOS -->
+    <!-- JAVASCRIPT COMPLETO -->
     <script>
         const state = {
             rates: { USD: 883.39, EUR: 988.97, USDT: 1003.46, BRL: 152.00, COP: 0.21, ARS: 0.85, CUSTOM: 883.39 },
