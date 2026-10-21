@@ -502,11 +502,11 @@
                     </div>
                     <div>
                         <div class="text-xs text-gray-400">Tasa Aplicada</div>
-                        <div class="text-sm font-semibold text-purple-400" id="rcpt-rate">1 USD = 88,18 Bs.</div>
+                        <div class="text-sm font-semibold text-purple-400" id="rcpt-rate">1 USD = 883,39 Bs.</div>
                     </div>
                     <div class="pt-2 border-t border-white/10">
                         <div class="text-xs text-gray-400">Monto en Bolívares</div>
-                        <div class="text-2xl font-black text-emerald-400" id="rcpt-total">Bs. 8.818,00</div>
+                        <div class="text-2xl font-black text-emerald-400" id="rcpt-total">Bs. 88.339,00</div>
                     </div>
                 </div>
 
@@ -535,7 +535,7 @@
             <div class="space-y-3 text-sm">
                 <div>
                     <label class="dc-muted text-xs block mb-1">Valor de la Tasa Personalizada (Bs.)</label>
-                    <input id="custom-rate-input" type="number" step="any" placeholder="Ej: 90.50" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-bold">
+                    <input id="custom-rate-input" type="number" step="any" placeholder="Ej: 900.50" class="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-bold">
                 </div>
                 <button onclick="saveCustomRate()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-xs">
                     Guardar Tasa
@@ -546,10 +546,10 @@
 
     <div id="toast-container"></div>
 
-    <!-- JAVASCRIPT COMPLETO -->
+    <!-- JAVASCRIPT COMPLETO CON VALORES DE RESPALDO CORREGIDOS -->
     <script>
         const state = {
-            rates: { USD: 88.18, EUR: 98.90, USDT: 100.20, BRL: 15.20, COP: 0.021, ARS: 0.085, CUSTOM: 90.00 },
+            rates: { USD: 883.39, EUR: 988.97, USDT: 1003.46, BRL: 152.00, COP: 0.21, ARS: 0.85, CUSTOM: 883.39 },
             activeCurrency: 'USD',
             isInverse: false,
             includeIGTF: false,
